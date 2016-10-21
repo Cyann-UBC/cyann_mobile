@@ -1,0 +1,3 @@
+rootProject.name = 'cyann_mobile'
+
+include ':app'
