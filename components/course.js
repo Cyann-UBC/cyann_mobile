@@ -16,19 +16,28 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import Drawer from 'react-native-drawer';
 import TimerMixin from 'react-timer-mixin';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
-import {Motion, spring} from 'react-motion';
+import FacebookTabBar from './tabbar.js';
+import * as Animatable from 'react-native-animatable';
+import Tabbar from 'react-native-tabbar'
+import Collapsible from 'react-native-collapsible';
 
+
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Modal = require('react-native-modalbox');
 var Dimensions = require('Dimensions');
 var {
   width,
   height
 } = Dimensions.get('window');
-
+const COLLAPSIBLE_PROPS = Object.keys(Collapsible.propTypes);
+const VIEW_PROPS = Object.keys(View.propTypes);
 export default class course extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      viewHeight:20,
+      questionPosted:false,
+      backgroundColor:'#4fc1e9',
       language:'java',
       questionList:[
         {title:'Q1',content:'Q1 Content',author:'a'},
@@ -41,7 +50,14 @@ export default class course extends Component {
         {title:'Q8',content:'Q8 Content',author:'h'},
         {title:'Q9',content:'Q9 Content',author:'i'},
         {title:'Q10',content:'Q10 Content',author:'j'},
-      ]
+      ],
+      questionTitle:'',
+      questionContent:'',
+      activeSection:0,
+      titleContainer:{},
+      contentContainer:{},
+      askButton:{},
+      buttonExit:false,
     };
   }
 
@@ -52,133 +68,198 @@ export default class course extends Component {
   }
 
   componentDidMount(){
-
-  }
-  _getOptionList() {
+    this.fetchPostsAPI()
   }
 
+fetchPostsAPI=()=>{
+    fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts",{method:"GET"})
+    .then((response) => response.json())
+    .then((responseData) => {
+      //  console.warn(JSON.stringify(responseData.data))
+      this.setState({questionList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.data)})
+    })
+  }
 
-  renderRow(rowData){
+pickCollapse(rowID){
+  console.warn(rowID)
+  this.setState({activeSection:rowID})
+  console.warn(this.state.activeSection)
+}
+
+  renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    let viewProps = {};
 
     return(
-      <TouchableOpacity onPress={()=>this.viewQuestion(rowData.title, rowData.content, rowData.author)}>
-        <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',borderBottomColor:'#aab2bd',borderBottomWidth:1,margin:10,paddingLeft:10}}>
-          <Text style={{marginBottom:10,fontWeight:'bold'}}>{rowData.title}</Text>
-          <Text style={{paddingBottom:10,}}>{rowData.content}</Text>
-        </View>
+      <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
+        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"bounceInDown" : "flipInX" } delay={rowID*80} duration={rowID*100} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
+    shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:5,marginLeft:10,marginRight:10,marginBottom:20,paddingLeft:10}}>
+          <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
+          <Text style={{color:"#AAB2BD"}}>author</Text>
+        <Animatable.View key={rowID} style={{height:50}}>
+          <View  style={{flex:1,flexDirection:'row'}}>
+            <Text style={{width:width/1.25,color:'gray',paddingBottom:10,}}>{rowData.content}</Text>
+
+            </View>
+          </Animatable.View>
+        </Animatable.View>
       </TouchableOpacity>
     )
   }
 
-  onBackPress(){
-    Actions.pop()
+  askQuestion(){
+    this.setState({buttonExit:true})
+    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    // this.setState({titleContainer:{
+    //   width:width/1.3,
+    //   height:height/4,
+    //   shadowColor: "#000000",
+    //   shadowOpacity: 0.5,
+    //   shadowRadius: 2,
+    //   shadowOffset: {height: 3.5,width: 0},
+    //   backgroundColor:"white",
+    //   borderRadius:20,
+    //   padding:10,
+    //   marginTop:-500
+    // }})
+    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    // this.setState({
+    //   contentContainer:{
+    //     width:width/1.3,
+    //     height:height/2.3,
+    //     shadowColor: "#000000",
+    //     shadowOpacity: 0.5,
+    //     shadowRadius: 2,
+    //     shadowOffset: {height: 3.5,width: 0},
+    //     backgroundColor:"white",
+    //     borderRadius:20,
+    //     padding:10,
+    //     marginTop:-500,
+    //   }
+    // })
+    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    // this.setState({
+    //   askButton:{
+    //     flex:1,
+    //     flexDirection:'row',
+    //     alignItems:'center',
+    //     justifyContent:'center',
+    //     shadowColor: "#000000",
+    //     shadowOpacity: 0.5,
+    //     shadowRadius: 2,
+    //     shadowOffset: {height: 3.5,width: 0},
+    //     width:width/1.3,
+    //     height:height/10,
+    //     backgroundColor:"#3bafda",
+    //     borderRadius:20,
+    //     marginTop:-1500
+    //   }
+    // })
+    var post = {
+    'title': this.state.questionTitle,
+    'content': this.state.questionContent,
+    'userId': '58122f3e6a5f670b42b5f85b'
+    }
+
+    var formBody = []
+
+    for (var property in post) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(post[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts",{method:"POST",
+    headers: {
+     'Content-Type': 'application/x-www-form-urlencoded'
+     },
+    body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.setState({questionList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.data)})
+    })
+
+
   }
 
-  openDrawer=()=>{
-    this._drawer.open()
+  viewQuestion=(id,title,content,author)=>{
+    Actions.viewQuestion({questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
   }
 
-  askQuestion=()=>{
-    setTimeout(()=>{this._drawer.close()},100)
-    setTimeout(()=>{this.refs.modal1.open()},200)
+  updateTitle(event){
+    this.setState({questionTitle:event.nativeEvent.text})
   }
 
-  viewQuestion=(title,content,author)=>{
-    Actions.viewQuestion({questionTitle:title,questionContent:content,questionAuthor:author})
+  updateContent(event){
+    this.setState({questionContent:event.nativeEvent.text})
   }
+
 
   render() {
+    let titleStyle = [styles.titleContainer, this.state.titleContainer]
+    let contentStyle = [styles.contentContainer, this.state.contentContainer]
+    let buttonStyle = [styles.askButton, this.state.askButton]
     return (
-      <Drawer
-        ref={(ref) => this._drawer = ref}
-        type="static"
-        content={
-          <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'space-around',backgroundColor:'#17B3C1',paddingTop:50,paddingBottom:50}}>
-            <TouchableOpacity onPress={()=>this.askQuestion()}>
-              <View>
-                <Ionicon name="ios-hand-outline" color="#f6f7fb" size={height/22} backgroundColor="transparent" >
-                </Ionicon>
-              </View>
-            </TouchableOpacity>
+      <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
+        onChangeTab={this.fetchPostsAPI.bind(this)}
+        renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}>
 
-            <View>
-              <Ionicon name="ios-folder-outline" color="#f6f7fb" size={height/22} backgroundColor="transparent" >
-              </Ionicon>
-            </View>
-
-            <View>
-              <Icon name="gear" color="#f6f7fb" size={height/22} backgroundColor="transparent" >
-              </Icon>
-            </View>
-          </View>
-        }
-        acceptDoubleTap
-        styles={{main: {shadowColor: '#000000', shadowOpacity: 0.3, shadowRadius: 15}}}
-        onOpen={() => {
-          console.log('onopen')
-          this.setState({drawerOpen: true})
-        }}
-        onClose={() => {
-          console.log('onclose')
-          this.setState({drawerOpen: false})
-        }}
-        captureGestures={false}
-        negotiatePan={true}
-        tweenDuration={150}
-        tweenEasing={'easeOutCirc'}
-        panThreshold={0.08}
-        disabled={this.state.drawerDisabled}
-        openDrawerOffset={(viewport) => {
-          return 300
-        }}
-        side={'right'}
-        panCloseMask={500}
-        panOpenMask={500}
-        closedDrawerOffset={() => 0}
-        negotiatePan
-        >
-
-      <View>
-        <View style={styles.topContainer}>
-          <TouchableOpacity
-            onPress={this.onBackPress}>
-            <Icon name="chevron-left" color="#f6f7fb" size={36} backgroundColor="transparent" />
-          </TouchableOpacity>
-
-          <Text style={styles.courseTitle}>{this.props.courseName}</Text>
-
-            <TouchableOpacity
-              onPress={this.openDrawer}
-              style={{marginRight: 15}}>
-              <Icon name="navicon" color="#f6f7fb" size={30} backgroundColor="transparent"/>
-            </TouchableOpacity>
-        </View>
-        <View style={{flex:1,height:height-height/10.5,backgroundColor:'#e6e9ed'}}>
+        <View style={{flex:1,backgroundColor:'#4fc1e9'}}>
           <ListView
             style={{flex:1}}
             showsVerticalScrollIndicator={false}
             dataSource={this.state.questionList}
             renderRow={this.renderRow.bind(this)}
             horizontal={false}
+            removeClippedSubviews={true}
           />
         </View>
-      </View>
-      <Modal style={[styles.modal, styles.modal1]} ref={"modal1"} swipeToClose={this.state.swipeToClose} onClosed={this.onClose} onOpened={this.onOpen} onClosingState={this.onClosingState}>
-          <Text style={{fontSize:23,height:height/10}}>Ask a Question</Text>
-          <View style={{margin:20,padding:20,borderBottomWidth:2,borderBottomColor:'#aab2bd'}}>
-            <AutoGrowingTextInput style={{height:50,fontSize:20,width:width/1.2,height:20,marginRight:20,}} placeholder={'title'} />
-          </View>
-          <View style={{margin:20,padding:20,borderBottomWidth:2,borderBottomColor:'#aab2bd',}}>
-            <AutoGrowingTextInput style={{height:50,fontSize:20,width:width/1.2,height:20,marginRight:20,}} placeholder={'content'} />
-          </View>
-          <TouchableOpacity>
-            <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',height:height/10,backgroundColor:'#17b3c1',borderRadius:height/20,width:width/2}}>
-              <Text style={{fontSize:20,fontWeight:'bold',color:'#f5f7fa',alignSelf:'center'}}>POST</Text>
-            </View>
+
+        <View style={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}}>
+          <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
+            <TextInput
+              multiline={true}
+              style={{height: 50,color:'black',fontSize:20}}
+              onChange={this.updateTitle.bind(this)}
+              value={this.state.questionTitle}
+              placeholder="Title"
+            />
+          </Animatable.View>
+
+          <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
+            <TextInput
+              multiline={true}
+              style={{height: 50,color:'black',fontSize:20}}
+              onChange={this.updateContent.bind(this)}
+              value={this.state.questionContent}
+              placeholder="Content"
+            />
+          </Animatable.View>
+
+          <TouchableOpacity onPress={this.askQuestion.bind(this)}>
+            <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} delay={this.state.buttonExit===false?400:800} duration={this.state.buttonExit===false?300:700} style={buttonStyle}>
+              <Text style={{color:"white",fontWeight:'bold',alignSelf:"center",fontSize:25}}>ASK</Text>
+            </Animatable.View>
           </TouchableOpacity>
-      </Modal>
-    </Drawer>
+
+
+          <View>
+
+          </View>
+        </View>
+
+        <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
+
+        </View>
+
+
+      </ScrollableTabView>
+
     );
   }
 }
@@ -188,7 +269,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'row',
     justifyContent: 'center',
-    backgroundColor:'#17B3C1',
+    backgroundColor:'#2d3545',
     alignItems: 'center',
   },
   courseTitle:{
@@ -203,7 +284,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: '#17B3C1',
+      backgroundColor: '#4fc1e9',
       paddingTop: 20,
   },
   modal: {
@@ -214,6 +295,42 @@ const styles = StyleSheet.create({
     backgroundColor:'#e6e9ed',
     alignItems: 'center'
   },
+  askButton:{
+    flex:1,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center',
+    shadowColor: "#000000",
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowOffset: {height: 3.5,width: 0},
+    width:width/1.3,
+    height:height/10,
+    backgroundColor:"#3bafda",
+    borderRadius:20
+  },
+  contentContainer:{
+    width:width/1.3,
+    height:height/2.3,
+    shadowColor: "#000000",
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowOffset: {height: 3.5,width: 0},
+    backgroundColor:"white",
+    borderRadius:20,
+    padding:10
+  },
+  titleContainer:{
+    width:width/1.3,
+    height:height/4,
+    shadowColor: "#000000",
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowOffset: {height: 3.5,width: 0},
+    backgroundColor:"white",
+    borderRadius:20,
+    padding:10
+  }
 
 });
 

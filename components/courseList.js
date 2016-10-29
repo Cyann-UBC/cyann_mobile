@@ -6,6 +6,7 @@ import {
   ListView,
   LayoutAnimation,
   StatusBar,
+  ScrollView,
   Text,
   View
 } from 'react-native';
@@ -13,17 +14,67 @@ import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {Motion, spring} from 'react-motion';
-
+import * as Animatable from 'react-native-animatable';
+if(!StyleSheet.flatten) {
+  StyleSheet.flatten = require('flattenStyle');
+}
 var Dimensions = require('Dimensions');
 var {
   width,
   height
 } = Dimensions.get('window');
 
+var animations = {
+  layout: {
+    spring: {
+      duration: 750,
+      create: {
+        duration: 300,
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+      update: {
+        type: LayoutAnimation.Types.spring,
+        springDamping: 400,
+      },
+    },
+    easeInEaseOut: {
+      duration: 400,
+      create: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.scaleXY,
+      },
+      update: {
+        delay: 100,
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+    },
+  },
+};
+
+
 export default class courseList extends Component {
+  mixins: [TimerMixin]
   constructor(props) {
     super(props);
     this.state = {
+      container:{
+        flex: 1,
+        flexDirection:'row',
+        justifyContent: 'center',
+        backgroundColor:'#4fc1e9',
+        alignItems: 'center',
+      },
+      courseStyle:{
+        margin:30,
+        marginBottom:20,
+        padding:15,
+        borderBottomColor:'white',
+        borderBottomWidth:2
+      },
+    listStyle:{
+      flex:1,
+    },
       courseList:[
         {name:'CPEN 321'},
         {name:'CPEN 281'},
@@ -36,6 +87,8 @@ export default class courseList extends Component {
       listSource:{},
       ifRenderList:false,
       commentSource:{},
+      viewToggle:'list',
+      selectedCourse:'',
     };
   }
 
@@ -45,50 +98,97 @@ export default class courseList extends Component {
     }).cloneWithRows(this.state.courseList)})
   }
   componentDidMount(){
-    console.warn(JSON.stringify(this.state.listSource))
+    // console.warn(JSON.stringify(this.state.listSource))
   }
 
-  gotoCourse(name){
-    Actions.course({courseName:name})
+  gotoCourse=(name)=>{
+    LayoutAnimation.configureNext(animations.layout.easeInEaseOut)
+    this.setState({selectedCourse:name})
+    setTimeout(()=>{this.setState({viewToggle:'name'})},200)
+    Actions.course()
   }
 
   renderRow(rowData){
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-
+    let courseContainerStyle = [styles.courseContainer, this.state.courseStyle]
     return(
-      <TouchableOpacity onPress={()=>this.gotoCourse(rowData.name)}>
-      <View style={{margin:30,marginBottom:20,padding:10,borderBottomColor:'white',borderBottomWidth:1}}>
-        <Text style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.name}</Text>
-      </View>
+      <TouchableOpacity onPress={() => this.gotoCourse(rowData.name)}>
+      <Animatable.View  animation="flipInY" style={this.state.courseStyle}>
+        <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.name}</Animatable.Text>
+      </Animatable.View>
       </TouchableOpacity>
     )
   }
+
   render() {
+    var courses = this.state.courseList
     return (
       <View style={styles.container}>
         <StatusBar
           backgroundColor="transparent"
-
           barStyle="light-content"
             />
-        <ListView
-          style={{flex:1}}
-          showsVerticalScrollIndicator={false}
-          dataSource={this.state.listSource}
-          renderRow={this.renderRow.bind(this)}
-          horizontal={false}
-        />
+          <View style={{height:height/3}}>
+            <ScrollView
+              horizontal ={true}
+              pagingEnabled ={true}
+              >
+              {this.state.courseList.map(function(course, i){
+                if(i==0){
+                  var marginLeft=width/12;
+                }
+                else if(i==courses.length-1){
+                  var marginLeft = width/10
+                  var marginRight = width/10
+                }
+                else
+                 var marginLeft=width/10;
+                  return(
+                    <TouchableOpacity onPress={()=>this.gotoCourse(course.name)}>
+                      <View obj={course} key={i} style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center',borderRadius:20,width:width/1.2,backgroundColor:'white',marginLeft:marginLeft,marginRight:marginRight,paddingLeft:20,paddingRight:20,paddingBottom:60}} >
+
+                        <View style={{width:width/1.5,paddingLeft:10}}>
+                          <Text>{course.name}</Text>
+                        </View>
+
+                        <View style={{width:width/1.5,paddingLeft:10}}>
+                          <Text style={{margin:10}}>Professor</Text>
+                          <Text style={{paddingLeft:10}}>blalala</Text>
+                        </View>
+
+                        <View style={{width:width/1.5,paddingLeft:10}}>
+                          <Text style={{margin:10}}>TAS</Text>
+                          <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
+                            <Text style={{marginRight:15}}>blalala</Text>
+                            <Text style={{marginRight:15}}>blalala</Text>
+                            <Text style={{marginRight:15}}>blalala</Text>
+                            <Text style={{marginRight:15}}>blalala</Text>
+                            <Text style={{marginRight:15}}>blalala</Text>
+                            <Text style={{marginRight:15}}>blalala</Text>
+                            <Text style={{marginRight:15}}>blalala</Text>
+                          </View>
+
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                )
+              },this)}
+            </ScrollView>
+          </View>
+
+
       </View>
     );
   }
 }
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection:'row',
+    flexDirection:'column',
     justifyContent: 'center',
-    backgroundColor:'#17B3C1',
+    backgroundColor:'#4fc1e9',
     alignItems: 'center',
   },
   welcome: {
@@ -101,6 +201,11 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  courseCard:{
+
+  }
+
+
 });
 
 AppRegistry.registerComponent('courseList', () => courseList);

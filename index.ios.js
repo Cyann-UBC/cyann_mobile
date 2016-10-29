@@ -20,8 +20,8 @@ export default class cyann_mobile extends Component {
   render() {
     return (
       <Router>
-        <Scene hideNavBar={true}  key="courseList" component={courseList} title="courseList" initial={true}/>
-        <Scene hideNavBar={true}  key="course" component={course} title="course"/>
+        <Scene hideNavBar={true}  key="courseList" animation="fade" component={courseList} title="courseList" initial={true}/>
+        <Scene hideNavBar={true}  panHandlers={null} key="course" duration={300} animation="fade" component={course} title="course"/>
         <Scene hideNavBar={true}  key="viewQuestion" component={viewQuestion} title="viewQuestion"/>
       </Router>
     )

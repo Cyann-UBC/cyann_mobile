@@ -35,11 +35,20 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
-
+    console.warn(this.props.questionId)
   }
 
   componentDidMount(){
-
+    var url = "http://localhost:3000/"+"api/courses/581231d06a5f670b42b5f868/posts/"+this.props.questionId+"/comments"
+    fetch(url
+    ,{method:"GET"})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.setState({questionList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.data)})
+    })
   }
 
   gotoCourse(name){
