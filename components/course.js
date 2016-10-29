@@ -59,6 +59,7 @@ export default class course extends Component {
       contentContainer:{},
       askButton:{},
       buttonExit:false,
+      pageNumber:undefined,
     };
   }
 
@@ -95,7 +96,7 @@ pickCollapse(rowID){
 
     return(
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"bounceInDown" : "flipInX" } delay={rowID*130} duration={rowID*150} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
+        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"bounceInDown" : "flipInX" } delay={rowID<9?rowID*150:300} duration={rowID<9?rowID*160:500} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
     shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:5,marginLeft:10,marginRight:10,marginBottom:20,paddingLeft:10}}>
           <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
           <Text style={{color:"#AAB2BD"}}>author</Text>
@@ -112,6 +113,10 @@ pickCollapse(rowID){
 
   askQuestion(){
     this.setState({buttonExit:true})
+    this.refs.titleView.bounce(500)
+    this.refs.contentView.bounce(500)
+    this.refs.buttonView.bounce(800)
+    setTimeout(()=>{this.refs.titleBounceOff.fadeOutUp(300)},300)
     // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     // this.setState({titleContainer:{
     //   width:width/1.3,
@@ -184,6 +189,9 @@ pickCollapse(rowID){
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
     })
+    setTimeout(()=>{this.setState({pageNumber:0})},800)
+    setTimeout(()=>{this.setState({pageNumber:undefined})},810)
+    setTimeout(()=>{this.setState({buttonExit:false})},800)
 
 
   }
@@ -200,7 +208,9 @@ pickCollapse(rowID){
     this.setState({questionContent:event.nativeEvent.text})
   }
 
-
+  getTitleBack(){
+    this.refs.titleBounceOff.fadeInDown(200)
+  }
   render() {
     let titleStyle = [styles.titleContainer, this.state.titleContainer]
     let contentStyle = [styles.contentContainer, this.state.contentContainer]
@@ -209,7 +219,7 @@ pickCollapse(rowID){
 
       <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
         onChangeTab={this.fetchPostsAPI.bind(this)}
-
+        page={this.state.pageNumber}
         renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
         >
 
@@ -229,17 +239,32 @@ pickCollapse(rowID){
         </View>
 
         <View style={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}}>
-          <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
-            <TextInput
-              multiline={true}
-              style={{height: 150,color:'black',fontSize:20}}
-              onChange={this.updateTitle.bind(this)}
-              value={this.state.questionTitle}
-              placeholder="Title"
-            />
+
+          <Animatable.View ref="titleView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
+            <Animatable.View ref="titleBounceOff" onAnimationEnd={()=>this.refs.titleBounceOff.fadeInDown(200)}>
+              <TextInput
+                multiline={true}
+                style={{height: 150,color:'black',fontSize:20}}
+                onChange={this.updateTitle.bind(this)}
+                value={this.state.questionTitle}
+                placeholder="Title"
+              />
+            </Animatable.View>
+
           </Animatable.View>
 
-          <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
+          <Animatable.View ref="contentView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
+            <Animatable.View ref="bounceOff" style={{width:0,
+            height:0,
+            shadowColor: "#000000",
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+            shadowOffset: {height: 3.5,width: 0},
+            backgroundColor:"white",
+            borderRadius:20,
+            marginBottom:200,
+            posigion:'absolute',
+            padding:10}}></Animatable.View>
             <TextInput
               multiline={true}
               style={{height: 250,color:'black',fontSize:20}}
@@ -250,7 +275,7 @@ pickCollapse(rowID){
           </Animatable.View>
 
           <TouchableOpacity onPress={this.askQuestion.bind(this)}>
-            <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} delay={this.state.buttonExit===false?400:800} duration={this.state.buttonExit===false?300:700} style={buttonStyle}>
+            <Animatable.View ref="buttonView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} delay={this.state.buttonExit===false?400:800} duration={this.state.buttonExit===false?300:700} style={buttonStyle}>
               <Text style={{color:"white",fontWeight:'bold',alignSelf:"center",fontSize:25}}>ASK</Text>
             </Animatable.View>
           </TouchableOpacity>
