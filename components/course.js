@@ -115,8 +115,9 @@ pickCollapse(rowID){
     this.setState({buttonExit:true})
     this.refs.titleView.bounce(500)
     this.refs.contentView.bounce(500)
-    this.refs.buttonView.bounce(800)
-    setTimeout(()=>{this.refs.titleBounceOff.fadeOutUp(300)},300)
+    this.refs.buttonView.bounce(1000)
+    setTimeout(()=>{this.refs.titleBounceOff.bounceOutUp(550)},200)
+    setTimeout(()=>{this.refs.contentBounceOff.bounceOutUp(700)},250)
     // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     // this.setState({titleContainer:{
     //   width:width/1.3,
@@ -191,6 +192,8 @@ pickCollapse(rowID){
     })
     setTimeout(()=>{this.setState({pageNumber:0})},800)
     setTimeout(()=>{this.setState({pageNumber:undefined})},810)
+    setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},820)
+    setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},820)
     setTimeout(()=>{this.setState({buttonExit:false})},800)
 
 
@@ -209,7 +212,7 @@ pickCollapse(rowID){
   }
 
   getTitleBack(){
-    this.refs.titleBounceOff.fadeInDown(200)
+    this.refs.titleView.fadeInDown(200)
   }
   render() {
     let titleStyle = [styles.titleContainer, this.state.titleContainer]
@@ -241,29 +244,28 @@ pickCollapse(rowID){
         <View style={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}}>
 
           <Animatable.View ref="titleView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
-            <Animatable.View ref="titleBounceOff" onAnimationEnd={()=>this.refs.titleBounceOff.fadeInDown(200)}>
-              <TextInput
-                multiline={true}
-                style={{height: 150,color:'black',fontSize:20}}
-                onChange={this.updateTitle.bind(this)}
-                value={this.state.questionTitle}
-                placeholder="Title"
-              />
+            <Animatable.View ref="titleBounceOff" onAnimationEnd={()=>this.getTitleBack()} style={{width:0,
+            height:0,
+            backgroundColor:"#ED5565",
+            borderRadius:20,
+            padding:10}}>
             </Animatable.View>
+            <TextInput
+              multiline={true}
+              style={{height: 150,color:'black',fontSize:20}}
+              onChange={this.updateTitle.bind(this)}
+              value={this.state.questionTitle}
+              placeholder="Title"
+            />
+
 
           </Animatable.View>
 
           <Animatable.View ref="contentView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
-            <Animatable.View ref="bounceOff" style={{width:0,
+            <Animatable.View ref="contentBounceOff" style={{width:0,
             height:0,
-            shadowColor: "#000000",
-            shadowOpacity: 0.5,
-            shadowRadius: 2,
-            shadowOffset: {height: 3.5,width: 0},
-            backgroundColor:"white",
+            backgroundColor:"#ED5565",
             borderRadius:20,
-            marginBottom:200,
-            posigion:'absolute',
             padding:10}}></Animatable.View>
             <TextInput
               multiline={true}
