@@ -118,52 +118,6 @@ pickCollapse(rowID){
     this.refs.buttonView.bounce(1000)
     setTimeout(()=>{this.refs.titleBounceOff.bounceOutUp(550)},200)
     setTimeout(()=>{this.refs.contentBounceOff.bounceOutUp(700)},250)
-    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    // this.setState({titleContainer:{
-    //   width:width/1.3,
-    //   height:height/4,
-    //   shadowColor: "#000000",
-    //   shadowOpacity: 0.5,
-    //   shadowRadius: 2,
-    //   shadowOffset: {height: 3.5,width: 0},
-    //   backgroundColor:"white",
-    //   borderRadius:20,
-    //   padding:10,
-    //   marginTop:-500
-    // }})
-    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    // this.setState({
-    //   contentContainer:{
-    //     width:width/1.3,
-    //     height:height/2.3,
-    //     shadowColor: "#000000",
-    //     shadowOpacity: 0.5,
-    //     shadowRadius: 2,
-    //     shadowOffset: {height: 3.5,width: 0},
-    //     backgroundColor:"white",
-    //     borderRadius:20,
-    //     padding:10,
-    //     marginTop:-500,
-    //   }
-    // })
-    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    // this.setState({
-    //   askButton:{
-    //     flex:1,
-    //     flexDirection:'row',
-    //     alignItems:'center',
-    //     justifyContent:'center',
-    //     shadowColor: "#000000",
-    //     shadowOpacity: 0.5,
-    //     shadowRadius: 2,
-    //     shadowOffset: {height: 3.5,width: 0},
-    //     width:width/1.3,
-    //     height:height/10,
-    //     backgroundColor:"#3bafda",
-    //     borderRadius:20,
-    //     marginTop:-1500
-    //   }
-    // })
     var post = {
     'title': this.state.questionTitle,
     'content': this.state.questionContent,
@@ -243,10 +197,11 @@ pickCollapse(rowID){
 
         <View style={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}}>
 
-          <Animatable.View ref="titleView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
-            <Animatable.View ref="titleBounceOff" onAnimationEnd={()=>this.getTitleBack()} style={{width:0,
+          <Animatable.View ref="titleView" animation={'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
+            <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>10?"flash":undefined} style={{
+            width:0,
             height:0,
-            backgroundColor:"#ED5565",
+            backgroundColor:this.state.questionTitle.length>10?"#A0D468":"#ED5565",
             borderRadius:20,
             padding:10}}>
             </Animatable.View>
@@ -261,10 +216,11 @@ pickCollapse(rowID){
 
           </Animatable.View>
 
-          <Animatable.View ref="contentView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
-            <Animatable.View ref="contentBounceOff" style={{width:0,
+          <Animatable.View ref="contentView" animation={'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
+            <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>20?"flash":undefined} style={{
+            width:0,
             height:0,
-            backgroundColor:"#ED5565",
+            backgroundColor:this.state.questionContent.length>20?"#A0D468":"#ED5565",
             borderRadius:20,
             padding:10}}></Animatable.View>
             <TextInput
