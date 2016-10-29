@@ -116,8 +116,8 @@ pickCollapse(rowID){
     this.refs.titleView.bounce(500)
     this.refs.contentView.bounce(500)
     this.refs.buttonView.bounce(1000)
-    setTimeout(()=>{this.refs.titleBounceOff.bounceOutUp(550)},200)
-    setTimeout(()=>{this.refs.contentBounceOff.bounceOutUp(700)},250)
+    setTimeout(()=>{this.refs.titleBounceOff.bounceOutUp(750)},200)
+    setTimeout(()=>{this.refs.contentBounceOff.bounceOutUp(900)},250)
     var post = {
     'title': this.state.questionTitle,
     'content': this.state.questionContent,

@@ -27,7 +27,7 @@ var {
 var animations = {
   layout: {
     spring: {
-      duration: 750,
+      duration: 850,
       create: {
         duration: 300,
         type: LayoutAnimation.Types.easeInEaseOut,
@@ -35,7 +35,7 @@ var animations = {
       },
       update: {
         type: LayoutAnimation.Types.spring,
-        springDamping: 400,
+        springDamping: 900,
       },
     },
     easeInEaseOut: {
