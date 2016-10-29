@@ -126,7 +126,7 @@ const FacebookTabBar = React.createClass({
                 color={this.props.activeTab === i ? 'rgb(255,255,255)' : 'rgb(204,204,204)'}
                 ref={(icon) => { this.tabIcons[i] = icon; }}
               />
-            <Animatable.Text animation={this.props.activeTab === i ? 'fadeOutDown':undefined} duration={this.props.activeTab === i ? 500:undefined} delay={0} style={{color:'white',textAlign:'center',height:15,marginBottom:this.props.activeTab === i ? -10:0}}>{text}</Animatable.Text>
+            <Animatable.Text animation={this.props.activeTab === i ? 'lightSpeedOut':undefined} duration={this.props.activeTab === i ? 500:undefined} delay={0} style={{color:'white',textAlign:'center',height:15,marginBottom:this.props.activeTab === i ? -10:0}}>{text}</Animatable.Text>
             </Animatable.View>
 
         </TouchableOpacity>;
