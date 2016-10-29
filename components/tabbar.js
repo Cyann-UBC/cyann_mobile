@@ -62,7 +62,7 @@ const FacebookTabBar = React.createClass({
 
         {this.state.tabs.map((tab, i) => {
           return <TouchableOpacity key={tab} onPress={() => Actions.pop()} style={ i < 2 ? styles.tab: styles.tab1}>
-            <Animatable.View animation={'bounceInRight'} duration={i*700}>
+            <Animatable.View animation={'bounceInRight'} duration={i===0?200:i*500}>
               <Icon
                 name={tab}
                 size={30}
