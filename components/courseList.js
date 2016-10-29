@@ -105,7 +105,7 @@ export default class courseList extends Component {
   }
 
   gotoCourse=(name)=>{
-    LayoutAnimation.configureNext(animations.layout.easeInEaseOut)
+    LayoutAnimation.configureNext(animations.layout.spring)
     this.setState({selectedCourse:name})
     this.setState({containerStyle:{
       flex:1,
@@ -114,14 +114,24 @@ export default class courseList extends Component {
       borderRadius:20,
       marginLeft:0,
       marginRight:0,
-      paddingBottom:60,
       marginTop:-500,
       backgroundColor:"white",
-      marginBottom:1000,
+      marginBottom:600,
     }})
     this.setState({mainContainer:{
       height:height
     }})
+    setTimeout(()=>{this.setState({containerStyle:{
+      flex:1,
+      width:width,
+      backgroundColor:'white',
+      borderRadius:0,
+      marginLeft:0,
+      marginRight:0,
+      marginTop:-500,
+      backgroundColor:"#1BB5EC",
+      marginBottom:600,
+    }})},200)
 
     setTimeout(()=>{this.setState({viewToggle:'name'})},200)
     setTimeout(()=>{Actions.course({type:'reset'})},300)

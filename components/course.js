@@ -6,6 +6,7 @@ import {
   TextInput,
   ListView,
   LayoutAnimation,
+  StatusBar,
   Text,
   View
 } from 'react-native';
@@ -205,11 +206,16 @@ pickCollapse(rowID){
     let contentStyle = [styles.contentContainer, this.state.contentContainer]
     let buttonStyle = [styles.askButton, this.state.askButton]
     return (
+
       <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
         onChangeTab={this.fetchPostsAPI.bind(this)}
         renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}>
 
         <View style={{flex:1,backgroundColor:'#4fc1e9'}}>
+          <StatusBar
+            backgroundColor="transparent"
+            barStyle="light-content"
+              />
           <ListView
             style={{flex:1}}
             showsVerticalScrollIndicator={false}
