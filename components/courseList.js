@@ -75,6 +75,8 @@ export default class courseList extends Component {
     listStyle:{
       flex:1,
     },
+    containerStyle:{},
+    mainContainer:{height:height/2},
       courseList:[
         {name:'CPEN 321'},
         {name:'CPEN 281'},
@@ -97,6 +99,7 @@ export default class courseList extends Component {
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.courseList)})
   }
+
   componentDidMount(){
     // console.warn(JSON.stringify(this.state.listSource))
   }
@@ -104,8 +107,25 @@ export default class courseList extends Component {
   gotoCourse=(name)=>{
     LayoutAnimation.configureNext(animations.layout.easeInEaseOut)
     this.setState({selectedCourse:name})
+    this.setState({containerStyle:{
+      flex:1,
+      width:width,
+      backgroundColor:'white',
+      borderRadius:20,
+      marginLeft:0,
+      marginRight:0,
+      paddingBottom:60,
+      marginTop:-500,
+      backgroundColor:"white",
+      marginBottom:1000,
+    }})
+    this.setState({mainContainer:{
+      height:height
+    }})
+
     setTimeout(()=>{this.setState({viewToggle:'name'})},200)
-    Actions.course()
+    setTimeout(()=>{Actions.course({type:'reset'})},300)
+
   }
 
   renderRow(rowData){
@@ -127,12 +147,13 @@ export default class courseList extends Component {
           backgroundColor="transparent"
           barStyle="light-content"
             />
-          <View style={{height:height/3}}>
+          <View style={this.state.mainContainer}>
             <ScrollView
               horizontal ={true}
               pagingEnabled ={true}
               >
               {this.state.courseList.map(function(course, i){
+
                 if(i==0){
                   var marginLeft=width/12;
                 }
@@ -142,9 +163,26 @@ export default class courseList extends Component {
                 }
                 else
                  var marginLeft=width/10;
+
+                 var containerStyle = {
+                   flex:1,
+                   flexDirection:'column',
+                   justifyContent:'space-around',
+                   alignItems:'center',
+                   borderRadius:20,
+                   width:width/1.2,
+                   backgroundColor:'white',
+                   marginLeft:marginLeft,
+                   marginRight:marginRight,
+                   paddingLeft:20,
+                   paddingRight:20,
+                   paddingBottom:60
+                 };
+
+                 var courseCardStyle=[containerStyle,this.state.containerStyle]
                   return(
                     <TouchableOpacity onPress={()=>this.gotoCourse(course.name)}>
-                      <View obj={course} key={i} style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center',borderRadius:20,width:width/1.2,backgroundColor:'white',marginLeft:marginLeft,marginRight:marginRight,paddingLeft:20,paddingRight:20,paddingBottom:60}} >
+                      <View obj={course} key={i} style={courseCardStyle} >
 
                         <View style={{width:width/1.5,paddingLeft:10}}>
                           <Text>{course.name}</Text>

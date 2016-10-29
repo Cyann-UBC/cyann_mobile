@@ -53,7 +53,7 @@ const FacebookTabBar = React.createClass({
   render() {
     return <View style={[styles.tabs, this.props.style, ]}>
       <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:10,paddingTop: 5,}}>
-        <TouchableOpacity onPress={()=>Actions.pop()}>
+        <TouchableOpacity onPress={()=>Actions.courseList({type: "reset"})}>
           <Icon name={"ios-arrow-dropleft-circle-outline"} size={30} color={'white'} />
         </TouchableOpacity>
       </View>
