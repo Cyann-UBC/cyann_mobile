@@ -97,7 +97,7 @@ pickCollapse(rowID){
     return(
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
         <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"bounceInDown" : "flipInX" } delay={rowID<9?rowID*150:300} duration={rowID<9?rowID*160:500} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
-    shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:5,marginLeft:10,marginRight:10,marginBottom:20,paddingLeft:10}}>
+    shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:13,marginLeft:10,marginRight:10,marginBottom:12,paddingLeft:10}}>
           <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
           <Text style={{color:"#AAB2BD"}}>author</Text>
         <Animatable.View key={rowID} style={{height:50}}>
@@ -146,8 +146,8 @@ pickCollapse(rowID){
     })
     setTimeout(()=>{this.setState({pageNumber:0})},800)
     setTimeout(()=>{this.setState({pageNumber:undefined})},810)
-    setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},820)
-    setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},820)
+    setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},1000)
+    setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.setState({buttonExit:false})},800)
 
 
