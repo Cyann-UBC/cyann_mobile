@@ -121,6 +121,7 @@ export default class courseList extends Component {
     this.setState({mainContainer:{
       height:height
     }})
+
     setTimeout(()=>{this.setState({containerStyle:{
       flex:1,
       width:width,
@@ -186,7 +187,7 @@ export default class courseList extends Component {
                    marginRight:marginRight,
                    paddingLeft:20,
                    paddingRight:20,
-                   paddingBottom:60
+                   paddingBottom:60,
                  };
 
                  var courseCardStyle=[containerStyle,this.state.containerStyle]
@@ -222,8 +223,6 @@ export default class courseList extends Component {
               },this)}
             </ScrollView>
           </View>
-
-
       </View>
     );
   }

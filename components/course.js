@@ -95,7 +95,7 @@ pickCollapse(rowID){
 
     return(
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"bounceInDown" : "flipInX" } delay={rowID*80} duration={rowID*100} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
+        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"bounceInDown" : "flipInX" } delay={rowID*130} duration={rowID*150} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
     shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:5,marginLeft:10,marginRight:10,marginBottom:20,paddingLeft:10}}>
           <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
           <Text style={{color:"#AAB2BD"}}>author</Text>
@@ -209,7 +209,9 @@ pickCollapse(rowID){
 
       <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
         onChangeTab={this.fetchPostsAPI.bind(this)}
-        renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}>
+
+        renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
+        >
 
         <View style={{flex:1,backgroundColor:'#4fc1e9'}}>
           <StatusBar
@@ -230,7 +232,7 @@ pickCollapse(rowID){
           <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
             <TextInput
               multiline={true}
-              style={{height: 50,color:'black',fontSize:20}}
+              style={{height: 150,color:'black',fontSize:20}}
               onChange={this.updateTitle.bind(this)}
               value={this.state.questionTitle}
               placeholder="Title"
@@ -240,7 +242,7 @@ pickCollapse(rowID){
           <Animatable.View animation={this.state.buttonExit===false?'slideInRight':"fadeOutUpBig"} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
             <TextInput
               multiline={true}
-              style={{height: 50,color:'black',fontSize:20}}
+              style={{height: 250,color:'black',fontSize:20}}
               onChange={this.updateContent.bind(this)}
               value={this.state.questionContent}
               placeholder="Content"

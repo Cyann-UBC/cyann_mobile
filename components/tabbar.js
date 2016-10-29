@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
+import * as Animatable from 'react-native-animatable';
+
 var Dimensions = require('Dimensions');
 var {
   width,
@@ -51,22 +53,26 @@ const FacebookTabBar = React.createClass({
   },
 
   render() {
-    return <View style={[styles.tabs, this.props.style, ]}>
-      <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:10,paddingTop: 5,}}>
+    return <View  style={[styles.tabs, this.props.style, ]}>
+      <Animatable.View animation={'bounceInLeft'} duration={700} style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:10,paddingTop: 5,}}>
         <TouchableOpacity onPress={()=>Actions.courseList({type: "reset"})}>
           <Icon name={"ios-arrow-dropleft-circle-outline"} size={30} color={'white'} />
         </TouchableOpacity>
-      </View>
-      {this.state.tabs.map((tab, i) => {
-        return <TouchableOpacity key={tab} onPress={() => Actions.pop()} style={ i < 2 ? styles.tab: styles.tab1}>
-          <Icon
-            name={tab}
-            size={30}
-            color={this.props.activeTab === i ? 'rgb(255,255,255)' : 'rgb(204,204,204)'}
-            ref={(icon) => { this.tabIcons[i] = icon; }}
-          />
+      </Animatable.View>
+
+        {this.state.tabs.map((tab, i) => {
+          return <TouchableOpacity key={tab} onPress={() => Actions.pop()} style={ i < 2 ? styles.tab: styles.tab1}>
+            <Animatable.View animation={'bounceInRight'} duration={i*700}>
+              <Icon
+                name={tab}
+                size={30}
+                color={this.props.activeTab === i ? 'rgb(255,255,255)' : 'rgb(204,204,204)'}
+                ref={(icon) => { this.tabIcons[i] = icon; }}
+              />
+            </Animatable.View>
+
         </TouchableOpacity>;
-      })}
+        })}
     </View>;
   },
 });
