@@ -52,6 +52,8 @@ export default class course extends Component {
         {title:'Q9',content:'Q9 Content',author:'i'},
         {title:'Q10',content:'Q10 Content',author:'j'},
       ],
+      assignmentList:{},
+      readingList:{},
       questionTitle:'',
       questionContent:'',
       activeSection:0,
@@ -73,6 +75,8 @@ export default class course extends Component {
 
   componentDidMount(){
     this.fetchPostsAPI()
+    this.fetchAssignmentAPI()
+    this.fetchReadingsAPI()
   }
 
 fetchPostsAPI(){
@@ -86,12 +90,27 @@ fetchPostsAPI(){
     })
   }
 
-pickCollapse(rowID){
-  console.warn(rowID)
-  this.setState({activeSection:rowID})
-  console.warn(this.state.activeSection)
+fetchAssignmentAPI(){
+  fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/assignments",{method:"GET"})
+  .then((response) => response.json())
+  .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+    this.setState({assignmentList:new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+    }).cloneWithRows(responseData.files)})
+  })
 }
 
+fetchReadingsAPI(){
+  fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/readings",{method:"GET"})
+  .then((response) => response.json())
+  .then((responseData) => {
+      console.warn(JSON.stringify(responseData.files))
+    this.setState({readingList:new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+    }).cloneWithRows(responseData.files)})
+  })
+}
   renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let viewProps = {};
@@ -132,8 +151,20 @@ pickCollapse(rowID){
   }
 
   renderFileList(rowData, sectionID, rowID, highlightRow){
+    if(!rowData.includes('.json')){
+      return(
+        <TouchableOpacity>
+          <Text>{rowData}</Text>
+        </TouchableOpacity>
+      )
+    }else{
+      return(
+        null
+      )
+    }
 
   }
+
   askQuestion(){
     this.setState({buttonExit:true})
     this.refs.titleView.bounce(500)
@@ -199,14 +230,14 @@ pickCollapse(rowID){
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
             <Animatable.View animation={'slideInRight'} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <Ionicon name="ios-book" size={50} color={'white'}/>
-              <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'bold'}}>readings</Text>
+              <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>readings</Text>
             </Animatable.View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
             <Animatable.View animation={'slideInRight'} delay={300} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <Ionicon name="ios-paper" size={50} color={'white'}/>
-              <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'bold'}}>assignments</Text>
+              <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>assignments</Text>
             </Animatable.View>
           </TouchableOpacity>
         </View>
@@ -214,14 +245,14 @@ pickCollapse(rowID){
     }else if(this.state.ifrenderFile === 'assignments'){
       return(
         <View>
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
             <Icon name="close" size={30} color={'white'}/>
           </TouchableOpacity>
           <ListView
             style={{flex:1}}
             showsVerticalScrollIndicator={false}
-            dataSource={this.state.questionList}
-            renderRow={this.renderRow.bind(this)}
+            dataSource={this.state.assignmentList}
+            renderRow={this.renderFileList.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
         </View>
@@ -229,14 +260,14 @@ pickCollapse(rowID){
     }else if(this.state.ifrenderFile === 'readings'){
       return(
         <View>
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
             <Icon name="close" size={30} color={'white'}/>
           </TouchableOpacity>
           <ListView
             style={{flex:1}}
             showsVerticalScrollIndicator={false}
-            dataSource={this.state.questionList}
-            renderRow={this.renderRow.bind(this)}
+            dataSource={this.state.readingList}
+            renderRow={this.renderFileList.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
         </View>
