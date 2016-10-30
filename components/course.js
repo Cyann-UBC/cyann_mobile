@@ -30,6 +30,7 @@ var {
   width,
   height
 } = Dimensions.get('window');
+
 const COLLAPSIBLE_PROPS = Object.keys(Collapsible.propTypes);
 const VIEW_PROPS = Object.keys(View.propTypes);
 export default class course extends Component {
@@ -39,7 +40,6 @@ export default class course extends Component {
       viewHeight:20,
       questionPosted:false,
       backgroundColor:'#4fc1e9',
-      language:'java',
       questionList:[
         {title:'Q1',content:'Q1 Content',author:'a'},
         {title:'Q2',content:'Q2 Content',author:'b'},
@@ -61,6 +61,7 @@ export default class course extends Component {
       buttonExit:false,
       pageNumber:undefined,
       delayFirst:false,
+      ifrenderFile:'none'
     };
   }
 
@@ -130,6 +131,9 @@ pickCollapse(rowID){
     }
   }
 
+  renderFileList(rowData, sectionID, rowID, highlightRow){
+
+  }
   askQuestion(){
     this.setState({buttonExit:true})
     this.refs.titleView.bounce(500)
@@ -187,6 +191,58 @@ pickCollapse(rowID){
   getTitleBack(){
     this.refs.titleView.fadeInDown(200)
   }
+
+  renderFiles(){
+    if(this.state.ifrenderFile === 'none'){
+      return(
+        <View style={{flex:1,flexDirection:'column',alignItems:'center', justifyContent:'space-around',paddingTop:height/7,paddingBottom:height/7}}>
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
+            <Animatable.View animation={'slideInRight'} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+              <Ionicon name="ios-book" size={50} color={'white'}/>
+              <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'bold'}}>readings</Text>
+            </Animatable.View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
+            <Animatable.View animation={'slideInRight'} delay={300} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+              <Ionicon name="ios-paper" size={50} color={'white'}/>
+              <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'bold'}}>assignments</Text>
+            </Animatable.View>
+          </TouchableOpacity>
+        </View>
+      )
+    }else if(this.state.ifrenderFile === 'assignments'){
+      return(
+        <View>
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+            <Icon name="close" size={30} color={'white'}/>
+          </TouchableOpacity>
+          <ListView
+            style={{flex:1}}
+            showsVerticalScrollIndicator={false}
+            dataSource={this.state.questionList}
+            renderRow={this.renderRow.bind(this)}
+            horizontal={false}
+            removeClippedSubviews={true}/>
+        </View>
+      )
+    }else if(this.state.ifrenderFile === 'readings'){
+      return(
+        <View>
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+            <Icon name="close" size={30} color={'white'}/>
+          </TouchableOpacity>
+          <ListView
+            style={{flex:1}}
+            showsVerticalScrollIndicator={false}
+            dataSource={this.state.questionList}
+            renderRow={this.renderRow.bind(this)}
+            horizontal={false}
+            removeClippedSubviews={true}/>
+        </View>
+      )
+    }
+  }
   render() {
     let titleStyle = [styles.titleContainer, this.state.titleContainer]
     let contentStyle = [styles.contentContainer, this.state.contentContainer]
@@ -232,8 +288,6 @@ pickCollapse(rowID){
               value={this.state.questionTitle}
               placeholder="Title"
             />
-
-
           </Animatable.View>
 
           <Animatable.View ref="contentView" animation={'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
@@ -258,17 +312,14 @@ pickCollapse(rowID){
             </Animatable.View>
           </TouchableOpacity>
 
-
           <View>
 
           </View>
         </View>
 
         <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
-
+          {this.renderFiles()}
         </View>
-
-
       </ScrollableTabView>
 
     );
