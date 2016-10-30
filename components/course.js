@@ -60,6 +60,7 @@ export default class course extends Component {
       askButton:{},
       buttonExit:false,
       pageNumber:undefined,
+      delayFirst:false,
     };
   }
 
@@ -73,7 +74,7 @@ export default class course extends Component {
     this.fetchPostsAPI()
   }
 
-fetchPostsAPI=()=>{
+fetchPostsAPI(){
     fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
@@ -94,21 +95,39 @@ pickCollapse(rowID){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let viewProps = {};
 
-    return(
-      <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"bounceInDown" : "flipInX" } delay={rowID<9?rowID*150:300} duration={rowID<9?rowID*160:500} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
-    shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:13,marginLeft:10,marginRight:10,marginBottom:12,paddingLeft:10}}>
-          <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
-          <Text style={{color:"#AAB2BD"}}>author</Text>
-        <Animatable.View key={rowID} style={{height:50}}>
-          <View  style={{flex:1,flexDirection:'row'}}>
-            <Text style={{width:width/1.25,color:'gray',paddingBottom:10,}}>{rowData.content}</Text>
-
-            </View>
+    if(rowID == 0){
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+      return(
+        <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
+          <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':"flipInX"} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
+      shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:13,marginLeft:10,marginRight:10,marginBottom:12,paddingLeft:10}}>
+            <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
+            <Text style={{color:"#AAB2BD"}}>author</Text>
+          <Animatable.View  key={rowID} style={{height:50}}>
+            <View  style={{flex:1,flexDirection:'row'}}>
+              <Text style={{width:width/1.25,color:'gray',paddingBottom:10,}}>{rowData.content}</Text>
+              </View>
+            </Animatable.View>
           </Animatable.View>
-        </Animatable.View>
-      </TouchableOpacity>
-    )
+        </TouchableOpacity>
+      )
+    }else{
+      return(
+        <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
+          <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*150:300} duration={rowID<9?rowID*160:500} style={{backgroundColor:'white',height:height/5.3,shadowColor: "#000000",
+      shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/40,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:13,marginLeft:10,marginRight:10,marginBottom:12,paddingLeft:10}}>
+            <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
+            <Text style={{color:"#AAB2BD"}}>author</Text>
+          <Animatable.View key={rowID} style={{height:50}}>
+            <View  style={{flex:1,flexDirection:'row'}}>
+              <Text style={{width:width/1.25,color:'gray',paddingBottom:10,}}>{rowData.content}</Text>
+
+              </View>
+            </Animatable.View>
+          </Animatable.View>
+        </TouchableOpacity>
+      )
+    }
   }
 
   askQuestion(){
@@ -149,7 +168,7 @@ pickCollapse(rowID){
     setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.setState({buttonExit:false})},800)
-
+    this.setState({delayFirst:true})
 
   }
 
@@ -177,6 +196,7 @@ pickCollapse(rowID){
       <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
         onChangeTab={this.fetchPostsAPI.bind(this)}
         page={this.state.pageNumber}
+        prerenderingSiblingsNumber={0}
         renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
         >
 

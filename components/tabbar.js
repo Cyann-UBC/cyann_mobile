@@ -13,7 +13,7 @@ import * as Animatable from 'react-native-animatable';
 var animations = {
   layout: {
     spring: {
-      duration: 250,
+      duration: 950,
       create: {
         duration: 100,
         type: LayoutAnimation.Types.easeInEaseOut,
@@ -37,7 +37,7 @@ var animations = {
       },
     },
     easeInEaseOut: {
-      duration: 300,
+      duration: 900,
       create: {
         type: LayoutAnimation.Types.easeInEaseOut,
         property: LayoutAnimation.Properties.scaleXY,
