@@ -175,8 +175,9 @@ fetchPostsAPI(){
     if(!rowData.includes('.json')){
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'readings')}>
-          <View>
-            <Text>{rowData}</Text>
+          <View style={{}}>
+
+            <Text>{rowData.split('.')[0]}</Text>
           </View>
 
         </TouchableOpacity>
@@ -247,17 +248,18 @@ fetchPostsAPI(){
 
   renderFiles(){
     if(this.state.ifrenderFile === 'none'){
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
       return(
         <View style={{flex:1,flexDirection:'column',alignItems:'center', justifyContent:'space-around',paddingTop:height/7,paddingBottom:height/7}}>
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
-            <Animatable.View animation={'slideInRight'} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+            <Animatable.View animation={'slideInRight'} delay={100} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <Ionicon name="ios-book" size={50} color={'white'}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>readings</Text>
             </Animatable.View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
-            <Animatable.View animation={'slideInRight'} delay={300} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+            <Animatable.View animation={'slideInRight'} delay={200} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <Ionicon name="ios-paper" size={50} color={'white'}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>assignments</Text>
             </Animatable.View>
@@ -266,9 +268,9 @@ fetchPostsAPI(){
       )
     }else if(this.state.ifrenderFile === 'assignments'){
       return(
-        <View>
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
-            <Icon name="close" size={30} color={'white'}/>
+        <Animatable.View animation={'fadeIn'} duration={500}>
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+            <Icon name="close" size={30} color={'white'} style={{margin:20}}/>
           </TouchableOpacity>
           <ListView
             style={{flex:1}}
@@ -277,13 +279,15 @@ fetchPostsAPI(){
             renderRow={this.renderAssignmentList.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
-        </View>
+        </Animatable.View>
       )
     }else if(this.state.ifrenderFile === 'readings'){
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+
       return(
-        <View>
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
-            <Icon name="close" size={30} color={'white'}/>
+        <Animatable.View animation={'fadeIn'} duration={500}>
+          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+            <Icon name="close" size={30} color={'white'} style={{margin:20}}/>
           </TouchableOpacity>
           <ListView
             style={{flex:1}}
@@ -292,7 +296,7 @@ fetchPostsAPI(){
             renderRow={this.renderReadingList.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
-        </View>
+        </Animatable.View>
       )
     }
   }
