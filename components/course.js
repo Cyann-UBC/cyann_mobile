@@ -71,6 +71,7 @@ export default class course extends Component {
     this.setState({questionList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.questionList)})
+
   }
 
   componentDidMount(){
@@ -90,27 +91,30 @@ fetchPostsAPI(){
     })
   }
 
-fetchAssignmentAPI(){
-  fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/assignments",{method:"GET"})
-  .then((response) => response.json())
-  .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
-    this.setState({assignmentList:new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 != r2
-    }).cloneWithRows(responseData.files)})
-  })
-}
+  fetchAssignmentAPI(){
+    fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/assignments",{method:"GET"})
+    .then((response) => response.json())
+    .then((responseData) => {
+        console.warn(JSON.stringify(responseData))
+      this.setState({assignmentList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.files)})
+    })
+  }
 
-fetchReadingsAPI(){
-  fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/readings",{method:"GET"})
-  .then((response) => response.json())
-  .then((responseData) => {
-      console.warn(JSON.stringify(responseData.files))
-    this.setState({readingList:new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 != r2
-    }).cloneWithRows(responseData.files)})
-  })
-}
+  fetchReadingsAPI(){
+    fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/readings",{method:"GET"})
+    .then((response) => response.json())
+    .then((responseData) => {
+        console.warn(JSON.stringify(responseData.files))
+      this.setState({readingList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.files)})
+    })
+  }
+  gotoFile(rowData,type){
+    Actions.fileView({uri:"http://localhost:3000/api/"+'581231d06a5f670b42b5f868'+'/files/'+type+'/download/'+rowData})
+  }
   renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let viewProps = {};
@@ -150,11 +154,14 @@ fetchReadingsAPI(){
     }
   }
 
-  renderFileList(rowData, sectionID, rowID, highlightRow){
+  renderAssignmentList(rowData, sectionID, rowID, highlightRow){
     if(!rowData.includes('.json')){
       return(
-        <TouchableOpacity>
-          <Text>{rowData}</Text>
+        <TouchableOpacity onPress={()=>this.gotoFile(rowData,'assignments')}>
+          <View>
+            <Text>{rowData}</Text>
+          </View>
+
         </TouchableOpacity>
       )
     }else{
@@ -162,7 +169,23 @@ fetchReadingsAPI(){
         null
       )
     }
+  }
 
+  renderReadingList(rowData, sectionID, rowID, highlightRow){
+    if(!rowData.includes('.json')){
+      return(
+        <TouchableOpacity onPress={()=>this.gotoFile(rowData,'readings')}>
+          <View>
+            <Text>{rowData}</Text>
+          </View>
+
+        </TouchableOpacity>
+      )
+    }else{
+      return(
+        null
+      )
+    }
   }
 
   askQuestion(){
@@ -199,12 +222,11 @@ fetchReadingsAPI(){
       }).cloneWithRows(responseData.data)})
     })
     setTimeout(()=>{this.setState({pageNumber:0})},800)
-    setTimeout(()=>{this.setState({pageNumber:undefined})},810)
+    setTimeout(()=>{this.setState({pageNumber:undefined})},800)
     setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.setState({buttonExit:false})},800)
     this.setState({delayFirst:true})
-
   }
 
   viewQuestion=(id,title,content,author)=>{
@@ -252,7 +274,7 @@ fetchReadingsAPI(){
             style={{flex:1}}
             showsVerticalScrollIndicator={false}
             dataSource={this.state.assignmentList}
-            renderRow={this.renderFileList.bind(this)}
+            renderRow={this.renderAssignmentList.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
         </View>
@@ -267,7 +289,7 @@ fetchReadingsAPI(){
             style={{flex:1}}
             showsVerticalScrollIndicator={false}
             dataSource={this.state.readingList}
-            renderRow={this.renderFileList.bind(this)}
+            renderRow={this.renderReadingList.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
         </View>
