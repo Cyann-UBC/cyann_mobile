@@ -143,7 +143,7 @@ fetchPostsAPI(){
           <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
       shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:7,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
             <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>{rowData.author}</Text>
+            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>{rowData.author.name}</Text>
           <Animatable.View key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
@@ -162,7 +162,6 @@ fetchPostsAPI(){
           <View>
             <Text>{rowData}</Text>
           </View>
-
         </TouchableOpacity>
       )
     }else{
@@ -177,10 +176,8 @@ fetchPostsAPI(){
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'readings')}>
           <View style={{}}>
-
             <Text>{rowData.split('.')[0]}</Text>
           </View>
-
         </TouchableOpacity>
       )
     }else{
@@ -201,6 +198,7 @@ fetchPostsAPI(){
     var post = {
     'title': this.state.questionTitle,
     'content': this.state.questionContent,
+    'userName':'Howard',
     'userId': '58122f3e6a5f670b42b5f85b'
     }
 

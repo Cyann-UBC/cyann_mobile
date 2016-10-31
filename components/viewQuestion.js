@@ -110,7 +110,7 @@ export default class courseList extends Component {
         <View style={{flex:1,height:height-height/10.5-height/1.5,backgroundColor:'#17B3C1'}}>
           <Text>{this.props.questionTitle}</Text>
           <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
+          <Text>{this.props.questionAuthor.name}</Text>
         </View>
 
         <View style={{flex:1,height:height/1.5,backgroundColor:'#f5f7fa'}}>
