@@ -31,11 +31,15 @@ export default class courseList extends Component {
       author:'',
       course:'',
       ifAnswering:false,
+      commentList:'',
     };
   }
 
   componentWillMount(){
     console.warn(JSON.stringify(this.props.data))
+    this.setState({commentList:new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+    }).cloneWithRows(this.props.data.data.comments)})
   }
 
   componentDidMount(){
@@ -66,41 +70,14 @@ export default class courseList extends Component {
       )
     }else{
       return(
-        <ScrollView>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor}</Text>
-        </ScrollView>
+        <ListView
+          style={{flex:1}}
+          showsVerticalScrollIndicator={false}
+          dataSource={this.state.commentList}
+          renderRow={this.renderRow.bind(this)}
+          horizontal={false}
+          removeClippedSubviews={true}
+        />
       )
     }
   }

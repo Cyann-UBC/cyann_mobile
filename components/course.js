@@ -84,7 +84,7 @@ fetchPostsAPI(){
     fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
-      //  console.warn(JSON.stringify(responseData.data))
+        console.warn(JSON.stringify(responseData.data))
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
@@ -103,15 +103,20 @@ fetchPostsAPI(){
   }
 
   fetchReadingsAPI(){
-
-  }
-
-  fetchPostByID(){
     fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/readings",{method:"GET"})
+    .then((response) => response.json())
+    .then((responseData) => {
+        console.warn(JSON.stringify(responseData))
+      this.setState({readingList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.files)})
+    })
   }
+
   gotoFile(rowData,type){
     Actions.fileView({uri:"http://localhost:3000/api/"+'581231d06a5f670b42b5f868'+'/files/'+type+'/download/'+rowData})
   }
+
   renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let viewProps = {};
@@ -122,11 +127,11 @@ fetchPostsAPI(){
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
           <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
       shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:12,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
-            <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/15}}>{rowData.title}</Text>
-            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>author</Text>
+            <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>{rowData.author.name}</Text>
           <Animatable.View  key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
-              <Text style={{width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
+              <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
               </View>
             </Animatable.View>
           </Animatable.View>
@@ -138,7 +143,7 @@ fetchPostsAPI(){
           <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
       shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:7,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
             <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>author</Text>
+            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>{rowData.author}</Text>
           <Animatable.View key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
@@ -190,7 +195,7 @@ fetchPostsAPI(){
     this.refs.titleView.bounce(500)
     this.refs.contentView.bounce(500)
     this.refs.buttonView.bounce(1000)
-      this.setState({delayFirst:true})
+    this.setState({delayFirst:true})
     setTimeout(()=>{this.refs.titleBounceOff.bounceOutUp(750)},200)
     setTimeout(()=>{this.refs.contentBounceOff.bounceOutUp(900)},250)
     var post = {
@@ -224,7 +229,6 @@ fetchPostsAPI(){
     setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.setState({buttonExit:false})},800)
-
     setTimeout(()=>{this.setState({delayFirst:false})},2100)
   }
 
@@ -233,7 +237,6 @@ fetchPostsAPI(){
     .then((response) => response.json())
     .then((responseData) => {
       Actions.viewQuestion({data:responseData,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
-
     })
 
   }
