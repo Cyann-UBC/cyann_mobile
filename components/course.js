@@ -124,12 +124,12 @@ fetchPostsAPI(){
       return(
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
           <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
-      shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:12,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
-            <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
-            <Text style={{color:"#AAB2BD"}}>author</Text>
+      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:12,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
+            <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/15}}>{rowData.title}</Text>
+            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>author</Text>
           <Animatable.View  key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
-              <Text style={{width:width/1.25,color:'gray',paddingBottom:10,}}>{rowData.content}</Text>
+              <Text style={{width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
               </View>
             </Animatable.View>
           </Animatable.View>
@@ -139,12 +139,12 @@ fetchPostsAPI(){
       return(
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
           <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
-      shadowOpacity: 0.5,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:7,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
-            <Text style={{width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold'}}>{rowData.title}</Text>
-            <Text style={{color:"#AAB2BD"}}>author</Text>
+      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:7,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
+            <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>author</Text>
           <Animatable.View key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
-              <Text style={{width:width/1.25,color:'gray',paddingBottom:10,}}>{rowData.content}</Text>
+              <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
 
               </View>
             </Animatable.View>
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     shadowColor: "#000000",
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: {height: 3.5,width: 0},
     width:width/1.3,
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
     width:width/1.3,
     height:height/2.3,
     shadowColor: "#000000",
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: {height: 3.5,width: 0},
     backgroundColor:"white",
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
     width:width/1.3,
     height:height/4,
     shadowColor: "#000000",
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: {height: 3.5,width: 0},
     backgroundColor:"white",
