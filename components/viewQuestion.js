@@ -35,7 +35,7 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
-    console.warn(this.props.questionId)
+    console.warn(JSON.stringify(this.props.data))
   }
 
   componentDidMount(){

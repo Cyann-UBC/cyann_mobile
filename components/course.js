@@ -103,14 +103,11 @@ fetchPostsAPI(){
   }
 
   fetchReadingsAPI(){
+
+  }
+
+  fetchPostByID(){
     fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/readings",{method:"GET"})
-    .then((response) => response.json())
-    .then((responseData) => {
-        console.warn(JSON.stringify(responseData.files))
-      this.setState({readingList:new ListView.DataSource({
-          rowHasChanged: (r1, r2) => r1 != r2
-      }).cloneWithRows(responseData.files)})
-    })
   }
   gotoFile(rowData,type){
     Actions.fileView({uri:"http://localhost:3000/api/"+'581231d06a5f670b42b5f868'+'/files/'+type+'/download/'+rowData})
@@ -145,7 +142,6 @@ fetchPostsAPI(){
           <Animatable.View key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
-
               </View>
             </Animatable.View>
           </Animatable.View>
@@ -233,7 +229,13 @@ fetchPostsAPI(){
   }
 
   viewQuestion=(id,title,content,author)=>{
-    Actions.viewQuestion({questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
+    fetch("http://localhost:3000/api/courses/"+'581231d06a5f670b42b5f868'+'/'+'posts/'+id,{method:"GET"})
+    .then((response) => response.json())
+    .then((responseData) => {
+      Actions.viewQuestion({data:responseData,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
+
+    })
+
   }
 
   updateTitle(event){
