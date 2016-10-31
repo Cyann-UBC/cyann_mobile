@@ -63,7 +63,8 @@ export default class course extends Component {
       buttonExit:false,
       pageNumber:undefined,
       delayFirst:false,
-      ifrenderFile:'none'
+      ifrenderFile:'none',
+      userName:"Howard",
     };
   }
 
@@ -113,10 +114,46 @@ fetchPostsAPI(){
     })
   }
 
+  deleteOwnPost(id){
+    var post = {
+    'userId': '58122f3e6a5f670b42b5f85b'
+    }
+
+    var formBody = []
+    for (var property in post) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(post[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts/"+id,{method:"DELETE",
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+          },body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+    })
+  }
+
   gotoFile(rowData,type){
     Actions.fileView({uri:"http://localhost:3000/api/"+'581231d06a5f670b42b5f868'+'/files/'+type+'/download/'+rowData})
   }
 
+  ifRenderCross(id,name){
+    if(this.state.userName === name){
+      return(
+        <TouchableOpacity onPress={()=>this.deleteOwnPost(id,name)}>
+          <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,height:height/17,marginRight:10}}/>
+        </TouchableOpacity>
+      )
+    }else{
+      return(
+        null
+      )
+    }
+  }
   renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let viewProps = {};
@@ -127,8 +164,13 @@ fetchPostsAPI(){
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
           <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
       shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:12,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
-            <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-            <Text style={{color:"#AAB2BD",marginTop:-height/12}}>{rowData.author.name}</Text>
+            <View style={{flex:1,flexDirection:"row",justifyContent:'space-between',alignItems:'center',height:10}}>
+              <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+              {this.ifRenderCross(rowData._id,rowData.author.name)}
+            </View>
+            <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+              <Text style={{color:"#AAB2BD",marginTop:-height/12}}>{rowData.author.name}</Text>
+            </View>
           <Animatable.View  key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content}</Text>
