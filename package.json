@@ -18,6 +18,7 @@
     "react-native-drawer": "^2.3.0",
     "react-native-drawer-layout": "^1.1.0",
     "react-native-dropdown": "0.0.6",
+    "react-native-facebook-login": "^1.4.0",
     "react-native-fbsdk": "^0.3.0",
     "react-native-linear-gradient": "^1.5.13",
     "react-native-menu": "^0.20.2",
