@@ -8,13 +8,16 @@ import {
   StatusBar,
   ScrollView,
   WebView,
+  Image,
   Text,
   View
 } from 'react-native';
 const FBSDK = require('react-native-fbsdk');
 const {
   LoginButton,
-  AccessToken
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager
 } = FBSDK;
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
@@ -33,6 +36,7 @@ export default class Login extends Component {
     super(props);
     this.state = {
       uri:'',
+      imgurl:'',
       user:'',
     }
   }
@@ -51,14 +55,14 @@ export default class Login extends Component {
     FBLoginManager.login(function(error, data){
       if (!error) {
         console.warn(JSON.stringify(data))
-        _this.setState({ user : data});
+        _this.setState({ user : data},_this.fetchUserInfo(data))
         // this.props.onLogin && _this.props.onLogin();
       } else {
         console.warn('wtf')
         console.warn(JSON.stringify(data))
         console.warn(error, data);
       }
-    });
+    })
   }
 
 
@@ -66,6 +70,7 @@ export default class Login extends Component {
       var _this = this
       FBLoginManager.logout(function(error, data){
         if (!error) {
+          console.warn(JSON.stringify(data))
           _this.setState({ user : null});
           // this.props.onLogout && _this.props.onLogout();
         } else {
@@ -73,6 +78,39 @@ export default class Login extends Component {
         }
       });
     }
+
+    _responseInfoCallback=(error: ?Object, result: ?Object)=>{
+  if (error) {
+    alert('Error fetching data: ' + error.toString());
+  } else {
+    console.warn(result.picture.data.url)
+    this.setState({imgurl:result.picture.data.url})
+    alert('Success fetching data: ' + result.toString());
+  }
+}
+  fetchUserInfo(data){
+
+    const infoRequest = new GraphRequest(
+                '/me',
+                {
+                  accessToken: data.credentials.token,
+                  parameters: {
+                    fields: {
+                      string: 'email,name,first_name,middle_name,last_name,picture'
+                    }
+                  }
+                },
+                this._responseInfoCallback
+              )
+              new GraphRequestManager().addRequest(infoRequest).start()
+
+    // var _this = this
+    //  fetch('https://graph.facebook.com/v2.8/me?access_token='+data.credentials.token +'?fields=picture')
+    //  .then((response) => response.json())
+    //  .then((responseData) => {
+    //      console.warn(JSON.stringify(responseData))
+    //  })
+  }
 /*
 the commented code could be used for alternaive for another login mechanism
 */
@@ -135,6 +173,10 @@ onPermissionsMissing(data){
   render(){
     return(
       <View style={styles.container}>
+        <Image
+          style={{width:50,height:50}}
+          source={{uri: this.state.imgurl}}
+        />
         <TouchableOpacity onPress={this.handleLogin.bind(this)}>
           <View style={{backgroundColor:'red',width:10,height:10}}></View>
         </TouchableOpacity>
