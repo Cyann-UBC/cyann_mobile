@@ -22,6 +22,9 @@ const {
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
 import * as Animatable from 'react-native-animatable';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import Ionicon from 'react-native-vector-icons/Ionicons'
+
 var {FBLogin, FBLoginManager,FBLoginView} = require('react-native-facebook-login');
 var Dimensions = require('Dimensions');
 var {
@@ -38,12 +41,18 @@ export default class Login extends Component {
       uri:'',
       imgurl:'',
       user:'',
+      buttonText:''
     }
   }
   componentWillMount(){
       var _this = this
     FBLoginManager.getCredentials(function(error, data){
       console.warn(JSON.stringify(data))
+      if(data === null){
+        _this.setState({buttonText:'login'})
+      }else{
+        _this.setState({buttonText:'logout'})
+      }
       if (!error) {
         _this.setState({ user : data})
       }
@@ -86,6 +95,7 @@ export default class Login extends Component {
     console.warn(result.picture.data.url)
     this.setState({imgurl:result.picture.data.url})
     alert('Success fetching data: ' + result.toString());
+    Actions.courseList()
   }
 }
   fetchUserInfo(data){
@@ -173,15 +183,11 @@ onPermissionsMissing(data){
   render(){
     return(
       <View style={styles.container}>
-        <Image
-          style={{width:50,height:50}}
-          source={{uri: this.state.imgurl}}
-        />
-        <TouchableOpacity onPress={this.handleLogin.bind(this)}>
-          <View style={{backgroundColor:'red',width:10,height:10}}></View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.handleLogout.bind(this)}>
-          <View style={{backgroundColor:'blue',width:10,height:10}}></View>
+      <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+            <Ionicon style={{marginRight:10}} name={'logo-facebook'} color={'white'} size={30} />
+            <Text style={{fontSize:19,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"logout"}</Text>
+          </View>
         </TouchableOpacity>
       </View>
     )
@@ -191,9 +197,9 @@ onPermissionsMissing(data){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection:'row',
+    flexDirection:'column',
     justifyContent: 'center',
-    backgroundColor:'#2d3545',
+    backgroundColor:'#4fc1e9',
     alignItems: 'center',
   },
 })
