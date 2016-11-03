@@ -95,7 +95,7 @@ export default class Login extends Component {
     console.warn(result.picture.data.url)
     this.setState({imgurl:result.picture.data.url})
     alert('Success fetching data: ' + result.toString());
-    Actions.courseList()
+  //  Actions.courseList()
   }
 }
   fetchUserInfo(data){

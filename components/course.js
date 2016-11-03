@@ -14,6 +14,7 @@ import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import Octicon from 'react-native-vector-icons/Octicons'
 import Drawer from 'react-native-drawer';
 import TimerMixin from 'react-timer-mixin';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
@@ -64,7 +65,7 @@ export default class course extends Component {
       pageNumber:undefined,
       delayFirst:false,
       ifrenderFile:'none',
-      userName:"Howard",
+      userName:"TA1",
     };
   }
 
@@ -82,18 +83,18 @@ export default class course extends Component {
   }
 
 fetchPostsAPI(){
-    fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts",{method:"GET"})
+    fetch("http://localhost:3000/api/courses/581a27f661083346ae0955dd/posts",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData.data))
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
-      }).cloneWithRows(responseData.data)})
+      }).cloneWithRows(responseData.posts)})
     })
   }
 
   fetchAssignmentAPI(){
-    fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/assignments",{method:"GET"})
+    fetch("http://localhost:3000/api/581a27f661083346ae0955dd/files/assignments",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -104,7 +105,7 @@ fetchPostsAPI(){
   }
 
   fetchReadingsAPI(){
-    fetch("http://localhost:3000/api/581231d06a5f670b42b5f868/files/readings",{method:"GET"})
+    fetch("http://localhost:3000/api/581a27f661083346ae0955dd/files/readings",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -127,7 +128,7 @@ fetchPostsAPI(){
     }
     formBody = formBody.join("&");
 
-    fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts/"+id,{method:"DELETE",
+    fetch("http://localhost:3000/api/courses/581a27f661083346ae0955dd/posts/"+id,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
           },body:formBody})
@@ -138,7 +139,7 @@ fetchPostsAPI(){
   }
 
   gotoFile(rowData,type){
-    Actions.fileView({uri:"http://localhost:3000/api/"+'581231d06a5f670b42b5f868'+'/files/'+type+'/download/'+rowData})
+    Actions.fileView({uri:"http://localhost:3000/api/"+'581a27f661083346ae0955dd'+'/files/'+type+'/download/'+rowData})
   }
 
   ifRenderCross(id,name){
@@ -201,8 +202,9 @@ fetchPostsAPI(){
     if(!rowData.includes('.json')){
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'assignments')}>
-          <View>
-            <Text>{rowData}</Text>
+          <View style={styles.fileRow}>
+            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'gray'} style={{marginRight:20}}/>
+            <Text style={{fontSize:20,fontWeight:'500',color:'gray'}}>{rowData}</Text>
           </View>
         </TouchableOpacity>
       )
@@ -217,8 +219,9 @@ fetchPostsAPI(){
     if(!rowData.includes('.json')){
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'readings')}>
-          <View style={{}}>
-            <Text>{rowData.split('.')[0]}</Text>
+          <View style={styles.fileRow}>
+            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'gray'} style={{marginRight:20}}/>
+            <Text style={{fontSize:20,fontWeight:'500',color:'gray'}}>{rowData.split('.')[0]}</Text>
           </View>
         </TouchableOpacity>
       )
@@ -240,8 +243,7 @@ fetchPostsAPI(){
     var post = {
     'title': this.state.questionTitle,
     'content': this.state.questionContent,
-    'userName':'Howard',
-    'userId': '58122f3e6a5f670b42b5f85b'
+    'userId': '58122f3e6a5f670b42b5f85d'
     }
 
     var formBody = []
@@ -253,7 +255,7 @@ fetchPostsAPI(){
     }
     formBody = formBody.join("&");
 
-    fetch("http://localhost:3000/api/courses/581231d06a5f670b42b5f868/posts",{method:"POST",
+    fetch("http://localhost:3000/api/courses/581a27f661083346ae0955dd/posts",{method:"POST",
     headers: {
      'Content-Type': 'application/x-www-form-urlencoded'
      },
@@ -262,7 +264,7 @@ fetchPostsAPI(){
     .then((responseData) => {
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
-      }).cloneWithRows(responseData.data)})
+      }).cloneWithRows(responseData.posts)})
     })
     setTimeout(()=>{this.setState({pageNumber:0})},800)
     setTimeout(()=>{this.setState({pageNumber:undefined})},810)
@@ -317,10 +319,9 @@ fetchPostsAPI(){
       return(
         <Animatable.View animation={'fadeIn'} duration={500}>
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
-            <Icon name="close" size={30} color={'white'} style={{margin:20}}/>
+            <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
           </TouchableOpacity>
           <ListView
-            style={{flex:1}}
             showsVerticalScrollIndicator={false}
             dataSource={this.state.assignmentList}
             renderRow={this.renderAssignmentList.bind(this)}
@@ -334,10 +335,9 @@ fetchPostsAPI(){
       return(
         <Animatable.View animation={'fadeIn'} duration={500}>
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
-            <Icon name="close" size={30} color={'white'} style={{margin:20}}/>
+            <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
           </TouchableOpacity>
           <ListView
-            style={{flex:1}}
             showsVerticalScrollIndicator={false}
             dataSource={this.state.readingList}
             renderRow={this.renderReadingList.bind(this)}
@@ -496,6 +496,23 @@ const styles = StyleSheet.create({
     backgroundColor:"white",
     borderRadius:height/100,
     padding:10
+  },
+  fileRow:{
+    flex:1,
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:"white",
+    height:height/7,
+    borderRadius:height/80,
+    marginTop:10,
+    marginBottom:10,
+    marginLeft:7,
+    marginRight:7,
+    shadowColor: "#000000",
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    shadowOffset: {height: 3.5,width: 0},
   }
 
 });
