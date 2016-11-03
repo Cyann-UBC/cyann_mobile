@@ -47,6 +47,10 @@ export default class courseList extends Component {
   }
 
   componentDidMount(){
+    this.getComments()
+  }
+
+  getComments(){
     var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.props.questionId+"/comments"
     fetch(url
     ,{method:"GET"})
@@ -58,7 +62,6 @@ export default class courseList extends Component {
       }).cloneWithRows(responseData.data)})
     })
   }
-
   gotoCourse(name){
     Actions.course({courseName:name})
   }
@@ -68,7 +71,18 @@ export default class courseList extends Component {
 
     if(this.state.ifTypingAnswering == true){
       return(
-          <TextInput onChangeText={(text)=>this.setState({commentContent:text})} style={{height:height/1.5,fontSize:20,width:width,padding:20}} multiline={true} placeholder={'your answer here'} />
+        <View>
+          <TouchableOpacity onPress={()=>this.cancelAnswer()}>
+            <Icon name={"close"} size={30} color={'gray'} style={{marginTop:10,marginLeft:10,}}/>
+          </TouchableOpacity>
+          <TextInput
+            onChangeText={(text)=>this.setState({commentContent:text})}
+            style={{height:height/1.5,fontSize:20,width:width,padding:20}}
+            multiline={true}
+            value={this.state.commentContent}
+            placeholder={'your answer here'} />
+        </View>
+
       )
     }else{
       return(
@@ -101,7 +115,10 @@ export default class courseList extends Component {
     this.setState({ifTypingAnswering:!this.state.ifTypingAnswering})
     this.setState({ifPostAnser:!this.state.ifPostAnser})
   }
-
+  cancelAnswer(){
+    this.setState({ifTypingAnswering:false})
+    this.setState({ifPostAnser:false})
+  }
   postAnswer(){
     var comment = {
     'content': this.state.commentContent,
@@ -123,6 +140,8 @@ export default class courseList extends Component {
       console.warn(JSON.stringify(responseData))
       this.setState({ifTypingAnswering:!this.state.ifTypingAnswering})
       this.setState({ifPostAnser:!this.state.ifPostAnser})
+      this.setState({commentContent:''})
+      this.getComments()
     })
   }
 
