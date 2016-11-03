@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   ListView,
   LayoutAnimation,
+  TextInput,
   Text,
   View
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import fontAwesome from 'react-native-vector-icons/FontAwesome';
 import ActionButton from 'react-native-action-button';
 
 var Dimensions = require('Dimensions');
@@ -25,13 +27,15 @@ export default class courseList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      iconName:'pencil',
+      iconName:'md-add',
       title:'',
       content:'',
       author:'',
       course:'',
-      ifAnswering:false,
-      commentList:'',
+      ifTypingAnswering:false,
+      ifPostAnser:false,
+      commentList:null,
+      commentContent:'',
     };
   }
 
@@ -43,13 +47,13 @@ export default class courseList extends Component {
   }
 
   componentDidMount(){
-    var url = "http://localhost:3000/"+"api/courses/581231d06a5f670b42b5f868/posts/"+this.props.questionId+"/comments"
+    var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.props.questionId+"/comments"
     fetch(url
     ,{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
-      this.setState({questionList:new ListView.DataSource({
+      this.setState({commentList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
     })
@@ -59,14 +63,12 @@ export default class courseList extends Component {
     Actions.course({courseName:name})
   }
 
-  renderScrollView(){
+  renderScrollView=()=>{
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
 
-    if(this.state.ifAnswering == true){
+    if(this.state.ifTypingAnswering == true){
       return(
-        <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',height:height/1.5,backgroundColor:'#f5f7fa'}}>
-          <AutoGrowingTextInput style={{height:50,fontSize:20,width:width/1.2,height:20,marginRight:20,}} placeholder={'content'} />
-        </View>
+          <TextInput onChangeText={(text)=>this.setState({commentContent:text})} style={{height:height/1.5,fontSize:20,width:width,padding:20}} multiline={true} placeholder={'your answer here'} />
       )
     }else{
       return(
@@ -82,14 +84,48 @@ export default class courseList extends Component {
     }
   }
   renderRow(rowData){
-
+    return(
+      <TouchableOpacity>
+        <View>
+          <Text>{rowData.author}</Text>
+          <Text>{rowData.content}</Text>
+          <Text>{rowData.upvotes}</Text>
+        </View>
+      </TouchableOpacity>
+    )
   }
   onBackPress(){
     Actions.pop();
   }
-  answerQuestion(){
-    this.setState({ifAnswering:!this.state.ifAnswering})
+  writeQuestion(){
+    this.setState({ifTypingAnswering:!this.state.ifTypingAnswering})
+    this.setState({ifPostAnser:!this.state.ifPostAnser})
   }
+
+  postAnswer(){
+    var comment = {
+    'content': this.state.commentContent,
+    'userId': '58122f3e6a5f670b42b5f85d'
+    }
+
+    var formBody = []
+
+    for (var property in comment) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(comment[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.props.questionId+"/comments"
+    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.setState({ifTypingAnswering:!this.state.ifTypingAnswering})
+      this.setState({ifPostAnser:!this.state.ifPostAnser})
+    })
+  }
+
   render() {
     return (
       <View>
@@ -103,11 +139,10 @@ export default class courseList extends Component {
 
             <TouchableOpacity
               onPress={this.openDrawer}
-              style={{marginRight: 15}}>
-              <Icon name="navicon" color="#f6f7fb" size={30} backgroundColor="transparent"/>
+              style={{height:20,width:20,marginRight: 15}}>
             </TouchableOpacity>
         </View>
-        <View style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#4fc1e9'}}>
+        <View style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#4fc1e9',paddingLeft:15,paddingRight:15}}>
           <Text style={{color:'white',fontSize:25,fontWeight:'500',marginBottom:10}}>{this.props.questionTitle}</Text>
           <Text style={{color:'white',fontSize:18,fontWeight:'500',marginBottom:10}}>{this.props.questionAuthor.name}</Text>
           <Text style={{color:'white',fontSize:18,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
@@ -116,12 +151,10 @@ export default class courseList extends Component {
         <View style={{flex:1,height:height/1.5,backgroundColor:'#f5f7fa'}}>
             {this.renderScrollView()}
         </View>
-        <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={()=>this.answerQuestion()}
-          icon={<Icon name={this.state.iconName} size={33} color='#f6f7fb'></Icon>}>
+        <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
+          icon={this.state.ifTypingAnswering?<Ionicon name={'ios-send-outline'} size={33} color='#f6f7fb'/>
+                                      :<Ionicon name={'ios-add'} size={33} color='#f6f7fb'/>}>
         </ActionButton>
-
-
-
       </View>
     );
   }

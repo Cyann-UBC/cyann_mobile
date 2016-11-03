@@ -86,7 +86,7 @@ fetchPostsAPI(){
     fetch("http://localhost:3000/api/courses/581a27f661083346ae0955dd/posts",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
-        console.warn(JSON.stringify(responseData.data))
+    //    console.warn(JSON.stringify(responseData.data))
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.posts)})
@@ -97,7 +97,7 @@ fetchPostsAPI(){
     fetch("http://localhost:3000/api/581a27f661083346ae0955dd/files/assignments",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
-        console.warn(JSON.stringify(responseData))
+      //  console.warn(JSON.stringify(responseData))
       this.setState({assignmentList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
@@ -108,7 +108,7 @@ fetchPostsAPI(){
     fetch("http://localhost:3000/api/581a27f661083346ae0955dd/files/readings",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
-        console.warn(JSON.stringify(responseData))
+      //  console.warn(JSON.stringify(responseData))
       this.setState({readingList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
@@ -134,7 +134,7 @@ fetchPostsAPI(){
           },body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+    //  console.warn(JSON.stringify(responseData))
     })
   }
 

@@ -102,6 +102,11 @@ export default class courseList extends Component {
 
   componentDidMount(){
     // console.warn(JSON.stringify(this.state.listSource))
+    fetch('http://localhost:3000/api/courses',{method:"GET"})
+    .then((response)=>response.json())
+    .then((responseData)=>{
+      console.warn(JSON.stringify(responseData))
+    })
   }
 
   gotoCourse=(name)=>{

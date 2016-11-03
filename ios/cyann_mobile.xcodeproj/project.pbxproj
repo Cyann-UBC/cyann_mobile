@@ -21,6 +21,7 @@
 		108A29041DC908FE0066237F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 108A29001DC908FE0066237F /* FBSDKCoreKit.framework */; };
 		108A29051DC908FE0066237F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 108A29011DC908FE0066237F /* FBSDKLoginKit.framework */; };
 		108A29061DC908FE0066237F /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 108A29021DC908FE0066237F /* FBSDKShareKit.framework */; };
+		10AE04E71DCBA543005C0E72 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10AE04E61DCBA543005C0E72 /* FontAwesome.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -146,6 +147,7 @@
 		108A29001DC908FE0066237F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = cyann_mobile.xcodeproj/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		108A29011DC908FE0066237F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = cyann_mobile.xcodeproj/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		108A29021DC908FE0066237F /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = cyann_mobile.xcodeproj/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		10AE04E61DCBA543005C0E72 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* cyann_mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cyann_mobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -351,6 +353,7 @@
 				108A29011DC908FE0066237F /* FBSDKLoginKit.framework */,
 				108A29021DC908FE0066237F /* FBSDKShareKit.framework */,
 				102A2ED81DB91CE800A6522A /* Ionicons.ttf */,
+				10AE04E61DCBA543005C0E72 /* FontAwesome.ttf */,
 				1064E85B1DCB17C0004AEC4C /* Octicons.ttf */,
 				102A2ECC1DB91CDB00A6522A /* EvilIcons.ttf */,
 				13B07FAE1A68108700A75B9A /* cyann_mobile */,
@@ -598,6 +601,7 @@
 				102A2ECD1DB91CDB00A6522A /* EvilIcons.ttf in Resources */,
 				102A2ED91DB91CE800A6522A /* Ionicons.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				10AE04E71DCBA543005C0E72 /* FontAwesome.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

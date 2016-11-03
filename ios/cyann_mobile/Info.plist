@@ -24,6 +24,7 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array>
+		<string>FontAwesome.ttf</string>
 		<string>Octicons.ttf</string>
 		<string>Ionicons.ttf</string>
 		<string>EvilIcons.ttf</string>
