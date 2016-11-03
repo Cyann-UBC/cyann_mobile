@@ -96,7 +96,7 @@ export default class courseList extends Component {
         <View style={styles.topContainer}>
           <TouchableOpacity
             onPress={this.onBackPress}>
-            <Icon name="chevron-left" color="#f6f7fb" size={36} backgroundColor="transparent" />
+            <Icon name={"arrow-left"} size={37} color={'white'} />
           </TouchableOpacity>
 
             <Text style={styles.courseTitle}>{this.props.courseName}</Text>
@@ -107,16 +107,16 @@ export default class courseList extends Component {
               <Icon name="navicon" color="#f6f7fb" size={30} backgroundColor="transparent"/>
             </TouchableOpacity>
         </View>
-        <View style={{flex:1,height:height-height/10.5-height/1.5,backgroundColor:'#17B3C1'}}>
-          <Text>{this.props.questionTitle}</Text>
-          <Text>{this.props.questionContent}</Text>
-          <Text>{this.props.questionAuthor.name}</Text>
+        <View style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#4fc1e9'}}>
+          <Text style={{color:'white',fontSize:25,fontWeight:'500',marginBottom:10}}>{this.props.questionTitle}</Text>
+          <Text style={{color:'white',fontSize:18,fontWeight:'500',marginBottom:10}}>{this.props.questionAuthor.name}</Text>
+          <Text style={{color:'white',fontSize:18,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
         </View>
 
         <View style={{flex:1,height:height/1.5,backgroundColor:'#f5f7fa'}}>
             {this.renderScrollView()}
         </View>
-        <ActionButton position="right" text="answer" buttonColor="#17B3C1" onPress={()=>this.answerQuestion()}
+        <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={()=>this.answerQuestion()}
           icon={<Icon name={this.state.iconName} size={33} color='#f6f7fb'></Icon>}>
         </ActionButton>
 
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     justifyContent: 'center',
-    backgroundColor:'#17B3C1',
+    backgroundColor:'#4fc1e9',
     alignItems: 'center',
   },
   welcome: {
@@ -148,11 +148,11 @@ const styles = StyleSheet.create({
   topContainer: {
       flex: 1,
       width:Dimensions.get('window').width,
-      height:Dimensions.get('window').height/10.5,
+      height:Dimensions.get('window').height/12.5,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: '#17B3C1',
+      backgroundColor: '#4fc1e9',
       paddingTop: 20,
   },
 });

@@ -275,7 +275,7 @@ fetchPostsAPI(){
   }
 
   viewQuestion=(id,title,content,author)=>{
-    fetch("http://localhost:3000/api/courses/"+'581231d06a5f670b42b5f868'+'/'+'posts/'+id,{method:"GET"})
+    fetch("http://localhost:3000/api/courses/"+'581a27f661083346ae0955dd'+'/'+'posts/'+id,{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
       Actions.viewQuestion({data:responseData,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})

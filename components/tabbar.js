@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf:'center',
     height:25,
-    paddingTop:3,
+    paddingTop:7,
     alignItems: 'center',
     borderRightWidth:1.5,
     borderRightColor:'white',
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     alignItems: 'center',
     height:20,
-    paddingTop:3,
+    paddingTop:7,
     justifyContent: 'center',
   },
   tabs: {
