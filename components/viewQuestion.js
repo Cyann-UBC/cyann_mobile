@@ -100,10 +100,10 @@ export default class courseList extends Component {
   renderRow(rowData){
     return(
       <TouchableOpacity>
-        <View>
-          <Text>{rowData.author}</Text>
-          <Text>{rowData.content}</Text>
-          <Text>{rowData.upvotes}</Text>
+        <View style={{marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'gray'}}>
+          <Text style={{fontSize:17,fontWeight:'500',marginBottom:3}}>{rowData.content}</Text>
+          <Text style={{fontSize:16,fontWeight:'500',marginBottom:3}}>{rowData.author}</Text>
+          <Text >{rowData.upvotes}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -151,7 +151,7 @@ export default class courseList extends Component {
         <View style={styles.topContainer}>
           <TouchableOpacity
             onPress={this.onBackPress}>
-            <Icon name={"arrow-left"} size={37} color={'white'} />
+            <Icon name={"chevron-left"} size={37} color={'white'} />
           </TouchableOpacity>
 
             <Text style={styles.courseTitle}>{this.props.courseName}</Text>
@@ -161,13 +161,13 @@ export default class courseList extends Component {
               style={{height:20,width:20,marginRight: 15}}>
             </TouchableOpacity>
         </View>
-        <View style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#4fc1e9',paddingLeft:15,paddingRight:15}}>
-          <Text style={{color:'white',fontSize:25,fontWeight:'500',marginBottom:10}}>{this.props.questionTitle}</Text>
-          <Text style={{color:'white',fontSize:18,fontWeight:'500',marginBottom:10}}>{this.props.questionAuthor.name}</Text>
-          <Text style={{color:'white',fontSize:18,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
-        </View>
+          <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#4fc1e9',paddingLeft:15,paddingRight:15}}>
+            <Text style={{color:'white',fontSize:25,fontWeight:'500',marginBottom:10}}>{this.props.questionTitle}</Text>
+            <Text style={{color:'white',fontSize:18,fontWeight:'500',marginBottom:10}}>{this.props.questionAuthor.name}</Text>
+            <Text style={{color:'white',fontSize:18,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
+          </ScrollView>
 
-        <View style={{flex:1,height:height/1.5,backgroundColor:'#f5f7fa'}}>
+        <View style={{flex:1,height:height/1.5,backgroundColor:'#f5f7fa',paddingLeft:7,paddingRight:7}}>
             {this.renderScrollView()}
         </View>
         <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
