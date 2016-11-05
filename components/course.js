@@ -165,12 +165,14 @@ fetchPostsAPI(){
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
           <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
       shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:12,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
-            <View style={{flex:1,flexDirection:"row",justifyContent:'space-between',alignItems:'center',height:10}}>
-              <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-              {this.ifRenderCross(rowData._id,rowData.author.name)}
-            </View>
-            <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-              <Text style={{color:"#AAB2BD",marginTop:-height/10}}>{rowData.author.name}</Text>
+            <View style={{flex:1,flexDirection:"column",justifyContent:'flex-start',height:5}}>
+              <View style={{flex:1,flexDirection:"row",justifyContent:'space-between',height:5}}>
+                <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+                {this.ifRenderCross(rowData._id,rowData.author.name)}
+              </View>
+              <View>
+                <Text style={{color:"#AAB2BD",marginTop:-height/10}}>{rowData.author.name}</Text>
+              </View>
             </View>
           <Animatable.View  key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
@@ -185,8 +187,15 @@ fetchPostsAPI(){
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
           <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
       shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:7,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
-            <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-            <Text style={{color:"#AAB2BD",marginTop:-height/10}}>{rowData.author.name}</Text>
+            <View style={{flex:1,flexDirection:"column",justifyContent:'flex-start',height:5}}>
+              <View style={{flex:1,flexDirection:"row",justifyContent:'space-between',height:5}}>
+                <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+                {this.ifRenderCross(rowData._id,rowData.author.name)}
+              </View>
+              <View>
+                <Text style={{color:"#AAB2BD",marginTop:-height/10}}>{rowData.author.name}</Text>
+              </View>
+            </View>
           <Animatable.View key={rowID} style={{height:50}}>
             <View  style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,marginTop:-height/15}}>{rowData.content.length>130?rowData.content.substring(0,130)+'...':rowData.content}</Text>
