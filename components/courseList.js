@@ -86,7 +86,13 @@ export default class courseList extends Component {
       ],
       ssc:'',
       password:'',
-      listSource:{},
+      listSource:[
+        {name:'CPEN 321'},
+        {name:'CPEN 281'},
+        {name:'ELEC 221'},
+        {name:'STAT 302'},
+        {name:'ECON 101'}
+      ],
       ifRenderList:false,
       commentSource:{},
       viewToggle:'list',
@@ -95,18 +101,17 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
-    this.setState({listSource:new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 != r2
-    }).cloneWithRows(this.state.courseList)})
+    fetch('http://localhost:3000/api/courses',{method:"GET"})
+    .then((response)=>response.json())
+    .then((responseData)=>{
+      console.warn(JSON.stringify(responseData.data))
+      this.setState({listSource:responseData.data})
+    })
   }
 
   componentDidMount(){
     // console.warn(JSON.stringify(this.state.listSource))
-    fetch('http://localhost:3000/api/courses',{method:"GET"})
-    .then((response)=>response.json())
-    .then((responseData)=>{
-      console.warn(JSON.stringify(responseData))
-    })
+
   }
 
   gotoCourse=(name)=>{
@@ -168,7 +173,7 @@ export default class courseList extends Component {
               horizontal ={true}
               pagingEnabled ={true}
               >
-              {this.state.courseList.map(function(course, i){
+              {this.state.listSource.map(function(course, i){
 
                 if(i==0){
                   var marginLeft=width/12;
@@ -201,24 +206,23 @@ export default class courseList extends Component {
                       <View obj={course} key={i} style={courseCardStyle} >
 
                         <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text>{course.name}</Text>
+                          <Text>{course.courseName}</Text>
                         </View>
 
                         <View style={{width:width/1.5,paddingLeft:10}}>
                           <Text style={{margin:10}}>Professor</Text>
-                          <Text style={{paddingLeft:10}}>blalala</Text>
+                          <Text style={{paddingLeft:10}}>{course.instructor}</Text>
                         </View>
 
+
                         <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text style={{margin:10}}>TAS</Text>
+                          <Text style={{margin:10}}>TAs</Text>
                           <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
-                            <Text style={{marginRight:15}}>blalala</Text>
-                            <Text style={{marginRight:15}}>blalala</Text>
-                            <Text style={{marginRight:15}}>blalala</Text>
-                            <Text style={{marginRight:15}}>blalala</Text>
-                            <Text style={{marginRight:15}}>blalala</Text>
-                            <Text style={{marginRight:15}}>blalala</Text>
-                            <Text style={{marginRight:15}}>blalala</Text>
+                            {[course.TAs].map(function(TA, i){
+                              return(
+                                <Text>{TA}</Text>
+                              )
+                            },this)}
                           </View>
 
                         </View>
