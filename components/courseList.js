@@ -104,8 +104,8 @@ export default class courseList extends Component {
     fetch('http://localhost:3000/api/courses',{method:"GET"})
     .then((response)=>response.json())
     .then((responseData)=>{
-      console.warn(JSON.stringify(responseData.data))
-      this.setState({listSource:responseData.data})
+      console.warn(JSON.stringify(responseData))
+      this.setState({listSource:responseData})
     })
   }
 
@@ -145,7 +145,7 @@ export default class courseList extends Component {
     }})},200)
 
     setTimeout(()=>{this.setState({viewToggle:'name'})},200)
-    setTimeout(()=>{Actions.course({id:id})},300)
+    setTimeout(()=>{Actions.course({type:'reset',id:id})},300)
 
   }
 
@@ -206,21 +206,21 @@ export default class courseList extends Component {
                       <View obj={course} key={i} style={courseCardStyle} >
 
                         <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text>{course.courseName}</Text>
+                          <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10}}>{course.courseName}</Text>
                         </View>
 
                         <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text style={{margin:10}}>Professor</Text>
-                          <Text style={{paddingLeft:10}}>{course.instructor}</Text>
+                          <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Professor</Text>
+                          <Text style={{paddingLeft:10}}>Farshid Agharebparast</Text>
                         </View>
 
 
                         <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text style={{margin:10}}>TAs</Text>
+                          <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
                           <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                             {[course.TAs].map(function(TA, i){
                               return(
-                                <Text>{TA}</Text>
+                                <Text>TA</Text>
                               )
                             },this)}
                           </View>

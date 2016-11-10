@@ -110,7 +110,7 @@ fetchPostsAPI(){
     fetch("http://localhost:3000/api/"+this.state.courseId+"/files/readings",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
-      //  console.warn(JSON.stringify(responseData))
+        console.warn(JSON.stringify(responseData))
       this.setState({readingList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
@@ -119,7 +119,7 @@ fetchPostsAPI(){
 
   deleteOwnPost(id){
     var post = {
-    'userId': '58122f3e6a5f670b42b5f85b'
+    'userId': '5824217b40a0836d65adc165'
     }
     var formBody = []
     for (var property in post) {
@@ -135,7 +135,7 @@ fetchPostsAPI(){
           },body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-    //  console.warn(JSON.stringify(responseData))
+      this.fetchPostsAPI()
     })
   }
 
@@ -144,7 +144,7 @@ fetchPostsAPI(){
   }
 
   ifRenderCross(id,name){
-    if(this.state.userName === name){
+    if('5824217b40a0836d65adc165' === name){
       return(
         <TouchableOpacity onPress={()=>this.deleteOwnPost(id,name)}>
           <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
@@ -169,7 +169,7 @@ fetchPostsAPI(){
             <View style={{height:40,marginBottom:10}}>
               <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
                 <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-                {this.ifRenderCross(rowData._id,rowData.author.name)}
+                {this.ifRenderCross(rowData._id,rowData.author._id)}
               </View>
             </View>
             <View style={{height:30,marginBottom:10}}>
@@ -202,7 +202,7 @@ fetchPostsAPI(){
               <View style={{height:40,marginBottom:10}}>
                 <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
                   <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-                  {this.ifRenderCross(rowData._id,rowData.author.name)}
+                  {this.ifRenderCross(rowData._id,rowData.author._id)}
                 </View>
               </View>
               <View style={{height:30,marginBottom:10}}>
@@ -277,7 +277,7 @@ fetchPostsAPI(){
     var post = {
     'title': this.state.questionTitle,
     'content': this.state.questionContent,
-    'userId': '58122f3e6a5f670b42b5f85d'
+    'userId': '5824217b40a0836d65adc165'
     }
 
     var formBody = []
@@ -350,35 +350,42 @@ fetchPostsAPI(){
         </View>
       )
     }else if(this.state.ifrenderFile === 'assignments'){
-      return(
-        <Animatable.View animation={'fadeIn'} duration={500}>
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
-            <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
-          </TouchableOpacity>
-          <ListView
-            showsVerticalScrollIndicator={false}
-            dataSource={this.state.assignmentList}
-            renderRow={this.renderAssignmentList.bind(this)}
-            horizontal={false}
-            removeClippedSubviews={true}/>
-        </Animatable.View>
-      )
+      if(this.state.assignmentList.length==0){
+        return null
+      }else{
+        return(
+          <Animatable.View animation={'fadeIn'} duration={500}>
+            <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+              <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
+            </TouchableOpacity>
+            <ListView
+              showsVerticalScrollIndicator={false}
+              dataSource={this.state.assignmentList}
+              renderRow={this.renderAssignmentList.bind(this)}
+              horizontal={false}
+              removeClippedSubviews={true}/>
+          </Animatable.View>
+        )
+      }
     }else if(this.state.ifrenderFile === 'readings'){
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-
-      return(
-        <Animatable.View animation={'fadeIn'} duration={500}>
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
-            <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
-          </TouchableOpacity>
-          <ListView
-            showsVerticalScrollIndicator={false}
-            dataSource={this.state.readingList}
-            renderRow={this.renderReadingList.bind(this)}
-            horizontal={false}
-            removeClippedSubviews={true}/>
-        </Animatable.View>
-      )
+      if(this.state.readingList.length==0){
+        return null
+      }else{
+        return(
+          <Animatable.View animation={'fadeIn'} duration={500}>
+            <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
+              <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
+            </TouchableOpacity>
+            <ListView
+              showsVerticalScrollIndicator={false}
+              dataSource={this.state.readingList}
+              renderRow={this.renderReadingList.bind(this)}
+              horizontal={false}
+              removeClippedSubviews={true}/>
+          </Animatable.View>
+        )
+      }
     }
   }
   render() {

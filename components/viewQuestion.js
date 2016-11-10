@@ -36,11 +36,17 @@ export default class courseList extends Component {
       ifPostAnser:false,
       commentList:null,
       commentContent:'',
+      postId:'',
+      courseId:'',
+      userId:'',
     };
   }
 
   componentWillMount(){
     console.warn(this.props.courseId)
+    this.setState({courseId:this.props.courseId})
+    this.setState({postId:this.props.questionId})
+    this.setState({userId:'5824217b40a0836d65adc165'})
     console.warn(JSON.stringify(this.props.data))
     this.setState({commentList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
@@ -66,7 +72,27 @@ export default class courseList extends Component {
   gotoCourse(name){
     Actions.course({courseName:name})
   }
-
+  upvoteComment(id){
+    var post = {
+    'userId': '5824217b40a0836d65adc165'
+    }
+    var formBody = []
+    for (var property in post) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(post[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+// /api/courses/:courseId/posts/:postId/comments/:commentId/upvote
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId +"/comments/"+id+'/upvote',{method:"put",
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+          },body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.getComments()
+    })
+  }
   renderScrollView=()=>{
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
 
@@ -101,10 +127,10 @@ export default class courseList extends Component {
   renderRow(rowData){
     return(
       <TouchableOpacity>
-        <View style={{marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'gray'}}>
+        <View style={{flex:1,flexDirection:'row', justifyContent:'space-around', alignItems:'center',height:height/10,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'gray'}}>
           <Text style={{fontSize:17,fontWeight:'500',marginBottom:3}}>{rowData.content}</Text>
-          <Text style={{fontSize:16,fontWeight:'500',marginBottom:3}}>{rowData.author}</Text>
           <Text >{rowData.upvotes}</Text>
+          <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} /></TouchableOpacity>
         </View>
       </TouchableOpacity>
     )
@@ -163,9 +189,8 @@ export default class courseList extends Component {
             </TouchableOpacity>
         </View>
           <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#4fc1e9',paddingLeft:15,paddingRight:15}}>
-            <Text style={{color:'white',fontSize:25,fontWeight:'500',marginBottom:10}}>{this.props.questionTitle}</Text>
-            <Text style={{color:'white',fontSize:18,fontWeight:'500',marginBottom:10}}>{this.props.questionAuthor.name}</Text>
-            <Text style={{color:'white',fontSize:18,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
+            <Text style={{color:'white',fontSize:19,fontWeight:'500',marginBottom:10}}>{this.props.questionTitle}</Text>
+            <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
           </ScrollView>
 
         <View style={{flex:1,height:height/1.5,backgroundColor:'#f5f7fa',paddingLeft:7,paddingRight:7}}>
