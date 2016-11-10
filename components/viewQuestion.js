@@ -40,6 +40,7 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
+    console.warn(this.props.courseId)
     console.warn(JSON.stringify(this.props.data))
     this.setState({commentList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
@@ -51,7 +52,7 @@ export default class courseList extends Component {
   }
 
   getComments(){
-    var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.props.questionId+"/comments"
+    var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url
     ,{method:"GET"})
     .then((response) => response.json())

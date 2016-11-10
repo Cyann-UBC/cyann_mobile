@@ -114,9 +114,9 @@ export default class courseList extends Component {
 
   }
 
-  gotoCourse=(name)=>{
+  gotoCourse=(id)=>{
     LayoutAnimation.configureNext(animations.layout.spring)
-    this.setState({selectedCourse:name})
+    this.setState({selectedCourse:id})
     this.setState({containerStyle:{
       flex:1,
       width:width,
@@ -145,7 +145,7 @@ export default class courseList extends Component {
     }})},200)
 
     setTimeout(()=>{this.setState({viewToggle:'name'})},200)
-    setTimeout(()=>{Actions.course({type:'reset'})},300)
+    setTimeout(()=>{Actions.course({id:id})},300)
 
   }
 
@@ -202,7 +202,7 @@ export default class courseList extends Component {
 
                  var courseCardStyle=[containerStyle,this.state.containerStyle]
                   return(
-                    <TouchableOpacity onPress={()=>this.gotoCourse(course.name)}>
+                    <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
                       <View obj={course} key={i} style={courseCardStyle} >
 
                         <View style={{width:width/1.5,paddingLeft:10}}>

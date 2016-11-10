@@ -67,6 +67,7 @@ export default class course extends Component {
       delayFirst:false,
       ifrenderFile:'none',
       userName:"TA1",
+      courseId:'',
     };
   }
 
@@ -74,7 +75,7 @@ export default class course extends Component {
     this.setState({questionList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.questionList)})
-
+    this.setState({courseId:this.props.id})
   }
 
   componentDidMount(){
@@ -84,7 +85,7 @@ export default class course extends Component {
   }
 
 fetchPostsAPI(){
-    fetch("http://localhost:3000/api/courses/581a27f661083346ae0955dd/posts",{method:"GET"})
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
     //    console.warn(JSON.stringify(responseData.data))
@@ -95,7 +96,7 @@ fetchPostsAPI(){
   }
 
   fetchAssignmentAPI(){
-    fetch("http://localhost:3000/api/581a27f661083346ae0955dd/files/assignments",{method:"GET"})
+    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/assignments",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
       //  console.warn(JSON.stringify(responseData))
@@ -106,7 +107,7 @@ fetchPostsAPI(){
   }
 
   fetchReadingsAPI(){
-    fetch("http://localhost:3000/api/581a27f661083346ae0955dd/files/readings",{method:"GET"})
+    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/readings",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
       //  console.warn(JSON.stringify(responseData))
@@ -120,7 +121,6 @@ fetchPostsAPI(){
     var post = {
     'userId': '58122f3e6a5f670b42b5f85b'
     }
-
     var formBody = []
     for (var property in post) {
       var encodedKey = encodeURIComponent(property);
@@ -129,7 +129,7 @@ fetchPostsAPI(){
     }
     formBody = formBody.join("&");
 
-    fetch("http://localhost:3000/api/courses/581a27f661083346ae0955dd/posts/"+id,{method:"DELETE",
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
           },body:formBody})
@@ -140,7 +140,7 @@ fetchPostsAPI(){
   }
 
   gotoFile(rowData,type){
-    Actions.fileView({uri:"http://localhost:3000/api/"+'581a27f661083346ae0955dd'+'/files/'+type+'/download/'+rowData})
+    Actions.fileView({uri:"http://localhost:3000/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData})
   }
 
   ifRenderCross(id,name){
@@ -164,8 +164,8 @@ fetchPostsAPI(){
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       return(
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-          <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
-      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginTop:12,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
+          <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.4,shadowColor: "#000000",
+      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginBottom:7,paddingLeft:10}}>
             <View style={{height:40,marginBottom:10}}>
               <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
                 <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
@@ -196,8 +196,8 @@ fetchPostsAPI(){
     }else{
       return(
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-          <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'white',height:height/3.7,shadowColor: "#000000",
-      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},borderRadius:height/100,flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginTop:7,marginLeft:7,marginRight:7,marginBottom:10,paddingLeft:10}}>
+          <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'white',height:height/3.4,shadowColor: "#000000",
+      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginBottom:7,paddingLeft:10}}>
 
               <View style={{height:40,marginBottom:10}}>
                 <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
@@ -289,7 +289,7 @@ fetchPostsAPI(){
     }
     formBody = formBody.join("&");
 
-    fetch("http://localhost:3000/api/courses/581a27f661083346ae0955dd/posts",{method:"POST",
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"POST",
     headers: {
      'Content-Type': 'application/x-www-form-urlencoded'
      },
@@ -309,10 +309,10 @@ fetchPostsAPI(){
   }
 
   viewQuestion=(id,title,content,author)=>{
-    fetch("http://localhost:3000/api/courses/"+'581a27f661083346ae0955dd'+'/'+'posts/'+id,{method:"GET"})
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+'/'+'posts/'+id,{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
-      Actions.viewQuestion({data:responseData,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
+      Actions.viewQuestion({data:responseData,courseId:this.state.courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
     })
 
   }
