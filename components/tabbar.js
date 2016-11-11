@@ -62,6 +62,7 @@ const FacebookTabBar = React.createClass({
         'archive',
         'pencil',
         'paperclip',
+        'user'
       ],
       textContainerHeight:15,
     };
@@ -117,8 +118,11 @@ const FacebookTabBar = React.createClass({
           else if(i ==2){
             var text = 'files'
           }
+          else if(i ==3){
+            var text = 'users'
+          }
 
-          return <TouchableOpacity key={tab} onPress={() => this.changeTextAndGo(i)} style={ i < 2 ? styles.tab: styles.tab1}>
+          return <TouchableOpacity key={tab} onPress={() => this.changeTextAndGo(i)} style={ i < 3 ? styles.tab: styles.tab1}>
             <Animatable.View animation={'bounceInDown'} delay={i===0?100:i*150} duration={700}>
               <Icon
                 name={tab}
@@ -128,7 +132,6 @@ const FacebookTabBar = React.createClass({
               />
             <Animatable.Text animation={this.props.activeTab === i ? 'lightSpeedOut':undefined} duration={this.props.activeTab === i ? 500:undefined} delay={0} style={{fontWeight:'500',color:'white',textAlign:'center',height:15,marginBottom:this.props.activeTab === i ? -10:0}}>{text}</Animatable.Text>
             </Animatable.View>
-
         </TouchableOpacity>;
       },this)}
     </View>;
@@ -140,6 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf:'center',
     height:25,
+    width:35,
     paddingTop:7,
     alignItems: 'center',
     borderRightWidth:1.5,
@@ -150,7 +154,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf:'center',
     alignItems: 'center',
-    height:20,
+    height:25,
+    width:35,
     paddingTop:7,
     justifyContent: 'center',
   },

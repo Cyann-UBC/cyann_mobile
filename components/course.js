@@ -7,6 +7,7 @@ import {
   ListView,
   LayoutAnimation,
   StatusBar,
+  Modal,
   Image,
   Text,
   View
@@ -23,10 +24,9 @@ import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
 import Tabbar from 'react-native-tabbar'
 import Collapsible from 'react-native-collapsible';
-
+import ActionButton from 'react-native-action-button';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
-var Modal = require('react-native-modalbox');
 var Dimensions = require('Dimensions');
 var {
   width,
@@ -68,6 +68,7 @@ export default class course extends Component {
       ifrenderFile:'none',
       userName:"TA1",
       courseId:'',
+      modalVisible:false,
     };
   }
 
@@ -119,7 +120,7 @@ fetchPostsAPI(){
 
   deleteOwnPost(id){
     var post = {
-    'userId': '5824217b40a0836d65adc165'
+    'userId': '5824218540a0836d65adc167'
     }
     var formBody = []
     for (var property in post) {
@@ -144,7 +145,7 @@ fetchPostsAPI(){
   }
 
   ifRenderCross(id,name){
-    if('5824217b40a0836d65adc165' === name){
+    if('5824218540a0836d65adc167' === name){
       return(
         <TouchableOpacity onPress={()=>this.deleteOwnPost(id,name)}>
           <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
@@ -155,6 +156,10 @@ fetchPostsAPI(){
         null
       )
     }
+  }
+
+  applyFilter(){
+
   }
   renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -277,7 +282,7 @@ fetchPostsAPI(){
     var post = {
     'title': this.state.questionTitle,
     'content': this.state.questionContent,
-    'userId': '5824217b40a0836d65adc165'
+    'userId': '5824218540a0836d65adc167'
     }
 
     var formBody = []
@@ -414,6 +419,22 @@ fetchPostsAPI(){
             horizontal={false}
             removeClippedSubviews={true}
           />
+          <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={()=>this.setState({modalVisible:!this.state.modalVisible})}
+            icon={<Icon name={'search'} size={33} color='#f6f7fb'/>}>
+          </ActionButton>
+
+          <Modal
+              animationType={"fade"}
+              transparent={false}
+              visible={this.state.modalVisible}
+              onRequestClose={() => {alert("Modal has been closed.")}}
+              >
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between'}}>
+                <Text>holder</Text>
+                <Text>holder</Text>
+                <Text>holder</Text>
+              </View>
+          </Modal>
         </View>
 
         <View style={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}}>

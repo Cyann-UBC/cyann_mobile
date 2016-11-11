@@ -46,7 +46,7 @@ export default class courseList extends Component {
     console.warn(this.props.courseId)
     this.setState({courseId:this.props.courseId})
     this.setState({postId:this.props.questionId})
-    this.setState({userId:'5824217b40a0836d65adc165'})
+    this.setState({userId:'5824218540a0836d65adc167'})
     console.warn(JSON.stringify(this.props.data))
     this.setState({commentList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
@@ -74,7 +74,7 @@ export default class courseList extends Component {
   }
   upvoteComment(id){
     var post = {
-    'userId': '5824217b40a0836d65adc165'
+    'userId': '5824218540a0836d65adc167'
     }
     var formBody = []
     for (var property in post) {
@@ -149,18 +149,17 @@ export default class courseList extends Component {
   postAnswer(){
     var comment = {
     'content': this.state.commentContent,
-    'userId': '58122f3e6a5f670b42b5f85d'
+    'userId': '5824218540a0836d65adc167'
     }
 
     var formBody = []
-
     for (var property in comment) {
       var encodedKey = encodeURIComponent(property);
       var encodedValue = encodeURIComponent(comment[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.props.questionId+"/comments"
+    var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
