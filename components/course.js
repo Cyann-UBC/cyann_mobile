@@ -25,6 +25,7 @@ import * as Animatable from 'react-native-animatable';
 import Tabbar from 'react-native-tabbar'
 import Collapsible from 'react-native-collapsible';
 import ActionButton from 'react-native-action-button';
+import LinearGradient from 'react-native-linear-gradient';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Dimensions = require('Dimensions');
@@ -429,11 +430,11 @@ fetchPostsAPI(){
               visible={this.state.modalVisible}
               onRequestClose={() => {alert("Modal has been closed.")}}
               >
-              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between'}}>
-                <Text>holder</Text>
-                <Text>holder</Text>
-                <Text>holder</Text>
-              </View>
+              <LinearGradient colors={['#4fc1e9', '#2DBCCC', '#31CDDE']} style={{flex:1,flexDirection:'column',justifyContent:'space-between',padding:20,paddingTop:40,paddingBottom:40}}>
+                <Text style={{backgroundColor:'transparent',color:'white'}}>Instructor</Text>
+                <Text style={{backgroundColor:'transparent',color:'white'}}>Time</Text>
+                <Text style={{backgroundColor:'transparent',color:'white'}}>Keywords</Text>
+              </LinearGradient>
           </Modal>
         </View>
 

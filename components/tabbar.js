@@ -122,7 +122,7 @@ const FacebookTabBar = React.createClass({
             var text = 'users'
           }
 
-          return <TouchableOpacity key={tab} onPress={() => this.changeTextAndGo(i)} style={ i < 3 ? styles.tab: styles.tab1}>
+          return <TouchableOpacity key={tab} onPress={() => this.changeTextAndGo(i)} style={ styles.tab}>
             <Animatable.View animation={'bounceInDown'} delay={i===0?100:i*150} duration={700}>
               <Icon
                 name={tab}
@@ -143,11 +143,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf:'center',
     height:25,
-    width:35,
+    width:25,
     paddingTop:7,
     alignItems: 'center',
-    borderRightWidth:1.5,
-    borderRightColor:'white',
+    borderLeftWidth:1.5,
+    borderLeftColor:'white',
     justifyContent: 'center',
   },
   tab1: {
