@@ -75,11 +75,18 @@ export default class course extends Component {
       userName:"TA1",
       courseId:'',
       modalVisible:false,
+      quesitonIdAnswering:'',
     };
   }
 
   openModal4() {
     this.refs.modal4.open();
+  }
+
+  openModal5(id){
+    console.warn(id)
+    this.setState({quesitonIdAnswering:id})
+    this.refs.modal5.open();
   }
 
   componentWillMount(){
@@ -154,6 +161,9 @@ fetchPostsAPI(){
     Actions.fileView({uri:"http://localhost:3000/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData})
   }
 
+  setQuestionID(id){
+    this.setState({quesitonIdAnswering:id})
+  }
 
   ifRenderCross(id,name){
     if('5824217b40a0836d65adc165' === name){
@@ -238,7 +248,7 @@ fetchPostsAPI(){
                 <Text style={{color:'gray',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>12</Text>
               </View>
             </View>
-            <TouchableOpacity onPress={()=>this.refs.modal5.open()}>
+            <TouchableOpacity onPress={()=>this.openModal5(rowData._id)}>
               <FontAwesomeIcon name="pencil-square-o" size={30} color={'#0f6088'}/>
             </TouchableOpacity>
           </View>
@@ -489,7 +499,7 @@ fetchPostsAPI(){
               </View>
             </Modal>
             <Modal style={[styles.modal1, styles.modal4]} position={"top"} ref={"modal5"} backdropOpacity={0.2}>
-              <View>
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
                 <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{backgroundColor:'#286b95',width:width-30,borderRadius:5}}>
                   <TextInput
                     multiline={true}
@@ -500,8 +510,8 @@ fetchPostsAPI(){
                   />
                 </Animatable.View>
                 <TouchableOpacity>
-                  <View>
-
+                  <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/1.3,height:height/13,backgroundColor:'#4fd6df',borderRadius:height/100}}>
+                    <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Answer</Text>
                   </View>
                 </TouchableOpacity>
               </View>
