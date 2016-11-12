@@ -25,7 +25,6 @@ import * as Animatable from 'react-native-animatable';
 import ActionButton from 'react-native-action-button';
 import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-var Accordion = require('react-native-accordion');
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Dimensions = require('Dimensions');
@@ -595,3 +594,4 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('course', () => course);
+//latest check
