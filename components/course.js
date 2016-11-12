@@ -23,6 +23,7 @@ import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
 import Tabbar from 'react-native-tabbar'
 import Collapsible from 'react-native-collapsible';
+var Accordion = require('react-native-accordion');
 
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
@@ -152,82 +153,59 @@ fetchPostsAPI(){
       )
     }else{
       return(
-        null
+        <View style={{height:20,width:30,marginTop:10,marginRight:10,backgroundColor:'transparent'}}></View>
       )
     }
   }
   renderRow(rowData, sectionID, rowID, highlightRow){
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    let viewProps = {};
-
-    if(rowID == 0){
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-      return(
-        <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-          <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.4,shadowColor: "#000000",
-      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginBottom:7,paddingLeft:10}}>
-            <View style={{height:40,marginBottom:10}}>
-              <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-                <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-                {this.ifRenderCross(rowData._id,rowData.author._id)}
+    var header = (
+      <View style={{backgroundColor:'white',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginBottom:15,shadowColor: "#000000",
+  shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},}}>
+        <View style={{height:40,marginBottom:10}}>
+          <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
+            <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+            {this.ifRenderCross(rowData._id,rowData.author._id)}
+          </View>
+        </View>
+        <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:10}}>
+          <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
+            <Image
+              style={{width: 36, height: 36,borderRadius:18}}
+              source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+            />
+          <View style={{height:36}}>
+              <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
+                <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
               </View>
             </View>
-            <View style={{height:30,marginBottom:10}}>
-              <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
-                <Image
-                  style={{width: 36, height: 36,borderRadius:18}}
-                  source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
-                />
-              <View style={{height:36}}>
-                  <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                    <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <Animatable.View key={rowID} style={{height:80}}>
-              <View style={{flex:1,flexDirection:'row'}}>
-                <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10}}>{rowData.content.length>130?rowData.content.substring(0,130)+'...':rowData.content}</Text>
-                </View>
-              </Animatable.View>
-          </Animatable.View>
-        </TouchableOpacity>
-      )
-    }else{
-      return(
-        <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-          <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'white',height:height/3.4,shadowColor: "#000000",
-      shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginBottom:7,paddingLeft:10}}>
+          </View>
+        </View>
+      </View>
+    )
 
-              <View style={{height:40,marginBottom:10}}>
-                <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-                  <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-                  {this.ifRenderCross(rowData._id,rowData.author._id)}
-                </View>
-              </View>
-              <View style={{height:30,marginBottom:10}}>
-                <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
-                  <Image
-                    style={{width: 36, height: 36,borderRadius:18}}
-                    source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
-                  />
-                  <View style={{height:36}}>
-                      <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                        <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
-                      </View>
-                    </View>
-                </View>
-              </View>
+    var content = (
+      <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
+        <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.4,shadowColor: "#000000",
+    shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginBottom:7,paddingLeft:10}}>
 
           <Animatable.View key={rowID} style={{height:80}}>
             <View style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10}}>{rowData.content.length>130?rowData.content.substring(0,130)+'...':rowData.content}</Text>
               </View>
             </Animatable.View>
-          </Animatable.View>
-        </TouchableOpacity>
-      )
-    }
+        </Animatable.View>
+      </TouchableOpacity>
+    )
+
+    return (
+      <Accordion
+        activeOpacity={0.5}
+        underlayColor={"#1BB5EC"}
+        header={header}
+        content={content}
+        easing="easeOutCubic"
+      />
+    )
   }
 
   renderAssignmentList(rowData, sectionID, rowID, highlightRow){
