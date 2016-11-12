@@ -22,10 +22,10 @@ import TimerMixin from 'react-timer-mixin';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
-import Tabbar from 'react-native-tabbar'
-import Collapsible from 'react-native-collapsible';
 import ActionButton from 'react-native-action-button';
 import LinearGradient from 'react-native-linear-gradient';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+var Accordion = require('react-native-accordion');
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Dimensions = require('Dimensions');
@@ -34,7 +34,6 @@ var {
   height
 } = Dimensions.get('window');
 
-const COLLAPSIBLE_PROPS = Object.keys(Collapsible.propTypes);
 const VIEW_PROPS = Object.keys(View.propTypes);
 export default class course extends Component {
   constructor(props) {
@@ -70,6 +69,7 @@ export default class course extends Component {
       userName:"TA1",
       courseId:'',
       modalVisible:false,
+      menuOpen: false,
     };
   }
 
@@ -157,6 +157,12 @@ fetchPostsAPI(){
         null
       )
     }
+  }
+
+  handleMenu() {
+    this.setState({
+      menuOpen: !this.state.menuOpen
+    })
   }
 
   applyFilter(){
@@ -399,96 +405,100 @@ fetchPostsAPI(){
     let contentStyle = [styles.contentContainer, this.state.contentContainer]
     let buttonStyle = [styles.askButton, this.state.askButton]
     return (
+        <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
+          onChangeTab={this.fetchPostsAPI.bind(this)}
+          page={this.state.pageNumber}
+          prerenderingSiblingsNumber={0}
+          renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
+          >
 
-      <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
-        onChangeTab={this.fetchPostsAPI.bind(this)}
-        page={this.state.pageNumber}
-        prerenderingSiblingsNumber={0}
-        renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
-        >
+          <View style={{flex:1,backgroundColor:'#4fc1e9'}}>
+            <StatusBar
+              backgroundColor="transparent"
+              barStyle="light-content"
+                />
+            <ListView
+              style={{flex:1}}
+              showsVerticalScrollIndicator={false}
+              dataSource={this.state.questionList}
+              renderRow={this.renderRow.bind(this)}
+              horizontal={false}
+              removeClippedSubviews={true}
+            />
+            <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={()=>this.setState({modalVisible:!this.state.modalVisible})}
+              icon={<Icon name={'search'} size={33} color='#f6f7fb'/>}>
+            </ActionButton>
 
-        <View style={{flex:1,backgroundColor:'#4fc1e9'}}>
-          <StatusBar
-            backgroundColor="transparent"
-            barStyle="light-content"
+            <Modal
+                animationType={"fade"}
+                transparent={false}
+                visible={this.state.modalVisible}
+                onRequestClose={() => {alert("Modal has been closed.")}}
+                >
+                <LinearGradient colors={['#4fc1e9', '#2DBCCC', '#31CDDE']} style={{flex:1,flexDirection:'column',justifyContent:'space-between',padding:20,paddingTop:40,paddingBottom:40}}>
+                  <Text style={{backgroundColor:'transparent',color:'white'}}>Instructor</Text>
+                  <Text style={{backgroundColor:'transparent',color:'white'}}>Time</Text>
+                  <Text style={{backgroundColor:'transparent',color:'white'}}>Keywords</Text>
+                </LinearGradient>
+            </Modal>
+          </View>
+
+          <KeyboardAwareScrollView keyboardDismissMode={'on-drag'} contentContainerStyle={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}} >
+          <View style={{}}>
+            <Animatable.View ref="titleView" animation={'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
+              <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>10?"flash":undefined} style={{
+              width:0,
+              height:0,
+              backgroundColor:this.state.questionTitle.length>10?"#A0D468":"#ED5565",
+              borderRadius:20,
+              padding:10}}>
+              </Animatable.View>
+              <TextInput
+                multiline={true}
+                style={{height: 100,color:'black',fontSize:20}}
+                onChange={this.updateTitle.bind(this)}
+                value={this.state.questionTitle}
+                placeholder="Title"
               />
-          <ListView
-            style={{flex:1}}
-            showsVerticalScrollIndicator={false}
-            dataSource={this.state.questionList}
-            renderRow={this.renderRow.bind(this)}
-            horizontal={false}
-            removeClippedSubviews={true}
-          />
-          <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={()=>this.setState({modalVisible:!this.state.modalVisible})}
-            icon={<Icon name={'search'} size={33} color='#f6f7fb'/>}>
-          </ActionButton>
-
-          <Modal
-              animationType={"fade"}
-              transparent={false}
-              visible={this.state.modalVisible}
-              onRequestClose={() => {alert("Modal has been closed.")}}
-              >
-              <LinearGradient colors={['#4fc1e9', '#2DBCCC', '#31CDDE']} style={{flex:1,flexDirection:'column',justifyContent:'space-between',padding:20,paddingTop:40,paddingBottom:40}}>
-                <Text style={{backgroundColor:'transparent',color:'white'}}>Instructor</Text>
-                <Text style={{backgroundColor:'transparent',color:'white'}}>Time</Text>
-                <Text style={{backgroundColor:'transparent',color:'white'}}>Keywords</Text>
-              </LinearGradient>
-          </Modal>
-        </View>
-
-        <View style={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}}>
-
-          <Animatable.View ref="titleView" animation={'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
-            <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>10?"flash":undefined} style={{
-            width:0,
-            height:0,
-            backgroundColor:this.state.questionTitle.length>10?"#A0D468":"#ED5565",
-            borderRadius:20,
-            padding:10}}>
             </Animatable.View>
-            <TextInput
-              multiline={true}
-              style={{height: 150,color:'black',fontSize:20}}
-              onChange={this.updateTitle.bind(this)}
-              value={this.state.questionTitle}
-              placeholder="Title"
-            />
-          </Animatable.View>
+            <Animatable.View ref="contentView" animation={'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
+              <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>20?"flash":undefined} style={{
+              width:0,
+              height:0,
+              backgroundColor:this.state.questionContent.length>20?"#A0D468":"#ED5565",
+              borderRadius:20,
+              padding:10}}></Animatable.View>
+              <TextInput
+                multiline={true}
+                style={{height: 230,color:'black',fontSize:20}}
+                onChange={this.updateContent.bind(this)}
+                value={this.state.questionContent}
+                placeholder="Content"
+              />
 
-          <Animatable.View ref="contentView" animation={'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
-            <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>20?"flash":undefined} style={{
-            width:0,
-            height:0,
-            backgroundColor:this.state.questionContent.length>20?"#A0D468":"#ED5565",
-            borderRadius:20,
-            padding:10}}></Animatable.View>
-            <TextInput
-              multiline={true}
-              style={{height: 250,color:'black',fontSize:20}}
-              onChange={this.updateContent.bind(this)}
-              value={this.state.questionContent}
-              placeholder="Content"
-            />
-          </Animatable.View>
-
-          <TouchableOpacity onPress={this.askQuestion.bind(this)}>
-            <Animatable.View ref="buttonView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} delay={this.state.buttonExit===false?400:800} duration={this.state.buttonExit===false?300:700} style={buttonStyle}>
-              <Text style={{color:"white",fontWeight:'bold',alignSelf:"center",fontSize:25}}>ASK</Text>
             </Animatable.View>
-          </TouchableOpacity>
 
-          <View>
+            <TouchableOpacity onPress={this.askQuestion.bind(this)}>
+              <Animatable.View ref="buttonView" animation={this.state.buttonExit===false?'slideInRight':'slideInRight'} delay={this.state.buttonExit===false?400:800} duration={this.state.buttonExit===false?300:700} style={buttonStyle}>
+                <Text style={{color:"white",fontWeight:'bold',alignSelf:"center",fontSize:25}}>ASK</Text>
+              </Animatable.View>
+            </TouchableOpacity>
+
+            <View>
+
+            </View>
 
           </View>
-        </View>
+          </KeyboardAwareScrollView>
 
-        <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
-          {this.renderFiles()}
-        </View>
-      </ScrollableTabView>
+          <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
+            {this.renderFiles()}
+          </View>
 
+          <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
+
+          </View>
+        </ScrollableTabView>
     );
   }
 }
@@ -536,7 +546,8 @@ const styles = StyleSheet.create({
     width:width/1.3,
     height:height/10,
     backgroundColor:"#3bafda",
-    borderRadius:height/100
+    borderRadius:height/100,
+    marginBottom:10
   },
   contentContainer:{
     width:width/1.3,
@@ -547,7 +558,8 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
     backgroundColor:"white",
     borderRadius:height/100,
-    padding:10
+    padding:10,
+    marginBottom:10
   },
   titleContainer:{
     width:width/1.3,
@@ -558,7 +570,8 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
     backgroundColor:"white",
     borderRadius:height/100,
-    padding:10
+    padding:10,
+    marginBottom:10
   },
   fileRow:{
     flex:1,

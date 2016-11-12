@@ -119,7 +119,7 @@ const FacebookTabBar = React.createClass({
             var text = 'files'
           }
           else if(i ==3){
-            var text = 'users'
+            var text = 'user'
           }
 
           return <TouchableOpacity key={tab} onPress={() => this.changeTextAndGo(i)} style={ styles.tab}>
