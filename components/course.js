@@ -516,7 +516,8 @@ const styles = StyleSheet.create({
     width:width/1.3,
     height:height/10,
     backgroundColor:"#3bafda",
-    borderRadius:height/100
+    borderRadius:height/100,
+    marginBottom:10,
   },
   contentContainer:{
     width:width/1.3,
@@ -527,7 +528,8 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
     backgroundColor:"white",
     borderRadius:height/100,
-    padding:10
+    padding:10,
+    marginBottom:10,
   },
   titleContainer:{
     width:width/1.3,
@@ -538,7 +540,8 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
     backgroundColor:"white",
     borderRadius:height/100,
-    padding:10
+    padding:10,
+    marginBottom:10,
   },
   fileRow:{
     flex:1,
