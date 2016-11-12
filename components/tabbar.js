@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderBottomColor: 'rgba(0,0,0,0.05)',
-    backgroundColor:"#1BB5EC",
+    backgroundColor:"#18bdd6",
   },
 });
 

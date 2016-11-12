@@ -8,7 +8,6 @@ import {
   LayoutAnimation,
   StatusBar,
   Image,
-  Modal,
   Text,
   View
 } from 'react-native';
@@ -28,6 +27,7 @@ var Accordion = require('react-native-accordion');
 import ActionButton from 'react-native-action-button';
 import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+var Modal   = require('react-native-modalbox');
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Dimensions = require('Dimensions');
@@ -44,7 +44,7 @@ export default class course extends Component {
     this.state = {
       viewHeight:20,
       questionPosted:false,
-      backgroundColor:'#4fc1e9',
+      backgroundColor:'#51d1e1',
       questionList:[
         {title:'Q1',content:'Q1 Content',author:'a'},
         {title:'Q2',content:'Q2 Content',author:'b'},
@@ -73,6 +73,10 @@ export default class course extends Component {
       courseId:'',
       modalVisible:false,
     };
+  }
+
+  openModal4() {
+    this.refs.modal4.open();
   }
 
   componentWillMount(){
@@ -147,6 +151,7 @@ fetchPostsAPI(){
     Actions.fileView({uri:"http://localhost:3000/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData})
   }
 
+
   ifRenderCross(id,name){
     if('5824217b40a0836d65adc165' === name){
       return(
@@ -161,39 +166,64 @@ fetchPostsAPI(){
     }
   }
   renderRow(rowData, sectionID, rowID, highlightRow){
-    var header = (
-      <View style={{backgroundColor:'white',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginBottom:15,shadowColor: "#000000",
-  shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},}}>
-        <View style={{height:40,marginBottom:10}}>
-          <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-            <Text style={{fontSize:16,width:width/1.2,color:"#656D78",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-            {this.ifRenderCross(rowData._id,rowData.author._id)}
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    if(rowID == 0){
+      var header = (
+        <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+          <View style={{height:40,marginBottom:10}}>
+            <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
+              <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+              {this.ifRenderCross(rowData._id,rowData.author._id)}
+            </View>
           </View>
-        </View>
-        <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:10}}>
-          <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
-            <Image
-              style={{width: 36, height: 36,borderRadius:18}}
-              source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
-            />
-          <View style={{height:36}}>
-              <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
+            <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
+              <Image
+                style={{width: 36, height: 36,borderRadius:18}}
+                source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+              />
+            <View style={{height:36}}>
+                <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
+                  <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      </View>
-    )
+        </Animatable.View>
+      )
+    }
+    else{
+      var header = (
+        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+          <View style={{height:40,marginBottom:10}}>
+            <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
+              <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+              {this.ifRenderCross(rowData._id,rowData.author._id)}
+            </View>
+          </View>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
+            <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
+              <Image
+                style={{width: 36, height: 36,borderRadius:18}}
+                source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+              />
+            <View style={{height:36}}>
+                <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
+                  <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Animatable.View>
+      )
+    }
 
     var content = (
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-        <Animatable.View ref="first" animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'white',height:height/3.4,shadowColor: "#000000",
-    shadowOpacity: 0.3,shadowRadius: 2,shadowOffset: {height: 3.5,width: 0},flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginBottom:7,paddingLeft:10}}>
-
+        <Animatable.View ref="first" style={{backgroundColor:'#e2faff',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginTop:10,addingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10}}>
           <Animatable.View key={rowID} style={{height:80}}>
             <View style={{flex:1,flexDirection:'row'}}>
-              <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10}}>{rowData.content.length>130?rowData.content.substring(0,130)+'...':rowData.content}</Text>
+              <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>130?rowData.content.substring(0,130)+'...':rowData.content}</Text>
               </View>
             </Animatable.View>
         </Animatable.View>
@@ -317,14 +347,14 @@ fetchPostsAPI(){
         <View style={{flex:1,flexDirection:'column',alignItems:'center', justifyContent:'space-around',paddingTop:height/7,paddingBottom:height/7}}>
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
             <Animatable.View animation={'slideInRight'} delay={100} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-              <Ionicon name="ios-book" size={50} color={'white'}/>
+              <Ionicon name="ios-book" size={50} color={'#e2faff'}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>readings</Text>
             </Animatable.View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
             <Animatable.View animation={'slideInRight'} delay={200} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-              <Ionicon name="ios-paper" size={50} color={'white'}/>
+              <Ionicon name="ios-paper" size={50} color={'#e2faff'}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>assignments</Text>
             </Animatable.View>
           </TouchableOpacity>
@@ -381,7 +411,7 @@ fetchPostsAPI(){
           renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
           >
 
-          <View style={{flex:1,backgroundColor:'#4fc1e9'}}>
+          <View style={{flex:1,backgroundColor:'#51d1e1'}}>
             <StatusBar
               backgroundColor="transparent"
               barStyle="light-content"
@@ -394,21 +424,12 @@ fetchPostsAPI(){
               horizontal={false}
               removeClippedSubviews={true}
             />
-            <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={()=>this.setState({modalVisible:!this.state.modalVisible})}
+          <ActionButton position="right" text="answer" buttonColor="#0f6088" onPress={()=>this.openModal4()}
               icon={<Icon name={'search'} size={33} color='#f6f7fb'/>}>
             </ActionButton>
 
-            <Modal
-                animationType={"fade"}
-                transparent={false}
-                visible={this.state.modalVisible}
-                onRequestClose={() => {alert("Modal has been closed.")}}
-                >
-                <LinearGradient colors={['#4fc1e9', '#2DBCCC', '#31CDDE']} style={{flex:1,flexDirection:'column',justifyContent:'space-between',padding:20,paddingTop:40,paddingBottom:40}}>
-                  <Text style={{backgroundColor:'transparent',color:'white'}}>Instructor</Text>
-                  <Text style={{backgroundColor:'transparent',color:'white'}}>Time</Text>
-                  <Text style={{backgroundColor:'transparent',color:'white'}}>Keywords</Text>
-                </LinearGradient>
+            <Modal style={[styles.modal, styles.modal4]} position={"bottom"} ref={"modal4"} backdropOpacity={0.2}>
+              <Text style={styles.text}>Modal on bottom with backdrop</Text>
             </Modal>
           </View>
 
@@ -515,7 +536,7 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
     width:width/1.3,
     height:height/10,
-    backgroundColor:"#3bafda",
+    backgroundColor:"#0f6088",
     borderRadius:height/100,
     marginBottom:10,
   },
@@ -526,7 +547,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: {height: 3.5,width: 0},
-    backgroundColor:"white",
+    backgroundColor:"#e2faff",
     borderRadius:height/100,
     padding:10,
     marginBottom:10,
@@ -538,7 +559,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: {height: 3.5,width: 0},
-    backgroundColor:"white",
+    backgroundColor:"#e2faff",
     borderRadius:height/100,
     padding:10,
     marginBottom:10,
@@ -560,7 +581,15 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     padding:20,
     shadowOffset: {height: 3.5,width: 0},
-  }
+  },
+    modal: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+    modal4: {
+    height: 300,
+    backgroundColor:'#0f6088'
+  },
 
 });
 
