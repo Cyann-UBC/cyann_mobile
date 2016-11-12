@@ -49,10 +49,10 @@ export default class course extends Component {
       questionPosted:false,
       backgroundColor:'#51d1e1',
       questionList:[
-        {title:'Q1',content:'Q1 Content',author:'a'},
-        {title:'Q2',content:'Q2 Content',author:'b'},
-        {title:'Q3',content:'Q3 Content',author:'c'},
-        {title:'Q4',content:'Q4 Content',author:'d'},
+        {title:'Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
+        {title:'Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
+        {title:'What is Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'c'},
+        {title:'What is Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'d'},
         {title:'Q5',content:'Q5 Content',author:'e'},
         {title:'Q6',content:'Q6 Content',author:'f'},
         {title:'Q7',content:'Q7 Content',author:'g'},
@@ -223,12 +223,25 @@ fetchPostsAPI(){
 
     var content = (
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-        <Animatable.View ref="first" style={{backgroundColor:'#e2faff',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'flex-start',borderColor:'white',borderWidth:2,marginTop:10,addingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10}}>
-          <Animatable.View key={rowID} style={{height:80}}>
+        <Animatable.View ref="first" style={{backgroundColor:'#e2faff',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:10,paddingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10}}>
+          <Animatable.View key={rowID} style={{height:150}}>
             <View style={{flex:1,flexDirection:'row'}}>
-              <Text style={{fontSize:16,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>130?rowData.content.substring(0,130)+'...':rowData.content}</Text>
+              <Text style={{fontSize:15,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>260?rowData.content.substring(0,260)+'...':rowData.content}</Text>
               </View>
-            </Animatable.View>
+          </Animatable.View>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:15,paddingLeft:10,paddingRight:10}}>
+            <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-start',alignItems:'center'}}>
+              <TouchableOpacity>
+                <FontAwesomeIcon name="comments-o" size={30} color={'#0f6088'}/>
+              </TouchableOpacity>
+              <View>
+                <Text style={{color:'gray',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>12</Text>
+              </View>
+            </View>
+            <TouchableOpacity onPress={()=>this.refs.modal5.open()}>
+              <FontAwesomeIcon name="pencil-square-o" size={30} color={'#0f6088'}/>
+            </TouchableOpacity>
+          </View>
         </Animatable.View>
       </TouchableOpacity>
     )
@@ -436,15 +449,14 @@ fetchPostsAPI(){
                 <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
                   <Kohana
                       style={{ backgroundColor: '#f9f5ed' }}
-                      label={'Keywords'}
+                      label={'Keyword'}
                       iconClass={FontAwesomeIcon}
                       iconName={'search'}
                       iconColor={'white'}
-                      labelStyle={{ color: 'white',marginTop:10}}
+                      labelStyle={{ fontWeight:'600',color:'white',fontSize:17,marginTop:15,marginLeft:10}}
                       inputStyle={styles.filterButtonText}
                       style={{backgroundColor:'#286b95',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
                     />
-
                 </View>
 
               <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
@@ -475,7 +487,24 @@ fetchPostsAPI(){
                   </TouchableOpacity>
                 </View>
               </View>
+            </Modal>
+            <Modal style={[styles.modal1, styles.modal4]} position={"top"} ref={"modal5"} backdropOpacity={0.2}>
+              <View>
+                <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{backgroundColor:'#286b95',width:width-30,borderRadius:5}}>
+                  <TextInput
+                    multiline={true}
+                    style={{padding:10,height: 250,color:'white',fontSize:20}}
+                    onChange={this.updateTitle.bind(this)}
+                    value={this.state.questionTitle}
+                    placeholder="Your answer here"
+                  />
+                </Animatable.View>
+                <TouchableOpacity>
+                  <View>
 
+                  </View>
+                </TouchableOpacity>
+              </View>
             </Modal>
           </View>
 
@@ -630,6 +659,14 @@ const styles = StyleSheet.create({
     paddingTop:10,
     paddingBottom:20,
     paddingLeft:20,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  modal1:{
+    paddingTop:10,
+    paddingBottom:20,
+    paddingLeft:10,
+    paddingRight:10,
     justifyContent: 'space-between',
     alignItems: 'center'
   },

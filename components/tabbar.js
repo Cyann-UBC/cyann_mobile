@@ -7,8 +7,11 @@ import {
   LayoutAnimation,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import * as Animatable from 'react-native-animatable';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+
 
 var animations = {
   layout: {
@@ -59,8 +62,8 @@ const FacebookTabBar = React.createClass({
   getInitialState() {
     return {
       tabs: [
-        'archive',
-        'pencil',
+        'list-alt',
+        'pencil-square-o',
         'paperclip',
         'user'
       ],
@@ -102,9 +105,9 @@ const FacebookTabBar = React.createClass({
   render() {
     LayoutAnimation.configureNext(animations.layout.spring)
     return <View  style={[styles.tabs, this.props.style, ]}>
-      <Animatable.View animation={'bounceInDown'} duration={700} style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:10,paddingTop: 3,}}>
+      <Animatable.View animation={'bounceInDown'} duration={700} style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:20}}>
         <TouchableOpacity onPress={()=>Actions.courseList({type: "reset"})}>
-          <Icon name={"arrow-left"} size={37} color={'white'} />
+          <FontAwesomeIcon name={"angle-left"} size={30} color={'white'} />
         </TouchableOpacity>
       </Animatable.View>
 
@@ -124,9 +127,9 @@ const FacebookTabBar = React.createClass({
 
           return <TouchableOpacity key={tab} onPress={() => this.changeTextAndGo(i)} style={ styles.tab}>
             <Animatable.View animation={'bounceInDown'} delay={i===0?100:i*150} duration={700}>
-              <Icon
+              <FontAwesomeIcon
                 name={tab}
-                size={this.props.activeTab===i ? 37:30}
+                size={this.props.activeTab===i ? 30:23}
                 color={this.props.activeTab === i ? 'rgb(255,255,255)' : 'rgb(204,204,204)'}
                 ref={(icon) => { this.tabIcons[i] = icon; }}
               />
