@@ -21,6 +21,8 @@ import TimerMixin from 'react-timer-mixin';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+
 import Tabbar from 'react-native-tabbar'
 import Collapsible from 'react-native-collapsible';
 var Accordion = require('react-native-accordion');
@@ -28,6 +30,7 @@ import ActionButton from 'react-native-action-button';
 import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 var Modal   = require('react-native-modalbox');
+import { Sae,Hoshi,Makiko,Jiro,Fumi,Kaede,Madoka,Kohana } from 'react-native-textinput-effects';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Dimensions = require('Dimensions');
@@ -429,7 +432,50 @@ fetchPostsAPI(){
             </ActionButton>
 
             <Modal style={[styles.modal, styles.modal4]} position={"bottom"} ref={"modal4"} backdropOpacity={0.2}>
-              <Text style={styles.text}>Modal on bottom with backdrop</Text>
+              <Text style={{color:'white',fontSize:20,fontWeight:'500'}}>Filter by</Text>
+                <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                  <Kohana
+                      style={{ backgroundColor: '#f9f5ed' }}
+                      label={'Keywords'}
+                      iconClass={FontAwesomeIcon}
+                      iconName={'search'}
+                      iconColor={'white'}
+                      labelStyle={{ color: 'white',marginTop:10}}
+                      inputStyle={styles.filterButtonText}
+                      style={{backgroundColor:'#286b95',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
+                    />
+
+                </View>
+
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
+                </View>
+                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
+                  <TouchableOpacity style={styles.filterButton}>
+                    <View><Text style={styles.filterButtonText}>Instructor</Text></View>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.filterButton}>
+                    <View><Text style={styles.filterButtonText}>Me</Text></View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
+                </View>
+                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
+                  <TouchableOpacity style={styles.filterButton}>
+                    <View><Text style={styles.filterButtonText}>1 week</Text></View>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.filterButton}>
+                    <View><Text style={styles.filterButtonText}>2 week</Text></View>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.filterButton}>
+                    <View><Text style={styles.filterButtonText}>3 week</Text></View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
             </Modal>
           </View>
 
@@ -465,7 +511,6 @@ fetchPostsAPI(){
                 value={this.state.questionContent}
                 placeholder="Content"
               />
-
             </Animatable.View>
 
             <TouchableOpacity onPress={this.askQuestion.bind(this)}>
@@ -475,7 +520,6 @@ fetchPostsAPI(){
             </TouchableOpacity>
 
             <View>
-
             </View>
 
           </View>
@@ -583,13 +627,32 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
   },
     modal: {
-    justifyContent: 'center',
+    paddingTop:10,
+    paddingBottom:20,
+    paddingLeft:20,
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
     modal4: {
-    height: 300,
+    height: 350,
     backgroundColor:'#0f6088'
   },
+  filterButton:{
+    flex:1,
+    flexDirection:'column',
+    alignItems:'center',
+    justifyContent:'center',
+    width:90,
+    height:70,
+    backgroundColor:'#286b95',
+    marginRight:20,
+    borderRadius:35
+  },
+  filterButtonText:{
+    fontWeight:'600',
+    color:'white',
+    fontSize:17
+  }
 
 });
 
