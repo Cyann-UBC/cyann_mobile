@@ -477,7 +477,7 @@ export default class course extends Component {
               removeClippedSubviews={true}
             />
           <ActionButton position="right" text="answer" buttonColor="#0f6088" onPress={()=>this.openModal4()}
-              icon={<Icon name={'search'} size={33} color='#f6f7fb'/>}>
+              icon={<FontAwesomeIcon name={'search'} size={22} color='#f6f7fb'/>}>
             </ActionButton>
 
             <Modal style={[styles.modal, styles.modal4]} position={"bottom"} ref={"modal4"} backdropOpacity={0.2}>
