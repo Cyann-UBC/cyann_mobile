@@ -188,8 +188,7 @@ export default class courseList extends Component {
               style={{height:20,width:20,marginRight: 15}}>
             </TouchableOpacity>
         </View>
-          <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#4fc1e9',paddingLeft:15,paddingRight:15}}>
-            <Text style={{color:'white',fontSize:19,fontWeight:'500',marginBottom:10}}>{this.props.questionTitle}</Text>
+          <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#51d1e1',paddingLeft:15,paddingRight:15}}>
             <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
           </ScrollView>
 
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: '#4fc1e9',
+      backgroundColor: '#51d1e1',
       paddingTop: 20,
   },
 });

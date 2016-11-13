@@ -49,16 +49,16 @@ export default class course extends Component {
       questionPosted:false,
       backgroundColor:'#51d1e1',
       questionList:[
-        {title:'Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
-        {title:'Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
-        {title:'What is Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'c'},
-        {title:'What is Lorem Ipsum?',content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'d'},
-        {title:'Q5',content:'Q5 Content',author:'e'},
-        {title:'Q6',content:'Q6 Content',author:'f'},
-        {title:'Q7',content:'Q7 Content',author:'g'},
-        {title:'Q8',content:'Q8 Content',author:'h'},
-        {title:'Q9',content:'Q9 Content',author:'i'},
-        {title:'Q10',content:'Q10 Content',author:'j'},
+        {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
+        {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
+        {title:'What is Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'c'},
+        {title:'What is Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'d'},
+        {title:'Q5',comments:[],content:'Q5 Content',author:'e'},
+        {title:'Q6',comments:[],content:'Q6 Content',author:'f'},
+        {title:'Q7',comments:[],content:'Q7 Content',author:'g'},
+        {title:'Q8',comments:[],content:'Q8 Content',author:'h'},
+        {title:'Q9',comments:[],content:'Q9 Content',author:'i'},
+        {title:'Q10',comments:[],content:'Q10 Content',author:'j'},
       ],
       assignmentList:{},
       readingList:{},
@@ -76,6 +76,7 @@ export default class course extends Component {
       courseId:'',
       modalVisible:false,
       quesitonIdAnswering:'',
+      commentContent:'',
     };
   }
 
@@ -102,7 +103,7 @@ export default class course extends Component {
     this.fetchReadingsAPI()
   }
 
-fetchPostsAPI(){
+  fetchPostsAPI(){
     fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET"})
     .then((response) => response.json())
     .then((responseData) => {
@@ -110,6 +111,30 @@ fetchPostsAPI(){
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.posts)})
+    })
+  }
+
+  postAnswer(){
+    var comment = {
+    'content': this.state.commentContent,
+    'userId': '58122f3e6a5f670b42b5f85d'
+    }
+
+    var formBody = []
+
+    for (var property in comment) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(comment[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.state.quesitonIdAnswering+"/comments"
+    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.setState({commentContent:''})
+      this.fetchPostsAPI()
     })
   }
 
@@ -240,17 +265,19 @@ fetchPostsAPI(){
               </View>
           </Animatable.View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:15,paddingLeft:10,paddingRight:10}}>
-            <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-start',alignItems:'center'}}>
-              <TouchableOpacity>
+            <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-start',alignItems:'center',paddingBottom:20}}>
+              <TouchableOpacity onPress={()=>console.warn('asd')}>
                 <FontAwesomeIcon name="comments-o" size={30} color={'#0f6088'}/>
               </TouchableOpacity>
               <View>
-                <Text style={{color:'gray',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>12</Text>
+                <Text style={{color:'gray',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
               </View>
             </View>
-            <TouchableOpacity onPress={()=>this.openModal5(rowData._id)}>
-              <FontAwesomeIcon name="pencil-square-o" size={30} color={'#0f6088'}/>
-            </TouchableOpacity>
+            <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-end',alignItems:'center',paddingBottom:20}}>
+              <TouchableOpacity onPress={()=>this.openModal5(rowData._id)}>
+                <FontAwesomeIcon name="pencil-square-o" size={30} color={'#0f6088'}/>
+              </TouchableOpacity>
+            </View>
           </View>
         </Animatable.View>
       </TouchableOpacity>
@@ -351,7 +378,6 @@ fetchPostsAPI(){
     .then((responseData) => {
       Actions.viewQuestion({data:responseData,courseId:this.state.courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
     })
-
   }
 
   updateTitle(event){
@@ -504,12 +530,13 @@ fetchPostsAPI(){
                   <TextInput
                     multiline={true}
                     style={{padding:10,height: 250,color:'white',fontSize:20}}
-                    onChange={this.updateTitle.bind(this)}
-                    value={this.state.questionTitle}
+                    onChangeText={(text)=>this.setState({commentContent:text})}
+                    value={this.state.commentContent}
                     placeholder="Your answer here"
+                    placeholderTextColor={'white'}
                   />
                 </Animatable.View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.postAnswer()}>
                   <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/1.3,height:height/13,backgroundColor:'#4fd6df',borderRadius:height/100}}>
                     <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Answer</Text>
                   </View>
@@ -569,7 +596,13 @@ fetchPostsAPI(){
           </View>
 
           <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
+            <View style={{}}>
 
+            </View>
+
+            <View style={{}}>
+
+            </View>
           </View>
         </ScrollableTabView>
 
