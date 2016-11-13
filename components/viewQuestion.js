@@ -182,8 +182,9 @@ export default class courseList extends Component {
       <View>
         <View style={styles.topContainer}>
           <TouchableOpacity
+            style={{marginLeft:15}}
             onPress={this.onBackPress}>
-            <Icon name={"chevron-left"} size={37} color={'white'} />
+            <FontAwesomeIcon name={"angle-left"} size={30} color={'white'} />
           </TouchableOpacity>
 
             <Text style={styles.courseTitle}>{this.props.courseName}</Text>
