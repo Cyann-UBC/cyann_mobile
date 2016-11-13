@@ -95,42 +95,46 @@ export default class courseList extends Component {
   }
   renderScrollView=()=>{
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-
     if(this.state.ifTypingAnswering == true){
       return(
-        <View>
-          <TouchableOpacity onPress={()=>this.cancelAnswer()}>
-            <Icon name={"close"} size={30} color={'gray'} style={{marginTop:10,marginLeft:10,}}/>
-          </TouchableOpacity>
-          <TextInput
-            onChangeText={(text)=>this.setState({commentContent:text})}
-            style={{height:height/1.5,fontSize:20,width:width,padding:20}}
-            multiline={true}
-            value={this.state.commentContent}
-            placeholder={'your answer here'} />
-        </View>
-
+          <View style={{flex:1,backgroundColor:'#e2faff',borderRadius:height/100,margin:7}}>
+            <TouchableOpacity onPress={()=>this.cancelAnswer()}>
+              <Icon name={"close"} size={30} color={'gray'} style={{marginTop:10,marginLeft:10,}}/>
+            </TouchableOpacity>
+            <TextInput
+              onChangeText={(text)=>this.setState({commentContent:text})}
+              style={{height:height/1.5,fontSize:20,width:width,padding:20}}
+              multiline={true}
+              value={this.state.commentContent}
+              placeholder={'your answer here'} />
+          </View>
       )
     }else{
       return(
-        <ListView
-          style={{flex:1}}
-          showsVerticalScrollIndicator={false}
-          dataSource={this.state.commentList}
-          renderRow={this.renderRow.bind(this)}
-          horizontal={false}
-          removeClippedSubviews={true}
-        />
+          <ListView
+            style={{flex:1,backgroundColor:'#e2faff',borderRadius:height/100,margin:7}}
+            showsVerticalScrollIndicator={false}
+            dataSource={this.state.commentList}
+            renderRow={this.renderRow.bind(this)}
+            horizontal={false}
+            removeClippedSubviews={true}
+          />
       )
     }
   }
   renderRow(rowData){
     return(
       <TouchableOpacity>
-        <View style={{flex:1,flexDirection:'row', justifyContent:'space-around', alignItems:'center',height:height/10,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'gray'}}>
-          <Text style={{fontSize:17,fontWeight:'500',marginBottom:3}}>{rowData.content}</Text>
-          <Text >{rowData.upvotes}</Text>
-          <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} /></TouchableOpacity>
+        <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'gray'}}>
+          <View style={{height:height/10,width:width,padding:10,paddingLeft:20,}}>
+            <View style={{flex:1,alignSelf:'flex-start',flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
+              <Text style={{fontSize:17,fontWeight:'500',marginBottom:3,color:'gray'}}>{rowData.content}</Text>
+            </View>
+          </View>
+          <View style={{alignSelf:'flex-start',flex:1,flexDirection:'row', justifyContent:'flex-start', alignItems:'center'}}>
+            <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} /></TouchableOpacity>
+            <Text>{rowData.upvotes}</Text>
+          </View>
         </View>
       </TouchableOpacity>
     )
@@ -192,10 +196,10 @@ export default class courseList extends Component {
             <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
           </ScrollView>
 
-        <View style={{flex:1,height:height/1.5,backgroundColor:'#f5f7fa',paddingLeft:7,paddingRight:7}}>
+        <View style={{flex:1,height:height/1.5,backgroundColor:'#51d1e1',paddingLeft:7,paddingRight:7}}>
             {this.renderScrollView()}
         </View>
-        <ActionButton position="right" text="answer" buttonColor="#4fc1e9" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
+        <ActionButton position="right" text="answer" buttonColor="#51d1e1" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
           icon={this.state.ifTypingAnswering?<Ionicon name={'ios-send-outline'} size={33} color='#f6f7fb'/>
                                       :<Ionicon name={'ios-add'} size={33} color='#f6f7fb'/>}>
         </ActionButton>
