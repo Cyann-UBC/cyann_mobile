@@ -14,8 +14,9 @@ import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import fontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import ActionButton from 'react-native-action-button';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 var Dimensions = require('Dimensions');
 var {
@@ -99,7 +100,7 @@ export default class courseList extends Component {
       return(
           <View style={{flex:1,backgroundColor:'#e2faff',borderRadius:height/100,margin:7}}>
             <TouchableOpacity onPress={()=>this.cancelAnswer()}>
-              <Icon name={"close"} size={30} color={'gray'} style={{marginTop:10,marginLeft:10,}}/>
+              <FontAwesomeIcon name={"close"} size={25} color={'gray'} style={{marginTop:10,marginLeft:10,}}/>
             </TouchableOpacity>
             <TextInput
               onChangeText={(text)=>this.setState({commentContent:text})}
@@ -125,7 +126,7 @@ export default class courseList extends Component {
   renderRow(rowData){
     return(
       <TouchableOpacity>
-        <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'gray'}}>
+        <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'#51d1e1'}}>
           <View style={{height:height/10,width:width,padding:10,paddingLeft:20,}}>
             <View style={{flex:1,alignSelf:'flex-start',flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
               <Text style={{fontSize:17,fontWeight:'500',marginBottom:3,color:'gray'}}>{rowData.content}</Text>
@@ -199,9 +200,9 @@ export default class courseList extends Component {
         <View style={{flex:1,height:height/1.5,backgroundColor:'#51d1e1',paddingLeft:7,paddingRight:7}}>
             {this.renderScrollView()}
         </View>
-        <ActionButton position="right" text="answer" buttonColor="#51d1e1" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
-          icon={this.state.ifTypingAnswering?<Ionicon name={'ios-send-outline'} size={33} color='#f6f7fb'/>
-                                      :<Ionicon name={'ios-add'} size={33} color='#f6f7fb'/>}>
+        <ActionButton position="right" text="answer" buttonColor="#0f6088" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
+          icon={this.state.ifTypingAnswering?<FontAwesomeIcon name={'send-o'} size={23} color='#f6f7fb'/>
+        :<FontAwesomeIcon name={'pencil'} size={23} color='#f6f7fb'/>}>
         </ActionButton>
       </View>
     );

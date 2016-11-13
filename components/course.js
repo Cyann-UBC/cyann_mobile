@@ -267,7 +267,7 @@ export default class course extends Component {
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:15,paddingLeft:10,paddingRight:10}}>
             <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-start',alignItems:'center',paddingBottom:20}}>
               <TouchableOpacity onPress={()=>console.warn('asd')}>
-                <FontAwesomeIcon name="comments-o" size={30} color={'#0f6088'}/>
+                <FontAwesomeIcon name="comments-o" size={30} color={'#18bdd6'}/>
               </TouchableOpacity>
               <View>
                 <Text style={{color:'gray',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
@@ -275,7 +275,7 @@ export default class course extends Component {
             </View>
             <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-end',alignItems:'center',paddingBottom:20}}>
               <TouchableOpacity onPress={()=>this.openModal5(rowData._id)}>
-                <FontAwesomeIcon name="pencil-square-o" size={30} color={'#0f6088'}/>
+                <FontAwesomeIcon name="pencil-square-o" size={30} color={'#18bdd6'}/>
               </TouchableOpacity>
             </View>
           </View>
@@ -532,6 +532,7 @@ export default class course extends Component {
                     style={{padding:10,height: 250,color:'white',fontSize:20}}
                     onChangeText={(text)=>this.setState({commentContent:text})}
                     value={this.state.commentContent}
+                    autoFocus={true}
                     placeholder="Your answer here"
                     placeholderTextColor={'white'}
                   />
