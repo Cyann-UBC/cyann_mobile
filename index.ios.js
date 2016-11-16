@@ -8,7 +8,6 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  Text,
   View
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
@@ -23,13 +22,12 @@ export default class cyann_mobile extends Component {
   render() {
     return (
       <Router>
-        <Scene hideNavBar={true}  type='reset' key="courseList" animation="fade" component={courseList} title="courseList" initial={true}/>
+        <Scene hideNavBar={true}  type='reset' key="courseList" animation="fade" component={courseList} title="courseList" />
         <Scene hideNavBar={true}  panHandlers={null} key="course" duration={100} animation="fade" component={course} title="course"/>
         <Scene hideNavBar={true}  key="viewQuestion" component={viewQuestion} title="viewQuestion"/>
         <Scene hideNavBar={true}  key="fileView" component={fileView} title="fileView"/>
         <Scene hideNavBar={true}  key="comment" component={comment} title="comment"/>
-        <Scene hideNavBar={true}  key="login" component={login} title="login" />
-
+        <Scene hideNavBar={true}  key="login" component={login} title="login" initial={true}/>
       </Router>
     )
   }

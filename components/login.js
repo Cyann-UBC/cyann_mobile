@@ -49,8 +49,10 @@ export default class Login extends Component {
     FBLoginManager.getCredentials(function(error, data){
       console.warn(JSON.stringify(data))
       if(data === null){
+        _this.setState({user:null})
         _this.setState({buttonText:'login'})
       }else{
+        _this.setState({user:data.credentials})
         _this.setState({buttonText:'logout'})
       }
       if (!error) {
@@ -92,7 +94,7 @@ export default class Login extends Component {
   if (error) {
     alert('Error fetching data: ' + error.toString());
   } else {
-    console.warn(result.picture.data.url)
+    console.warn(JSON.stringify(result))
     this.setState({imgurl:result.picture.data.url})
     alert('Success fetching data: ' + result.toString());
   //  Actions.courseList()
@@ -183,10 +185,14 @@ onPermissionsMissing(data){
   render(){
     return(
       <View style={styles.container}>
+        <StatusBar
+          backgroundColor="transparent"
+          barStyle="light-content"
+            />
       <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
             <Ionicon style={{marginRight:10}} name={'logo-facebook'} color={'white'} size={30} />
-            <Text style={{fontSize:19,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"logout"}</Text>
+            <Text style={{fontSize:19,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"Logout"}</Text>
           </View>
         </TouchableOpacity>
       </View>
