@@ -7,6 +7,7 @@ import {
   LayoutAnimation,
   StatusBar,
   ScrollView,
+  AsyncStorage,
   WebView,
   Image,
   Text,
@@ -54,6 +55,7 @@ export default class Login extends Component {
       }else{
         _this.setState({user:data.credentials})
         _this.setState({buttonText:'logout'})
+      //  Actions.courseList()
       }
       if (!error) {
         _this.setState({ user : data})
@@ -90,10 +92,14 @@ export default class Login extends Component {
       });
     }
 
+  retreiveJWT(){
+
+  }
     _responseInfoCallback=(error: ?Object, result: ?Object)=>{
   if (error) {
     alert('Error fetching data: ' + error.toString());
   } else {
+    this.retreiveJWT()
     console.warn(JSON.stringify(result))
     this.setState({imgurl:result.picture.data.url})
     alert('Success fetching data: ' + result.toString());

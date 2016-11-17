@@ -12,6 +12,8 @@
     "react-native": "^0.35.0",
     "react-native-action-button": "^2.0.8",
     "react-native-animatable": "^0.6.1",
+    "react-native-autocomplete": "^0.2.1",
+    "react-native-autocomplete-input": "^2.0.0",
     "react-native-autogrow-textinput": "^2.1.1",
     "react-native-cards-slider": "^0.1.2",
     "react-native-collapsible": "^0.7.0",

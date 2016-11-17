@@ -5,8 +5,10 @@ import {
   TouchableOpacity,
   ListView,
   LayoutAnimation,
+  AsyncStorage,
   StatusBar,
   ScrollView,
+
   Text,
   View
 } from 'react-native';
@@ -15,9 +17,7 @@ import { Actions } from 'react-native-router-flux';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {Motion, spring} from 'react-motion';
 import * as Animatable from 'react-native-animatable';
-if(!StyleSheet.flatten) {
-  StyleSheet.flatten = require('flattenStyle');
-}
+var AutoComplete = require('react-native-autocomplete');
 var Dimensions = require('Dimensions');
 var {
   width,
@@ -76,7 +76,7 @@ export default class courseList extends Component {
       flex:1,
     },
     containerStyle:{},
-    mainContainer:{height:height/2},
+    mainContainer:{flex:1,flexDirection:'column',height:height/2,justifyContent:'space-around',},
       courseList:[
         {name:'CPEN 321'},
         {name:'CPEN 281'},
@@ -84,7 +84,6 @@ export default class courseList extends Component {
         {name:'STAT 302'},
         {name:'ECON 101'}
       ],
-      ssc:'',
       password:'',
       listSource:[
         {name:'CPEN 321'},
@@ -97,6 +96,9 @@ export default class courseList extends Component {
       commentSource:{},
       viewToggle:'list',
       selectedCourse:'',
+      courseList:[],
+      myCourse:[],
+      showSearchBar: true,
     };
   }
 
@@ -105,18 +107,19 @@ export default class courseList extends Component {
     .then((response)=>response.json())
     .then((responseData)=>{
       console.warn(JSON.stringify(responseData))
-      this.setState({listSource:responseData})
+      this.setState({courseList:responseData.data})
+      this.setState({listSource:responseData.data})
     })
   }
 
   componentDidMount(){
-    // console.warn(JSON.stringify(this.state.listSource))
 
   }
 
   gotoCourse=(id)=>{
     LayoutAnimation.configureNext(animations.layout.spring)
     this.setState({selectedCourse:id})
+    this.setState({showSearchBar:false})
     this.setState({containerStyle:{
       flex:1,
       width:width,
@@ -153,13 +156,72 @@ export default class courseList extends Component {
     let courseContainerStyle = [styles.courseContainer, this.state.courseStyle]
     return(
       <TouchableOpacity onPress={() => this.gotoCourse(rowData.name)}>
-      <Animatable.View  animation="flipInY" style={this.state.courseStyle}>
+      <Animatable.View animation="flipInY" style={this.state.courseStyle}>
         <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.name}</Animatable.Text>
       </Animatable.View>
       </TouchableOpacity>
     )
   }
+  onTyping=(text)=> {
 
+          var courses = this.state.listSource.filter(function (course) {
+              return course.courseName.toLowerCase().startsWith(text.toLowerCase())
+          }).map(function (course) {
+              return course.courseName;
+          });
+
+          this.setState({
+              data:  courses
+          });
+      }
+  ifRenderList(){
+    if(this.state.showSearchBar === true){
+      return(
+        <View style={{marginBottom:20,position:'relative'}}>
+          <AutoComplete
+                      onTyping={this.onTyping}
+                      onSelect={(e) => AlertIOS.alert('You choosed', e)}
+                      onBlur={() => console.warn('a')}
+                      onFocus={() => console.warn('b')}
+                      onSubmitEditing={(e) => AlertIOS.alert('onSubmitEditing')}
+                      onEndEditing={(e) => AlertIOS.alert('onEndEditing')}
+                      autoCorrect={false}
+                      suggestions={this.state.data}
+
+                      placeholder='This is a great placeholder'
+                      style={styles.autocomplete}
+                      clearButtonMode='always'
+                      returnKeyType='go'
+                      textAlign='center'
+                      clearTextOnFocus={true}
+
+                      maximumNumberOfAutoCompleteRows={10}
+                      applyBoldEffectToAutoCompleteSuggestions={true}
+                      reverseAutoCompleteSuggestionsBoldEffect={true}
+                      showTextFieldDropShadowWhenAutoCompleteTableIsOpen={false}
+                      autoCompleteTableViewHidden={false}
+
+                      autoCompleteTableBorderColor='lightblue'
+                      autoCompleteTableBackgroundColor='azure'
+                      autoCompleteTableCornerRadius={10}
+                      autoCompleteTableBorderWidth={1}
+
+                      autoCompleteRowHeight={35}
+
+                      autoCompleteFontSize={15}
+                      autoCompleteRegularFontName='Helvetica Neue'
+                      autoCompleteBoldFontName='Helvetica Bold'
+                      autoCompleteTableCellTextColor={'red'}
+                  />
+        </View>
+
+      )
+    }else{
+      return(
+        null
+      )
+    }
+  }
   render() {
     var courses = this.state.courseList
     return (
@@ -167,70 +229,13 @@ export default class courseList extends Component {
         <StatusBar
           backgroundColor="transparent"
           barStyle="light-content"
-            />
+          />
+
           <View style={this.state.mainContainer}>
-            <ScrollView
-              horizontal ={true}
-              pagingEnabled ={true}
-              >
-              {this.state.listSource.map(function(course, i){
+            <View >
+              {this.ifRenderList()}
+            </View>
 
-                if(i==0){
-                  var marginLeft=width/12;
-                }
-                else if(i==courses.length-1){
-                  var marginLeft = width/10
-                  var marginRight = width/10
-                }
-                else
-                 var marginLeft=width/10;
-
-                 var containerStyle = {
-                   flex:1,
-                   flexDirection:'column',
-                   justifyContent:'space-around',
-                   alignItems:'center',
-                   borderRadius:20,
-                   width:width/1.2,
-                   backgroundColor:'white',
-                   marginLeft:marginLeft,
-                   marginRight:marginRight,
-                   paddingLeft:20,
-                   paddingRight:20,
-                   paddingBottom:60,
-                 };
-
-                 var courseCardStyle=[containerStyle,this.state.containerStyle]
-                  return(
-                    <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
-                      <View obj={course} key={i} style={courseCardStyle} >
-
-                        <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10}}>{course.courseName}</Text>
-                        </View>
-
-                        <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Professor</Text>
-                          <Text style={{paddingLeft:10}}>Farshid Agharebparast</Text>
-                        </View>
-
-
-                        <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
-                          <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
-                            {[course.TAs].map(function(TA, i){
-                              return(
-                                <Text>TA</Text>
-                              )
-                            },this)}
-                          </View>
-
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                )
-              },this)}
-            </ScrollView>
           </View>
       </View>
     );
@@ -242,7 +247,7 @@ export default class courseList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection:'column',
+    flexDirection:'row',
     justifyContent: 'center',
     backgroundColor:'#4fc1e9',
     alignItems: 'center',
@@ -259,7 +264,14 @@ const styles = StyleSheet.create({
   },
   courseCard:{
 
-  }
+  },
+  autocomplete: {
+        alignSelf: 'stretch',
+        height: 50,
+        backgroundColor: '#FFF',
+        borderColor: 'lightblue',
+        borderWidth: 1
+    },
 
 
 });
