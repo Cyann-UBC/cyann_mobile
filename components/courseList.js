@@ -98,7 +98,7 @@ export default class courseList extends Component {
       selectedCourse:'',
       courseList:[],
       myCourse:[],
-      showSearchBar: true,
+      showSearchBar: false,
     };
   }
 
@@ -114,6 +114,10 @@ export default class courseList extends Component {
 
   componentDidMount(){
 
+  }
+
+  toggleSearchBar(){
+    this.setState({showSearchBar:!this.state.showSearchBar})
   }
 
   gotoCourse=(id)=>{
@@ -163,7 +167,6 @@ export default class courseList extends Component {
     )
   }
   onTyping=(text)=> {
-
           var courses = this.state.listSource.filter(function (course) {
               return course.courseName.toLowerCase().startsWith(text.toLowerCase())
           }).map(function (course) {
@@ -222,8 +225,86 @@ export default class courseList extends Component {
       )
     }
   }
+
+  ifRenderScrollView(){
+    if(!this.state.myCourse.length == 1){
+      return(
+        <TouchableOpacity onPress={()=>this.toggleSearchBar()}>
+          <Text>add a course</Text>
+        </TouchableOpacity>
+      )
+    }else{
+      var courses = this.state.courseList
+      return(
+        <ScrollView
+          style={{flex:1,flexDirection:'row'}}
+          contentContainer={{justifyContent:'center'}}
+          horizontal ={true}
+          pagingEnabled ={true}
+          >
+          {this.state.listSource.map(function(course, i){
+
+            if(i==0){
+              var marginLeft=width/12;
+            }
+            else if(i==courses.length-1){
+              var marginLeft = width/10
+              var marginRight = width/10
+            }
+            else
+             var marginLeft=width/10;
+
+             var containerStyle = {
+               flex:1,
+               flexDirection:'column',
+               justifyContent:'space-around',
+               alignItems:'center',
+               borderRadius:height/100,
+               width:width/1.2,
+               backgroundColor:'white',
+               marginLeft:marginLeft,
+               marginRight:marginRight,
+               paddingLeft:20,
+               paddingRight:20,
+               paddingBottom:60,
+             };
+
+             var courseCardStyle=[containerStyle,this.state.containerStyle]
+              return(
+                <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
+                  <View obj={course} key={i} style={courseCardStyle} >
+
+                    <View style={{width:width/1.5,paddingLeft:10}}>
+                      <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10}}>{course.courseName}</Text>
+                    </View>
+
+                    <View style={{width:width/1.5,paddingLeft:10}}>
+                      <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Professor</Text>
+                      <Text style={{paddingLeft:10}}>Farshid Agharebparast</Text>
+                    </View>
+
+
+                    <View style={{width:width/1.5,paddingLeft:10}}>
+                      <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
+                      <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
+                        {[course.TAs].map(function(TA, i){
+                          return(
+                            <Text>TA</Text>
+                          )
+                        },this)}
+                      </View>
+
+                    </View>
+                  </View>
+                </TouchableOpacity>
+            )
+          },this)}
+        </ScrollView>
+      )
+    }
+  }
   render() {
-    var courses = this.state.courseList
+
     return (
       <View style={styles.container}>
         <StatusBar
@@ -235,7 +316,7 @@ export default class courseList extends Component {
             <View >
               {this.ifRenderList()}
             </View>
-
+              {this.ifRenderScrollView()}
           </View>
       </View>
     );
@@ -266,7 +347,9 @@ const styles = StyleSheet.create({
 
   },
   autocomplete: {
-        alignSelf: 'stretch',
+        alignSelf: 'center',
+        width:300,
+        borderRadius:height/100,
         height: 50,
         backgroundColor: '#FFF',
         borderColor: 'lightblue',
