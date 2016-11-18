@@ -95,6 +95,7 @@ export default class courseList extends Component {
       selectedCourse:'',
       myCourse:[],
       showSearchBar: false,
+      query:'',
     };
   }
 
@@ -114,6 +115,21 @@ export default class courseList extends Component {
       }).cloneWithRows(responseData.data)})
       this.setState({listSource:responseData.data})
     })
+  }
+
+  filterCourses=(query)=>{
+    var courses = this.state.listSource;
+    var result = [];
+    var query = query;
+
+    var filtered = courses.filter(function(course){
+      return course.courseName.toLowerCase().startsWith(query.toLowerCase())
+    })
+
+    this.setState({courseList:new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+    }).cloneWithRows(filtered)})
+    console.warn(JSON.stringify(filtered))
 
 
   }
@@ -311,6 +327,8 @@ export default class courseList extends Component {
       )
     }
   }
+
+
   render() {
 
     return (
@@ -323,9 +341,8 @@ export default class courseList extends Component {
           <View style={this.state.mainContainer}>
 
             <TextInput
-              multiline={true}
               style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center'}}
-              onChangeText={(text)=>this.setState({commentContent:text})}
+              onChangeText={(text)=>this.filterCourses(text)}
               value={this.state.commentContent}
               autoFocus={true}
               placeholder="Search here to add a course"
