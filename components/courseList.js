@@ -7,8 +7,8 @@ import {
   LayoutAnimation,
   AsyncStorage,
   StatusBar,
+  TextInput,
   ScrollView,
-
   Text,
   View
 } from 'react-native';
@@ -77,13 +77,10 @@ export default class courseList extends Component {
     },
     containerStyle:{},
     mainContainer:{flex:1,flexDirection:'column',height:height/2,justifyContent:'space-around',},
-      courseList:[
-        {name:'CPEN 321'},
-        {name:'CPEN 281'},
-        {name:'ELEC 221'},
-        {name:'STAT 302'},
-        {name:'ECON 101'}
-      ],
+    courseList:[
+      {courseName:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
+      {courseName:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
+    ],
       password:'',
       listSource:[
         {name:'CPEN 321'},
@@ -96,23 +93,28 @@ export default class courseList extends Component {
       commentSource:{},
       viewToggle:'list',
       selectedCourse:'',
-      courseList:[],
       myCourse:[],
       showSearchBar: false,
     };
   }
 
   componentWillMount(){
+    this.setState({courseList:new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 != r2
+    }).cloneWithRows(this.state.courseList)})
+  }
+
+  componentDidMount(){
     fetch('http://localhost:3000/api/courses',{method:"GET"})
     .then((response)=>response.json())
     .then((responseData)=>{
       console.warn(JSON.stringify(responseData))
-      this.setState({courseList:responseData.data})
+      this.setState({courseList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.data)})
       this.setState({listSource:responseData.data})
     })
-  }
 
-  componentDidMount(){
 
   }
 
@@ -156,12 +158,12 @@ export default class courseList extends Component {
 
   }
 
-  renderRow(rowData){
+  renderCourses(rowData){
     let courseContainerStyle = [styles.courseContainer, this.state.courseStyle]
     return(
-      <TouchableOpacity onPress={() => this.gotoCourse(rowData.name)}>
+      <TouchableOpacity onPress={() => this.gotoCourse(rowData.courseName)}>
       <Animatable.View animation="flipInY" style={this.state.courseStyle}>
-        <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.name}</Animatable.Text>
+        <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.courseName}</Animatable.Text>
       </Animatable.View>
       </TouchableOpacity>
     )
@@ -191,7 +193,7 @@ export default class courseList extends Component {
                       autoCorrect={false}
                       suggestions={this.state.data}
 
-                      placeholder='This is a great placeholder'
+                      placeholder='Tap here to search for courses'
                       style={styles.autocomplete}
                       clearButtonMode='always'
                       returnKeyType='go'
@@ -229,9 +231,15 @@ export default class courseList extends Component {
   ifRenderScrollView(){
     if(!this.state.myCourse.length == 1){
       return(
-        <TouchableOpacity onPress={()=>this.toggleSearchBar()}>
-          <Text>add a course</Text>
-        </TouchableOpacity>
+
+          <ListView
+            showsVerticalScrollIndicator={false}
+            dataSource={this.state.courseList}
+            renderRow={this.renderCourses.bind(this)}
+            horizontal={false}
+            removeClippedSubviews={true}/>
+
+
       )
     }else{
       var courses = this.state.courseList
@@ -313,10 +321,18 @@ export default class courseList extends Component {
           />
 
           <View style={this.state.mainContainer}>
-            <View >
-              {this.ifRenderList()}
-            </View>
+
+            <TextInput
+              multiline={true}
+              style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center'}}
+              onChangeText={(text)=>this.setState({commentContent:text})}
+              value={this.state.commentContent}
+              autoFocus={true}
+              placeholder="Search here to add a course"
+              placeholderTextColor={'white'}
+            />
               {this.ifRenderScrollView()}
+
           </View>
       </View>
     );
