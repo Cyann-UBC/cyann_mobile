@@ -94,12 +94,14 @@ export default class courseList extends Component {
       viewToggle:'list',
       selectedCourse:'',
       myCourse:[],
+      courseObjects:[],
       showSearchBar: false,
       query:'',
     };
   }
 
   componentWillMount(){
+
     this.setState({courseList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.courseList)})
@@ -109,6 +111,12 @@ export default class courseList extends Component {
     note to self: when using the production build, change responseData to responseData.data
   */
   componentDidMount(){
+
+    AsyncStorage.getItem('courseObjects')
+      .then(req => JSON.parse(req))
+      .then(json => console.warn(JSON.stringify(json)))
+      .catch(error => console.log('error!'));
+      
     fetch('http://localhost:3000/api/courses',{method:"GET"})
     .then((response)=>response.json())
     .then((responseData)=>{
@@ -177,13 +185,26 @@ export default class courseList extends Component {
 
   addCourse(id){
     console.warn('ha')
+    var tempCourseObjects=[]
+    var courseObject={}
     var myCourseTemp = []
     myCourseTemp = myCourseTemp.concat(id)
     this.setState({myCourse:myCourseTemp})
-    fetch("/api/courses/"+id,{method:"GET"})
+    fetch("http://localhost:3000/api/courses/"+id,{method:"GET"})
     .then((response)=>response.json())
     .then(responseData=>{
       console.warn(JSON.stringify(responseData))
+      courseObject={
+        id:responseData._id,
+        courseName:responseData.courseName,
+        instructor:responseData.instructor,
+        posts:responseData.posts.length,
+        user:responseData.users.length,
+      }
+      tempCourseObjects = tempCourseObjects.concat(courseObject)
+
+      this.setState({courseObjects: tempCourseObjects}, () => {AsyncStorage.setItem('courseObjects',JSON.stringify(this.state.courseObjects))});
+console.warn(JSON.stringify(this.state.courseObjects))
     })
   }
   renderCourses(rowData){
