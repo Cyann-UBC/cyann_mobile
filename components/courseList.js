@@ -79,7 +79,7 @@ export default class courseList extends Component {
     mainContainer:{flex:1,flexDirection:'column',height:height/2,justifyContent:'space-around',},
     courseList:[
       {courseName:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
-      {courseName:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
+      {courseName:'Lorem Ipsum?',ccomments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
     ],
       password:'',
       listSource:[
@@ -105,15 +105,18 @@ export default class courseList extends Component {
     }).cloneWithRows(this.state.courseList)})
   }
 
+  /*
+    note to self: when using the production build, change responseData to responseData.data
+  */
   componentDidMount(){
     fetch('http://localhost:3000/api/courses',{method:"GET"})
     .then((response)=>response.json())
     .then((responseData)=>{
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.setState({courseList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
-      }).cloneWithRows(responseData.data)})
-      this.setState({listSource:responseData.data})
+      }).cloneWithRows(responseData)})
+      this.setState({listSource:responseData})
     })
   }
 
@@ -130,8 +133,6 @@ export default class courseList extends Component {
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(filtered)})
     console.warn(JSON.stringify(filtered))
-
-
   }
 
   toggleSearchBar(){
@@ -174,6 +175,17 @@ export default class courseList extends Component {
 
   }
 
+  addCourse(id){
+    console.warn('ha')
+    var myCourseTemp = []
+    myCourseTemp = myCourseTemp.concat(id)
+    this.setState({myCourse:myCourseTemp})
+    fetch("/api/courses/"+id,{method:"GET"})
+    .then((response)=>response.json())
+    .then(responseData=>{
+      console.warn(JSON.stringify(responseData))
+    })
+  }
   renderCourses(rowData){
     let courseContainerStyle = [styles.courseContainer, this.state.courseStyle]
     return(
@@ -181,6 +193,9 @@ export default class courseList extends Component {
       <Animatable.View animation="flipInY" style={this.state.courseStyle}>
         <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.courseName}</Animatable.Text>
       </Animatable.View>
+      <TouchableOpacity onPress={()=>this.addCourse(rowData._id)}>
+        <Text>ADD</Text>
+      </TouchableOpacity>
       </TouchableOpacity>
     )
   }
@@ -339,7 +354,6 @@ export default class courseList extends Component {
           />
 
           <View style={this.state.mainContainer}>
-
             <TextInput
               style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center'}}
               onChangeText={(text)=>this.filterCourses(text)}
