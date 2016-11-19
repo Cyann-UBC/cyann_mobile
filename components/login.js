@@ -42,7 +42,9 @@ export default class Login extends Component {
       uri:'',
       imgurl:'',
       user:'',
-      buttonText:''
+      buttonText:'',
+      access_token:'',
+      doneLogin:false
     }
   }
   componentWillMount(){
@@ -67,7 +69,8 @@ export default class Login extends Component {
     var _this = this
     FBLoginManager.login(function(error, data){
       if (!error) {
-        console.warn(JSON.stringify(data))
+        console.warn(JSON.stringify(data.credentials.token))
+        _this.setState({access_token: data.credentials.token})
         _this.setState({ user : data},_this.fetchUserInfo(data))
         // this.props.onLogin && _this.props.onLogin();
       } else {
@@ -92,22 +95,45 @@ export default class Login extends Component {
       });
     }
 
-  retreiveJWT(){
+  retreiveJWT(result){
+    console.warn(this.state.access_token)
+    var body = {
+    'userType': 'Student',
+    'socialToken': this.state.access_token,
+    'email':result.email,
+    'profileImg':result.picture.data.url
+    }
 
+    var formBody = []
+    // console.warn(JSON.stringify(body))
+    for (var property in body) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(body[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    fetch('http://localhost:3000/api/users/register',{method:'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(responseData)
+      AsyncStorage.setItem('jwt',responseData)
+    })
   }
+
+
     _responseInfoCallback=(error: ?Object, result: ?Object)=>{
   if (error) {
     alert('Error fetching data: ' + error.toString());
   } else {
-    this.retreiveJWT()
-    console.warn(JSON.stringify(result))
-    this.setState({imgurl:result.picture.data.url})
-    alert('Success fetching data: ' + result.toString());
+    this.retreiveJWT(result)
+    // console.warn(JSON.stringify(result))
   //  Actions.courseList()
   }
 }
-  fetchUserInfo(data){
 
+
+  fetchUserInfo(data){
     const infoRequest = new GraphRequest(
                 '/me',
                 {
@@ -121,13 +147,6 @@ export default class Login extends Component {
                 this._responseInfoCallback
               )
               new GraphRequestManager().addRequest(infoRequest).start()
-
-    // var _this = this
-    //  fetch('https://graph.facebook.com/v2.8/me?access_token='+data.credentials.token +'?fields=picture')
-    //  .then((response) => response.json())
-    //  .then((responseData) => {
-    //      console.warn(JSON.stringify(responseData))
-    //  })
   }
 /*
 the commented code could be used for alternaive for another login mechanism
@@ -187,7 +206,6 @@ onPermissionsMissing(data){
   console.warn(JSON.stringify(data))
 }
 */
-
   render(){
     return(
       <View style={styles.container}>

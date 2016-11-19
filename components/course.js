@@ -117,7 +117,7 @@ export default class course extends Component {
   postAnswer(){
     var comment = {
     'content': this.state.commentContent,
-    'userId': '58122f3e6a5f670b42b5f85d'
+    'userId': '582cf3a4c5fbee3046f2d10f'
     }
 
     var formBody = []
@@ -128,7 +128,7 @@ export default class course extends Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.state.quesitonIdAnswering+"/comments"
+    var url = "http://localhost:3000/"+"api/courses/582fd82c206bc731a84bb673/posts/"+this.state.quesitonIdAnswering+"/comments"
     fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
