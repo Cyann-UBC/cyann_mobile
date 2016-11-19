@@ -129,11 +129,10 @@ const FacebookTabBar = React.createClass({
             <Animatable.View animation={'bounceInDown'} delay={i===0?100:i*150} duration={700}>
               <FontAwesomeIcon
                 name={tab}
-                size={this.props.activeTab===i ? 30:23}
+                size={30}
                 color={this.props.activeTab === i ? 'rgb(255,255,255)' : 'rgb(204,204,204)'}
                 ref={(icon) => { this.tabIcons[i] = icon; }}
               />
-            <Animatable.Text animation={this.props.activeTab === i ? 'lightSpeedOut':undefined} duration={this.props.activeTab === i ? 500:undefined} delay={0} style={{fontWeight:'500',color:'white',textAlign:'center',height:15,marginBottom:this.props.activeTab === i ? -10:0}}>{text}</Animatable.Text>
             </Animatable.View>
         </TouchableOpacity>;
       },this)}

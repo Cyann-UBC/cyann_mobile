@@ -283,7 +283,7 @@ export default class courseList extends Component {
   }
 
   ifRenderScrollView(){
-    if(!this.state.myCourse.length == 1){
+    if(this.state.myCourse.length == 1){
       return(
 
           <ListView
