@@ -101,6 +101,10 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
+    AsyncStorage.getItem('courseObjects')
+      .then(req => JSON.parse(req))
+      .then(json => this.setState({courseObjects:json}))
+      .catch(error => console.log('error!'));
 
     this.setState({courseList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
@@ -111,12 +115,9 @@ export default class courseList extends Component {
     note to self: when using the production build, change responseData to responseData.data
   */
   componentDidMount(){
+    console.warn(JSON.stringify(this.state.courseObjects))
 
-    AsyncStorage.getItem('courseObjects')
-      .then(req => JSON.parse(req))
-      .then(json => console.warn(JSON.stringify(json)))
-      .catch(error => console.log('error!'));
-      
+
     fetch('http://localhost:3000/api/courses',{method:"GET"})
     .then((response)=>response.json())
     .then((responseData)=>{
@@ -184,8 +185,8 @@ export default class courseList extends Component {
   }
 
   addCourse(id){
-    console.warn('ha')
-    var tempCourseObjects=[]
+    console.warn("courseObject"+JSON.stringify(this.state.courseObjects))
+    var tempCourseObjects=this.state.courseObjects
     var courseObject={}
     var myCourseTemp = []
     myCourseTemp = myCourseTemp.concat(id)
@@ -201,10 +202,14 @@ export default class courseList extends Component {
         posts:responseData.posts.length,
         user:responseData.users.length,
       }
+      for(i=0; i<tempCourseObjects.length; i++){
+        if(tempCourseObjects[i].courseName === responseData.courseName){
+          return;
+        }
+      }
       tempCourseObjects = tempCourseObjects.concat(courseObject)
-
       this.setState({courseObjects: tempCourseObjects}, () => {AsyncStorage.setItem('courseObjects',JSON.stringify(this.state.courseObjects))});
-console.warn(JSON.stringify(this.state.courseObjects))
+      console.warn(JSON.stringify(this.state.courseObjects))
     })
   }
   renderCourses(rowData){
