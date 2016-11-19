@@ -115,9 +115,6 @@ export default class courseList extends Component {
     note to self: when using the production build, change responseData to responseData.data
   */
   componentDidMount(){
-    console.warn(JSON.stringify(this.state.courseObjects))
-
-
     fetch('http://localhost:3000/api/courses',{method:"GET"})
     .then((response)=>response.json())
     .then((responseData)=>{
@@ -194,7 +191,6 @@ export default class courseList extends Component {
     fetch("http://localhost:3000/api/courses/"+id,{method:"GET"})
     .then((response)=>response.json())
     .then(responseData=>{
-      console.warn(JSON.stringify(responseData))
       courseObject={
         id:responseData._id,
         courseName:responseData.courseName,
@@ -212,6 +208,7 @@ export default class courseList extends Component {
       console.warn(JSON.stringify(this.state.courseObjects))
     })
   }
+
   renderCourses(rowData){
     let courseContainerStyle = [styles.courseContainer, this.state.courseStyle]
     return(
