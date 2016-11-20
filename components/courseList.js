@@ -17,6 +17,7 @@ import { Actions } from 'react-native-router-flux';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {Motion, spring} from 'react-motion';
 import * as Animatable from 'react-native-animatable';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 var AutoComplete = require('react-native-autocomplete');
 var Dimensions = require('Dimensions');
 var {
@@ -216,13 +217,13 @@ export default class courseList extends Component {
   renderCourses(rowData){
     let courseContainerStyle = [styles.courseContainer, this.state.courseStyle]
     return(
-      <TouchableOpacity onPress={() => this.gotoCourse(rowData.courseName)}>
-      <Animatable.View animation="flipInY" style={this.state.courseStyle}>
-        <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.courseName}</Animatable.Text>
-      </Animatable.View>
       <TouchableOpacity onPress={()=>this.addCourse(rowData._id)}>
-        <Text>ADD</Text>
-      </TouchableOpacity>
+      <Animatable.View animation="flipInY" style={{paddingRight:30,paddingLeft:30,height:80,flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,paddingLeft:10,borderBottomWidth:2,borderBottomColor:'white'}}>
+        <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.courseName}</Animatable.Text>
+        <Animatable.View animation="fadeInUp" easing="ease-in" duration={500} delay={500} >
+          <FontAwesomeIcon name="plus" size={27} color={'white'}/>
+        </Animatable.View>
+      </Animatable.View>
       </TouchableOpacity>
     )
   }
