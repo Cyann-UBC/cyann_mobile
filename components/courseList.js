@@ -101,6 +101,7 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
+    this.getUserCourses()
     AsyncStorage.getItem('courseObjects')
       .then(req => JSON.parse(req))
       .then(json => this.setState({courseObjects:json}))
@@ -115,15 +116,24 @@ export default class courseList extends Component {
     note to self: when using the production build, change responseData to responseData.data
   */
   componentDidMount(){
-    console.warn(this.props.jwt)
-    fetch('http://localhost:3000/api/courses',{method:"GET"})
+    // console.warn(this.props.jwt)
+    fetch('http://localhost:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
     .then((response)=>response.json())
     .then((responseData)=>{
       //console.warn(JSON.stringify(responseData))
       this.setState({courseList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
-      }).cloneWithRows(responseData)})
-      this.setState({listSource:responseData})
+      }).cloneWithRows(responseData.data)})
+      // console.warn(JSON.stringify(responseData))
+      this.setState({listSource:responseData.data})
+    })
+  }
+
+  getUserCourses(){
+    fetch('http://localhost:3000/api/users/5830e5127e74713d73206139/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
+    .then(response=>response.json())
+    .then(responseData=>{
+      this.setState({myCourse:responseData})
     })
   }
 
@@ -183,31 +193,47 @@ export default class courseList extends Component {
   }
 
   addCourse(id){
-    console.warn("courseObject"+JSON.stringify(this.state.courseObjects))
-    var tempCourseObjects=this.state.courseObjects
-    var courseObject={}
-    var myCourseTemp = []
-    myCourseTemp = myCourseTemp.concat(id)
-    this.setState({myCourse:myCourseTemp})
-    fetch("http://localhost:3000/api/courses/"+id,{method:"GET"})
+    var post = {
+    'userId': '5824217b40a0836d65adc165'
+    }
+    var formBody = []
+    for (var property in post) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(post[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    fetch("http://localhost:3000/api/courses/"+id,{method:"PUT"})
     .then((response)=>response.json())
     .then(responseData=>{
-      courseObject={
-        id:responseData._id,
-        courseName:responseData.courseName,
-        instructor:responseData.instructor,
-        posts:responseData.posts.length,
-        user:responseData.users.length,
-      }
-      for(i=0; i<tempCourseObjects.length; i++){
-        if(tempCourseObjects[i].courseName === responseData.courseName){
-          return;
-        }
-      }
-      tempCourseObjects = tempCourseObjects.concat(courseObject)
-      this.setState({courseObjects: tempCourseObjects}, () => {AsyncStorage.setItem('courseObjects',JSON.stringify(this.state.courseObjects))});
-      console.warn(JSON.stringify(this.state.courseObjects))
+
     })
+    // console.warn("courseObject"+JSON.stringify(this.state.courseObjects))
+    // var tempCourseObjects=this.state.courseObjects
+    // var courseObject={}
+    // var myCourseTemp = []
+    // myCourseTemp = myCourseTemp.concat(id)
+    // this.setState({myCourse:myCourseTemp})
+    // fetch("http://localhost:3000/api/courses/"+id,{method:"GET"})
+    // .then((response)=>response.json())
+    // .then(responseData=>{
+    //   courseObject={
+    //     id:responseData._id,
+    //     courseName:responseData.courseName,
+    //     instructor:responseData.instructor,
+    //     posts:responseData.posts.length,
+    //     user:responseData.users.length,
+    //   }
+    //   for(i=0; i<tempCourseObjects.length; i++){
+    //     if(tempCourseObjects[i].courseName === responseData.courseName){
+    //       return;
+    //     }
+    //   }
+    //   tempCourseObjects = tempCourseObjects.concat(courseObject)
+    //   this.setState({courseObjects: tempCourseObjects}, () => {AsyncStorage.setItem('courseObjects',JSON.stringify(this.state.courseObjects))});
+    //   console.warn(JSON.stringify(this.state.courseObjects))
+    // })
   }
 
   renderCourses(rowData){
@@ -234,67 +260,28 @@ export default class courseList extends Component {
               data:  courses
           });
       }
-  ifRenderList(){
-    if(this.state.showSearchBar === true){
-      return(
-        <View style={{marginBottom:20,position:'relative'}}>
-          <AutoComplete
-                      onTyping={this.onTyping}
-                      onSelect={(e) => AlertIOS.alert('You choosed', e)}
-                      onBlur={() => console.warn('a')}
-                      onFocus={() => console.warn('b')}
-                      onSubmitEditing={(e) => AlertIOS.alert('onSubmitEditing')}
-                      onEndEditing={(e) => AlertIOS.alert('onEndEditing')}
-                      autoCorrect={false}
-                      suggestions={this.state.data}
-
-                      placeholder='Tap here to search for courses'
-                      style={styles.autocomplete}
-                      clearButtonMode='always'
-                      returnKeyType='go'
-                      textAlign='center'
-                      clearTextOnFocus={true}
-
-                      maximumNumberOfAutoCompleteRows={10}
-                      applyBoldEffectToAutoCompleteSuggestions={true}
-                      reverseAutoCompleteSuggestionsBoldEffect={true}
-                      showTextFieldDropShadowWhenAutoCompleteTableIsOpen={false}
-                      autoCompleteTableViewHidden={false}
-
-                      autoCompleteTableBorderColor='lightblue'
-                      autoCompleteTableBackgroundColor='azure'
-                      autoCompleteTableCornerRadius={10}
-                      autoCompleteTableBorderWidth={1}
-
-                      autoCompleteRowHeight={35}
-
-                      autoCompleteFontSize={15}
-                      autoCompleteRegularFontName='Helvetica Neue'
-                      autoCompleteBoldFontName='Helvetica Bold'
-                      autoCompleteTableCellTextColor={'red'}
-                  />
-        </View>
-
-      )
-    }else{
-      return(
-        null
-      )
-    }
-  }
 
   ifRenderScrollView(){
-    if(this.state.myCourse.length == 1){
+    if(this.state.myCourse.length == 0){
       return(
-
+        <View>
+          <TextInput
+            style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center'}}
+            onChangeText={(text)=>this.filterCourses(text)}
+            value={this.state.commentContent}
+            autoFocus={true}
+            placeholder="Search here to add a course"
+            placeholderTextColor={'white'}
+          />
+        <View style={{height:height/2}}>
           <ListView
             showsVerticalScrollIndicator={false}
             dataSource={this.state.courseList}
             renderRow={this.renderCourses.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
-
-
+        </View>
+        </View>
       )
     }else{
       var courses = this.state.courseList
@@ -378,14 +365,7 @@ export default class courseList extends Component {
           />
 
           <View style={this.state.mainContainer}>
-            <TextInput
-              style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center'}}
-              onChangeText={(text)=>this.filterCourses(text)}
-              value={this.state.commentContent}
-              autoFocus={true}
-              placeholder="Search here to add a course"
-              placeholderTextColor={'white'}
-            />
+
               {this.ifRenderScrollView()}
 
           </View>

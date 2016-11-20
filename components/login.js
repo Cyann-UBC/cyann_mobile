@@ -54,14 +54,14 @@ export default class Login extends Component {
         .then(req => this.setState({jwt:req}))
         .then(function(){
           FBLoginManager.getCredentials(function(error, data){
-            console.warn(JSON.stringify(data))
+            // console.warn(JSON.stringify(data))
             if(data === null){
               _this.setState({user:null})
               _this.setState({buttonText:'login'})
             }else{
               _this.setState({user:data.credentials})
               _this.setState({buttonText:'logout'})
-              Actions.courseList({jwt:_this.state.jwt})
+               Actions.courseList({jwt:_this.state.jwt})
             }
             if (!error) {
               _this.setState({ user : data})
@@ -76,14 +76,14 @@ export default class Login extends Component {
     var _this = this
     FBLoginManager.login(function(error, data){
       if (!error) {
-        console.warn(JSON.stringify(data.credentials.token))
+        // console.warn(JSON.stringify(data.credentials.token))
         _this.setState({access_token: data.credentials.token})
         _this.setState({ user : data},_this.fetchUserInfo(data))
         // this.props.onLogin && _this.props.onLogin();
       } else {
-        console.warn('wtf')
-        console.warn(JSON.stringify(data))
-        console.warn(error, data);
+        // console.warn('wtf')
+        // console.warn(JSON.stringify(data))
+        // console.warn(error, data);
       }
     })
   }
@@ -97,13 +97,13 @@ export default class Login extends Component {
           _this.setState({ user : null});
           // this.props.onLogout && _this.props.onLogout();
         } else {
-          console.log(error, data);
+          // console.log(error, data);
         }
       });
     }
 
   retreiveJWT(result){
-    console.warn(this.state.access_token)
+    // console.warn(this.state.access_token)
     var body = {
     'userType': 'Student',
     'socialToken': this.state.access_token,
@@ -123,7 +123,9 @@ export default class Login extends Component {
     fetch('http://localhost:3000/api/users/register',{method:'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      AsyncStorage.setItem('jwt',responseData)
+      console.warn(JSON.stringify(responseData))
+      AsyncStorage.setItem('jwt',responseData.data.token)
+      // AsyncStorage.setUserID('userId',responseData.data.userId)
       Actions.courseList({jwt:responseData})
     })
   }
