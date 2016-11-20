@@ -77,7 +77,7 @@ export default class courseList extends Component {
     },
     containerStyle:{},
     mainContainer:{flex:1,flexDirection:'column',height:height/2,justifyContent:'space-around',},
-    courseList:[
+    allCourseList:[
       {courseName:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
       {courseName:'Lorem Ipsum?',ccomments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
     ],
@@ -97,19 +97,23 @@ export default class courseList extends Component {
       courseObjects:[],
       showSearchBar: false,
       query:'',
+      allCourseList:[],
+      allCourseFilter:[],
+      userAddCourseSwitch:false,
     };
   }
 
   componentWillMount(){
+    this.getAllCourses()
     this.getUserCourses()
     AsyncStorage.getItem('courseObjects')
       .then(req => JSON.parse(req))
       .then(json => this.setState({courseObjects:json}))
       .catch(error => console.log('error!'));
 
-    this.setState({courseList:new ListView.DataSource({
+    this.setState({allCourseList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
-    }).cloneWithRows(this.state.courseList)})
+    }).cloneWithRows(this.state.allCourseList)})
   }
 
   /*
@@ -117,28 +121,35 @@ export default class courseList extends Component {
   */
   componentDidMount(){
     // console.warn(this.props.jwt)
+
+  }
+
+  getAllCourses(){
     fetch('http://localhost:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
     .then((response)=>response.json())
     .then((responseData)=>{
       //console.warn(JSON.stringify(responseData))
-      this.setState({courseList:new ListView.DataSource({
+      this.setState({allCourseList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
-      // console.warn(JSON.stringify(responseData))
-      this.setState({listSource:responseData.data})
+       console.warn("all course: "+JSON.stringify(responseData))
+      this.setState({allCourseFilter:responseData.data})
     })
   }
-
   getUserCourses(){
     fetch('http://localhost:3000/api/users/5830e5127e74713d73206139/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
     .then(response=>response.json())
     .then(responseData=>{
-      this.setState({myCourse:responseData})
+      console.warn(JSON.stringify(responseData))
+      this.setState({myCourse:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData)})
+      this.setState({listSource:responseData})
     })
   }
 
   filterCourses=(query)=>{
-    var courses = this.state.listSource;
+    var courses = this.state.allCourseFilter;
     var result = [];
     var query = query;
 
@@ -146,7 +157,7 @@ export default class courseList extends Component {
       return course.courseName.toLowerCase().startsWith(query.toLowerCase())
     })
 
-    this.setState({courseList:new ListView.DataSource({
+    this.setState({allCourseList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(filtered)})
     console.warn(JSON.stringify(filtered))
@@ -193,47 +204,13 @@ export default class courseList extends Component {
   }
 
   addCourse(id){
-    var post = {
-    'userId': '5824217b40a0836d65adc165'
-    }
-    var formBody = []
-    for (var property in post) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(post[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-
-    fetch("http://localhost:3000/api/courses/"+id,{method:"PUT"})
+    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt}})
     .then((response)=>response.json())
-    .then(responseData=>{
-
+    .then((responseData)=>{
+       console.warn(JSON.stringify(responseData))
+       this.getUserCourses()
+       this.setState({userAddCourseSwitch:false})
     })
-    // console.warn("courseObject"+JSON.stringify(this.state.courseObjects))
-    // var tempCourseObjects=this.state.courseObjects
-    // var courseObject={}
-    // var myCourseTemp = []
-    // myCourseTemp = myCourseTemp.concat(id)
-    // this.setState({myCourse:myCourseTemp})
-    // fetch("http://localhost:3000/api/courses/"+id,{method:"GET"})
-    // .then((response)=>response.json())
-    // .then(responseData=>{
-    //   courseObject={
-    //     id:responseData._id,
-    //     courseName:responseData.courseName,
-    //     instructor:responseData.instructor,
-    //     posts:responseData.posts.length,
-    //     user:responseData.users.length,
-    //   }
-    //   for(i=0; i<tempCourseObjects.length; i++){
-    //     if(tempCourseObjects[i].courseName === responseData.courseName){
-    //       return;
-    //     }
-    //   }
-    //   tempCourseObjects = tempCourseObjects.concat(courseObject)
-    //   this.setState({courseObjects: tempCourseObjects}, () => {AsyncStorage.setItem('courseObjects',JSON.stringify(this.state.courseObjects))});
-    //   console.warn(JSON.stringify(this.state.courseObjects))
-    // })
   }
 
   renderCourses(rowData){
@@ -262,7 +239,7 @@ export default class courseList extends Component {
       }
 
   ifRenderScrollView(){
-    if(this.state.myCourse.length == 0){
+    if(!this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true){
       return(
         <View>
           <TextInput
@@ -276,7 +253,7 @@ export default class courseList extends Component {
         <View style={{height:height/2}}>
           <ListView
             showsVerticalScrollIndicator={false}
-            dataSource={this.state.courseList}
+            dataSource={this.state.allCourseList}
             renderRow={this.renderCourses.bind(this)}
             horizontal={false}
             removeClippedSubviews={true}/>
@@ -284,72 +261,77 @@ export default class courseList extends Component {
         </View>
       )
     }else{
-      var courses = this.state.courseList
+      var courses = this.state.listSource
       return(
-        <ScrollView
-          style={{flex:1,flexDirection:'row'}}
-          contentContainer={{justifyContent:'center'}}
-          horizontal ={true}
-          pagingEnabled ={true}
-          >
-          {this.state.listSource.map(function(course, i){
+        <View>
+          <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:true})}>
+            <View style={{width:20,height:20,backgroundColor:'red'}}></View>
+          </TouchableOpacity>
+          <ScrollView
+            style={{flex:1,flexDirection:'row'}}
+            contentContainer={{justifyContent:'center'}}
+            horizontal ={true}
+            pagingEnabled ={true}
+            >
+            {this.state.listSource.map(function(course, i){
 
-            if(i==0){
-              var marginLeft=width/12;
-            }
-            else if(i==courses.length-1){
-              var marginLeft = width/10
-              var marginRight = width/10
-            }
-            else
-             var marginLeft=width/10;
+              if(i==0){
+                var marginLeft=width/12;
+              }
+              else if(i==courses.length-1){
+                var marginLeft = width/10
+                var marginRight = width/10
+              }
+              else
+               var marginLeft=width/10;
 
-             var containerStyle = {
-               flex:1,
-               flexDirection:'column',
-               justifyContent:'space-around',
-               alignItems:'center',
-               borderRadius:height/100,
-               width:width/1.2,
-               backgroundColor:'white',
-               marginLeft:marginLeft,
-               marginRight:marginRight,
-               paddingLeft:20,
-               paddingRight:20,
-               paddingBottom:60,
-             };
+               var containerStyle = {
+                 flex:1,
+                 flexDirection:'column',
+                 justifyContent:'space-around',
+                 alignItems:'center',
+                 borderRadius:height/100,
+                 width:width/1.2,
+                 backgroundColor:'white',
+                 marginLeft:marginLeft,
+                 marginRight:marginRight,
+                 paddingLeft:20,
+                 paddingRight:20,
+                 paddingBottom:60,
+               };
 
-             var courseCardStyle=[containerStyle,this.state.containerStyle]
-              return(
-                <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
-                  <View obj={course} key={i} style={courseCardStyle} >
+               var courseCardStyle=[containerStyle,this.state.containerStyle]
+                return(
+                  <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
+                    <View obj={course} key={i} style={courseCardStyle} >
 
-                    <View style={{width:width/1.5,paddingLeft:10}}>
-                      <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10}}>{course.courseName}</Text>
-                    </View>
-
-                    <View style={{width:width/1.5,paddingLeft:10}}>
-                      <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Professor</Text>
-                      <Text style={{paddingLeft:10}}>Farshid Agharebparast</Text>
-                    </View>
-
-
-                    <View style={{width:width/1.5,paddingLeft:10}}>
-                      <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
-                      <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
-                        {[course.TAs].map(function(TA, i){
-                          return(
-                            <Text>TA</Text>
-                          )
-                        },this)}
+                      <View style={{width:width/1.5,paddingLeft:10}}>
+                        <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10}}>{course.courseName}</Text>
                       </View>
 
+                      <View style={{width:width/1.5,paddingLeft:10}}>
+                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Professor</Text>
+                        <Text style={{paddingLeft:10}}>Farshid Agharebparast</Text>
+                      </View>
+
+
+                      <View style={{width:width/1.5,paddingLeft:10}}>
+                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
+                        <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
+                          {[course.TAs].map(function(TA, i){
+                            return(
+                              <Text>TA</Text>
+                            )
+                          },this)}
+                        </View>
+
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
-            )
-          },this)}
-        </ScrollView>
+                  </TouchableOpacity>
+              )
+            },this)}
+          </ScrollView>
+        </View>
       )
     }
   }
