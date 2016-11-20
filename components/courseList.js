@@ -107,15 +107,6 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
-
-  }
-
-  /*
-    note to self: when using the production build, change responseData to responseData.data
-  */
-  componentDidMount(){
-    //  console.warn(this.props.jwt)
-
     this.getAllCourses()
     this.getUserCourses()
     AsyncStorage.getItem('courseObjects')
@@ -126,6 +117,13 @@ export default class courseList extends Component {
     this.setState({allCourseList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.allCourseList)})
+  }
+
+  /*
+    note to self: when using the production build, change responseData to responseData.data
+  */
+  componentDidMount(){
+
   }
 
   getAllCourses(){
@@ -159,7 +157,7 @@ export default class courseList extends Component {
       this.setState({userList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
-      
+
     })
   }
 
@@ -269,7 +267,7 @@ export default class courseList extends Component {
   }
   ifRenderScrollView(){
     LayoutAnimation.configureNext(animations.layout.spring)
-    if(!this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true){
+    if(this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true){
       return(
         <View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
