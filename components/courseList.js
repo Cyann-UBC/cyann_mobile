@@ -212,7 +212,7 @@ export default class courseList extends Component {
       borderRadius:0,
       marginLeft:0,
       marginRight:0,
-      marginTop:-310,
+      marginTop:-300,
       backgroundColor:"#18bdd6",
       marginBottom:600,
     }})},200)
@@ -389,42 +389,57 @@ export default class courseList extends Component {
                  paddingRight:20,
                  paddingBottom:60,
                };
-
+               var instructors = ['Farshid Agharebparast','Sathish Gopalakrishnan']
+               var TAs = ['Bader Alahmad','John Deppe','Bibek Kaur','Theresa Mammarella','Nick Mulvenna']
                var courseCardStyle=[containerStyle,this.state.containerStyle]
                 return(
                   <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
                     <View obj={course} key={i} style={courseCardStyle} >
 
-                      <View style={{width:width/1.5}}>
+                      <View style={{width:width/1.5,marginBottom:10}}>
                         <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10,textAlign:'center'}}>{course.courseName}</Text>
                       </View>
 
-                      <View style={{width:width/1.5,paddingLeft:10}}>
-                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Posts</Text>
-                        <Text style={{paddingLeft:10}}>{course.postCount}</Text>
-                      </View>
 
-                      <TouchableOpacity onPress={()=>this.getListofUser(course._id)}>
-                        <View style={{width:width/1.5,paddingLeft:10}}>
-                          <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Users</Text>
-                          <Text style={{paddingLeft:10}}>{course.userCount}</Text>
-                        </View>
-                      </TouchableOpacity>
-
-                      <View style={{width:width/1.5,paddingLeft:10}}>
-                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
+                      <View style={{height:70,width:width/1.5,paddingLeft:10,marginBottom:25}}>
+                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Instructors</Text>
                         <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
-                          {[course.TAs].map(function(TA, i){
+                          {instructors.map(function(instructor, i){
                             return(
-                              <Text>{course.userCount}</Text>
+                              <Text style={{color:'gray',fontSize:13,fontWeight:'500',marginRight:15}}>{instructor}</Text>
                             )
                           },this)}
                         </View>
-
                       </View>
-                      <View style={{height:150,width:width/1.5}}>
 
+                      <View style={{height:100,width:width/1.5,paddingLeft:10,marginBottom:25}}>
+                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
+                          <View>
+                            <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
+                              {TAs.map(function(TA, i){
+                                return(
+                                  <Text style={{height:20,color:'gray',fontSize:13,fontWeight:'500',marginRight:15}}>{TA}</Text>
+                                )
+                              },this)}
+                            </View>
+                          </View>
                       </View>
+
+                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200}}>
+                          <View style={{}}>
+                            <FontAwesomeIcon name={'file-text'} color={'#18bdd6'} size={27}/>
+                            <Text style={{color:'gray',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.postCount}</Text>
+                          </View>
+
+                          <TouchableOpacity onPress={()=>this.getListofUser(course._id)}>
+                            <View style={{}}>
+                              <FontAwesomeIcon name={'users'} color={'#18bdd6'} size={27}/>
+                              <Text style={{color:'gray',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.userCount}</Text>
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+
+
                     </View>
                   </TouchableOpacity>
               )
