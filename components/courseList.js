@@ -105,6 +105,15 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
+
+  }
+
+  /*
+    note to self: when using the production build, change responseData to responseData.data
+  */
+  componentDidMount(){
+     console.warn(this.props.jwt)
+
     this.getAllCourses()
     this.getUserCourses()
     AsyncStorage.getItem('courseObjects')
@@ -115,14 +124,6 @@ export default class courseList extends Component {
     this.setState({allCourseList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.allCourseList)})
-  }
-
-  /*
-    note to self: when using the production build, change responseData to responseData.data
-  */
-  componentDidMount(){
-    // console.warn(this.props.jwt)
-
   }
 
   getAllCourses(){
@@ -179,7 +180,7 @@ export default class courseList extends Component {
       borderRadius:20,
       marginLeft:0,
       marginRight:0,
-      marginTop:-500,
+      marginTop:-300,
       backgroundColor:"white",
       marginBottom:600,
     }})
@@ -200,7 +201,7 @@ export default class courseList extends Component {
     }})},200)
 
     setTimeout(()=>{this.setState({viewToggle:'name'})},200)
-    setTimeout(()=>{Actions.course({type:'reset',id:id})},300)
+    setTimeout(()=>{Actions.course({type:'reset',id:id,jwt:this.props.jwt})},300)
 
   }
 
@@ -274,8 +275,9 @@ export default class courseList extends Component {
       return(
         <View>
           <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:true})}>
-            <View style={{width:20,height:20,backgroundColor:'red'}}></View>
+            <View style={{marginLeft:320,marginBottom:20,width:20,height:20,backgroundColor:'red'}}></View>
           </TouchableOpacity>
+
           <ScrollView
             style={{flex:1,flexDirection:'row'}}
             contentContainer={{justifyContent:'center'}}

@@ -77,6 +77,7 @@ export default class course extends Component {
       modalVisible:false,
       quesitonIdAnswering:'',
       commentContent:'',
+      jwt:'',
     };
   }
 
@@ -94,6 +95,7 @@ export default class course extends Component {
     this.setState({questionList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.questionList)})
+    this.setState({jwt:this.props.jwt})
     this.setState({courseId:this.props.id})
   }
 
@@ -101,23 +103,24 @@ export default class course extends Component {
     this.fetchPostsAPI()
     this.fetchAssignmentAPI()
     this.fetchReadingsAPI()
+    console.warn(this.props.id)
+    console.warn(this.props.jwt)
   }
 
   fetchPostsAPI(){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET"})
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
-    //    console.warn(JSON.stringify(responseData.data))
+        console.warn(JSON.stringify(responseData))
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
-      }).cloneWithRows(responseData.posts)})
+      }).cloneWithRows(responseData.data)})
     })
   }
 
   postAnswer(){
     var comment = {
     'content': this.state.commentContent,
-    'userId': '582cf3a4c5fbee3046f2d10f'
     }
 
     var formBody = []
@@ -129,7 +132,7 @@ export default class course extends Component {
     }
     formBody = formBody.join("&");
     var url = "http://localhost:3000/"+"api/courses/582fd82c206bc731a84bb673/posts/"+this.state.quesitonIdAnswering+"/comments"
-    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
+    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Bearer '+this.props.jwt},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
@@ -139,7 +142,7 @@ export default class course extends Component {
   }
 
   fetchAssignmentAPI(){
-    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/assignments",{method:"GET"})
+    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
       //  console.warn(JSON.stringify(responseData))
@@ -150,7 +153,7 @@ export default class course extends Component {
   }
 
   fetchReadingsAPI(){
-    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/readings",{method:"GET"})
+    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -174,7 +177,8 @@ export default class course extends Component {
 
     fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
           headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer '+this.props.jwt
           },body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
@@ -341,7 +345,6 @@ export default class course extends Component {
     var post = {
     'title': this.state.questionTitle,
     'content': this.state.questionContent,
-    'userId': '5824217b40a0836d65adc165'
     }
 
     var formBody = []
@@ -355,7 +358,8 @@ export default class course extends Component {
 
     fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"POST",
     headers: {
-     'Content-Type': 'application/x-www-form-urlencoded'
+     'Content-Type': 'application/x-www-form-urlencoded',
+     'Authorization': 'Bearer '+this.props.jwt
      },
     body:formBody})
     .then((response) => response.json())
@@ -460,7 +464,7 @@ export default class course extends Component {
           onChangeTab={this.fetchPostsAPI.bind(this)}
           page={this.state.pageNumber}
           prerenderingSiblingsNumber={0}
-          renderTabBar={() =><FacebookTabBar tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
+          renderTabBar={() =><FacebookTabBar jwt={this.props.jwt} tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
           >
 
           <View style={{flex:1,backgroundColor:'#51d1e1'}}>
