@@ -212,7 +212,7 @@ export default class courseList extends Component {
       borderRadius:0,
       marginLeft:0,
       marginRight:0,
-      marginTop:-300,
+      marginTop:-340,
       backgroundColor:"#18bdd6",
       marginBottom:600,
     }})},200)
@@ -418,7 +418,7 @@ export default class courseList extends Component {
                             <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                               {TAs.map(function(TA, i){
                                 return(
-                                  <Text style={{height:20,color:'gray',fontSize:13,fontWeight:'500',marginRight:15}}>{TA}</Text>
+                                  <Text style={{height:25,color:'gray',fontSize:13,fontWeight:'500',marginRight:15}}>{TA}</Text>
                                 )
                               },this)}
                             </View>
