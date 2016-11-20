@@ -101,6 +101,7 @@ export default class courseList extends Component {
       allCourseList:[],
       allCourseFilter:[],
       userAddCourseSwitch:false,
+      renderPlus:true,
     };
   }
 
@@ -112,7 +113,7 @@ export default class courseList extends Component {
     note to self: when using the production build, change responseData to responseData.data
   */
   componentDidMount(){
-     console.warn(this.props.jwt)
+    //  console.warn(this.props.jwt)
 
     this.getAllCourses()
     this.getUserCourses()
@@ -134,7 +135,7 @@ export default class courseList extends Component {
       this.setState({allCourseList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
-       console.warn("all course: "+JSON.stringify(responseData))
+      //  console.warn("all course: "+JSON.stringify(responseData))
       this.setState({allCourseFilter:responseData.data})
     })
   }
@@ -173,6 +174,7 @@ export default class courseList extends Component {
     LayoutAnimation.configureNext(animations.layout.spring)
     this.setState({selectedCourse:id})
     this.setState({showSearchBar:false})
+    this.setState({renderPlus:false})
     this.setState({containerStyle:{
       flex:1,
       width:width,
@@ -180,7 +182,7 @@ export default class courseList extends Component {
       borderRadius:20,
       marginLeft:0,
       marginRight:0,
-      marginTop:-300,
+      marginTop:-100,
       backgroundColor:"white",
       marginBottom:600,
     }})
@@ -195,8 +197,8 @@ export default class courseList extends Component {
       borderRadius:0,
       marginLeft:0,
       marginRight:0,
-      marginTop:-500,
-      backgroundColor:"#1BB5EC",
+      marginTop:-320,
+      backgroundColor:"#18bdd6",
       marginBottom:600,
     }})},200)
 
@@ -240,6 +242,19 @@ export default class courseList extends Component {
           });
       }
 
+  ifRenderPlus(){
+    if(this.state.renderPlus){
+      return(
+        <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:true})}>
+          <FontAwesomeIcon name={'plus'} color={'#e2faff'} size={27} style={{marginLeft:320,marginBottom:20}}/>
+        </TouchableOpacity>
+      )
+    }else{
+      return(
+        null
+      )
+    }
+  }
   ifRenderScrollView(){
     LayoutAnimation.configureNext(animations.layout.spring)
     if(!this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true){
@@ -255,7 +270,7 @@ export default class courseList extends Component {
               placeholderTextColor={'white'}
             />
           <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:false})}>
-              <FontAwesomeIcon name='plus' color={'white'} size={27} style={{marginLeft:20}}/>
+              <FontAwesomeIcon name='times' color={'white'} size={27} style={{marginLeft:20}}/>
             </TouchableOpacity>
           </View>
 
@@ -274,9 +289,8 @@ export default class courseList extends Component {
       var courses = this.state.listSource
       return(
         <View>
-          <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:true})}>
-            <View style={{marginLeft:320,marginBottom:20,width:20,height:20,backgroundColor:'red'}}></View>
-          </TouchableOpacity>
+          {this.ifRenderPlus()}
+
 
           <ScrollView
             style={{flex:1,flexDirection:'row'}}
@@ -294,7 +308,7 @@ export default class courseList extends Component {
                 var marginRight = width/10
               }
               else
-               var marginLeft=width/10;
+               var marginLeft=width/6;
 
                var containerStyle = {
                  flex:1,
@@ -303,7 +317,7 @@ export default class courseList extends Component {
                  alignItems:'center',
                  borderRadius:height/100,
                  width:width/1.2,
-                 backgroundColor:'white',
+                 backgroundColor:'#e2faff',
                  marginLeft:marginLeft,
                  marginRight:marginRight,
                  paddingLeft:20,
@@ -377,7 +391,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'row',
     justifyContent: 'center',
-    backgroundColor:'#4fc1e9',
+    backgroundColor:'#51d1e1',
     alignItems: 'center',
   },
   welcome: {
