@@ -240,17 +240,24 @@ export default class courseList extends Component {
       }
 
   ifRenderScrollView(){
+    LayoutAnimation.configureNext(animations.layout.spring)
     if(!this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true){
       return(
         <View>
-          <TextInput
-            style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center'}}
-            onChangeText={(text)=>this.filterCourses(text)}
-            value={this.state.commentContent}
-            autoFocus={true}
-            placeholder="Search here to add a course"
-            placeholderTextColor={'white'}
-          />
+          <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+            <TextInput
+              style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center',width:200}}
+              onChangeText={(text)=>this.filterCourses(text)}
+              value={this.state.commentContent}
+              autoFocus={true}
+              placeholder="Tap here to search"
+              placeholderTextColor={'white'}
+            />
+          <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:false})}>
+              <FontAwesomeIcon name='plus' color={'white'} size={27} style={{marginLeft:20}}/>
+            </TouchableOpacity>
+          </View>
+
         <View style={{height:height/2}}>
           <ListView
             showsVerticalScrollIndicator={false}
@@ -259,6 +266,7 @@ export default class courseList extends Component {
             horizontal={false}
             removeClippedSubviews={true}/>
         </View>
+
         </View>
       )
     }else{
@@ -311,20 +319,23 @@ export default class courseList extends Component {
                       </View>
 
                       <View style={{width:width/1.5,paddingLeft:10}}>
-                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Professor</Text>
-                        <Text style={{paddingLeft:10}}>Farshid Agharebparast</Text>
+                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Posts</Text>
+                        <Text style={{paddingLeft:10}}>{course.postCount}</Text>
                       </View>
 
 
                       <View style={{width:width/1.5,paddingLeft:10}}>
-                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
+                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Users</Text>
                         <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                           {[course.TAs].map(function(TA, i){
                             return(
-                              <Text>TA</Text>
+                              <Text>{course.userCount}</Text>
                             )
                           },this)}
                         </View>
+
+                      </View>
+                      <View style={{height:150,width:width/1.5}}>
 
                       </View>
                     </View>
