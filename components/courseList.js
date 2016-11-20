@@ -233,17 +233,29 @@ export default class courseList extends Component {
     return(
       <TouchableOpacity onPress={()=>this.addCourse(rowData._id)}>
       <Animatable.View animation="flipInY" style={{paddingRight:30,paddingLeft:30,height:80,flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,paddingLeft:10,borderBottomWidth:2,borderBottomColor:'white'}}>
-        <View>
-          <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.name}</Animatable.Text>
+        <View style={{flex:1,flexDirection:'row',justifyContent:"flex-start",alignItems:"center"}}>
           <Animatable.Image
             animation="fadeInUp" easing="ease-in" duration={500} delay={500}
             style={{width: 36, height: 36,borderRadius:18}}
             source={{uri: rowData.profileImg}}
           />
+        <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{marginLeft:10,color:'white',textAlign:'center',fontSize:16,fontWeight:'500'}}>{rowData.name}</Animatable.Text>
         </View>
-        <Animatable.View animation="fadeInUp" easing="ease-in" duration={500} delay={500} >
-          <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
-        </Animatable.View>
+        <View style={{height:30,width:75}}>
+          <View style={{flex:1,flexDirection:'row',justifyContent:"space-around"}}>
+            <View style={{flex:1,flexDirection:'row'}}>
+              <Animatable.View animation="fadeInUp" easing="ease-in" duration={500} delay={500} >
+                <FontAwesomeIcon name="star-o" size={27} color={'white'}/>
+              </Animatable.View>
+              <Text style={{marginLeft:3,marginTop:5,color:'white'}}>{rowData.honour}</Text>
+            </View>
+            <Animatable.View animation="fadeInUp" easing="ease-in" duration={500} delay={500} >
+              <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
+            </Animatable.View>
+          </View>
+        </View>
+
+
       </Animatable.View>
       </TouchableOpacity>
     )
@@ -318,12 +330,19 @@ export default class courseList extends Component {
       )
     }else if(this.state.showUserList){
       return(
-        <ListView
-          showsVerticalScrollIndicator={false}
-          dataSource={this.state.userList}
-          renderRow={this.renderUserList.bind(this)}
-          horizontal={false}
-          removeClippedSubviews={true}/>
+        <View>
+          <TouchableOpacity onPress={()=>this.setState({showUserList:false})}>
+            <FontAwesomeIcon name='times' color={'white'} size={27} style={{marginLeft:20}}/>
+          </TouchableOpacity>
+          <View style={{height:height/2}}>
+            <ListView
+              showsVerticalScrollIndicator={false}
+              dataSource={this.state.userList}
+              renderRow={this.renderUserList.bind(this)}
+              horizontal={false}
+              removeClippedSubviews={true}/>
+          </View>
+        </View>
       )
     }else{
       var courses = this.state.listSource
