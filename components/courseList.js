@@ -19,6 +19,8 @@ import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {Motion, spring} from 'react-motion';
 import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import Communications from 'react-native-communications';
+
 var AutoComplete = require('react-native-autocomplete');
 var Dimensions = require('Dimensions');
 var {
@@ -229,27 +231,31 @@ export default class courseList extends Component {
        this.setState({userAddCourseSwitch:false})
     })
   }
+
+  emailUser=(to)=>{
+    Communications.email(to,null,null,'email from Cyann User','')
+  }
   renderUserList(rowData){
     return(
-      <TouchableOpacity onPress={()=>this.addCourse(rowData._id)}>
+      <TouchableOpacity onPress={()=>this.emailUser(rowData.email)}>
       <Animatable.View animation="flipInY" style={{paddingRight:30,paddingLeft:30,height:80,flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,paddingLeft:10,borderBottomWidth:2,borderBottomColor:'white'}}>
         <View style={{flex:1,flexDirection:'row',justifyContent:"flex-start",alignItems:"center"}}>
           <Animatable.Image
-            animation="fadeInUp" easing="ease-in" duration={500} delay={500}
+            animation="fadeInLeft" easing="ease-in" duration={500} delay={500}
             style={{width: 36, height: 36,borderRadius:18}}
             source={{uri: rowData.profileImg}}
           />
-        <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{marginLeft:10,color:'white',textAlign:'center',fontSize:16,fontWeight:'500'}}>{rowData.name}</Animatable.Text>
+        <Animatable.Text animation="fadeInLeft" easing="ease-in" duration={500} delay={500} style={{marginLeft:10,color:'white',textAlign:'center',fontSize:16,fontWeight:'500'}}>{rowData.name}</Animatable.Text>
         </View>
         <View style={{height:30,width:75}}>
           <View style={{flex:1,flexDirection:'row',justifyContent:"space-around"}}>
             <View style={{flex:1,flexDirection:'row'}}>
-              <Animatable.View animation="fadeInUp" easing="ease-in" duration={500} delay={500} >
+              <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} >
                 <FontAwesomeIcon name="star-o" size={27} color={'white'}/>
               </Animatable.View>
-              <Text style={{marginLeft:3,marginTop:5,color:'white'}}>{rowData.honour}</Text>
+              <Animatable.Text animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:3,marginTop:5,color:'white'}}>{rowData.honour}</Animatable.Text>
             </View>
-            <Animatable.View animation="fadeInUp" easing="ease-in" duration={500} delay={500} >
+            <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} >
               <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
             </Animatable.View>
           </View>
@@ -389,8 +395,8 @@ export default class courseList extends Component {
                   <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
                     <View obj={course} key={i} style={courseCardStyle} >
 
-                      <View style={{width:width/1.5,paddingLeft:10}}>
-                        <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10}}>{course.courseName}</Text>
+                      <View style={{width:width/1.5}}>
+                        <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10,textAlign:'center'}}>{course.courseName}</Text>
                       </View>
 
                       <View style={{width:width/1.5,paddingLeft:10}}>
