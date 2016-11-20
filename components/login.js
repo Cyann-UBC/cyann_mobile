@@ -57,7 +57,7 @@ export default class Login extends Component {
       }else{
         _this.setState({user:data.credentials})
         _this.setState({buttonText:'logout'})
-      //  Actions.courseList()
+        Actions.courseList()
       }
       if (!error) {
         _this.setState({ user : data})
@@ -116,8 +116,8 @@ export default class Login extends Component {
     fetch('http://localhost:3000/api/users/register',{method:'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(responseData)
       AsyncStorage.setItem('jwt',responseData)
+      Actions.courseList()
     })
   }
 
