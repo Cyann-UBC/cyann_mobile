@@ -45,6 +45,7 @@ export default class courseList extends Component {
 
   componentWillMount(){
     console.warn(this.props.courseId)
+    console.warn(this.props.questionId)
     this.setState({courseId:this.props.courseId})
     this.setState({postId:this.props.questionId})
     this.setState({userId:'5824217b40a0836d65adc165'})
@@ -61,7 +62,10 @@ export default class courseList extends Component {
   getComments(){
     var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url
-    ,{method:"GET"})
+    ,{method:"GET",
+      headers:{
+        'Authorization': 'Bearer '+this.props.jwt
+      }})
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
@@ -74,23 +78,14 @@ export default class courseList extends Component {
     Actions.course({courseName:name})
   }
   upvoteComment(id){
-    var post = {
-    'userId': '5824217b40a0836d65adc165'
-    }
-    var formBody = []
-    for (var property in post) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(post[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
 // /api/courses/:courseId/posts/:postId/comments/:commentId/upvote
     fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId +"/comments/"+id+'/upvote',{method:"put",
           headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-          },body:formBody})
+          'Authorization': 'Bearer '+this.props.jwt
+          }})
     .then((response) => response.json())
     .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
       this.getComments()
     })
   }
@@ -154,7 +149,6 @@ export default class courseList extends Component {
   postAnswer(){
     var comment = {
     'content': this.state.commentContent,
-    'userId': '58122f3e6a5f670b42b5f85d'
     }
 
     var formBody = []
@@ -165,8 +159,12 @@ export default class courseList extends Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    var url = "http://localhost:3000/"+"api/courses/581a27f661083346ae0955dd/posts/"+this.props.questionId+"/comments"
-    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
+    var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
+    fetch(url,{method:"POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer '+this.props.jwt}
+      ,body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))

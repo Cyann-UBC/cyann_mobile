@@ -51,7 +51,8 @@ export default class Login extends Component {
   componentWillMount(){
       var _this = this
       AsyncStorage.getItem('jwt')
-        .then(req => this.setState({jwt:req}))
+        .then(req => JSON.parse(req))
+        .then(json => _this.setState({jwt:json}))
         .then(function(){
           FBLoginManager.getCredentials(function(error, data){
             // console.warn(JSON.stringify(data))
@@ -61,7 +62,7 @@ export default class Login extends Component {
             }else{
               _this.setState({user:data.credentials})
               _this.setState({buttonText:'logout'})
-               Actions.courseList({jwt:_this.state.jwt})
+                 Actions.courseList({jwt:_this.state.jwt})
             }
             if (!error) {
               _this.setState({ user : data})
@@ -124,9 +125,9 @@ export default class Login extends Component {
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
-      AsyncStorage.setItem('jwt',responseData.data.token)
+      AsyncStorage.setItem('jwt',JSON.stringify(responseData.data))
       // AsyncStorage.setUserID('userId',responseData.data.userId)
-      Actions.courseList({jwt:responseData})
+      Actions.courseList({jwt:responseData.data.jwt})
     })
   }
 

@@ -102,6 +102,7 @@ export default class courseList extends Component {
       allCourseFilter:[],
       userAddCourseSwitch:false,
       renderPlus:true,
+      userList:[],
     };
   }
 
@@ -128,7 +129,7 @@ export default class courseList extends Component {
   }
 
   getAllCourses(){
-    fetch('http://localhost:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
+    fetch('http://localhost:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
       //console.warn(JSON.stringify(responseData))
@@ -140,7 +141,7 @@ export default class courseList extends Component {
     })
   }
   getUserCourses(){
-    fetch('http://localhost:3000/api/users/5830e5127e74713d73206139/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
+    fetch('http://localhost:3000/api/users/5830e5127e74713d73206139/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       console.warn(JSON.stringify(responseData))
@@ -148,6 +149,17 @@ export default class courseList extends Component {
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
       this.setState({listSource:responseData})
+    })
+  }
+
+  getListofUser(id){
+    fetch('http://localhost:3000/api/courses/users/'+id,{method:"GET",headers:{'Authorization': 'Bearer '+this.props.jwt.token}})
+    .then(response=>response.json())
+    .then(responseData=>{
+      this.setState({userList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData)})
+      
     })
   }
 
@@ -197,7 +209,7 @@ export default class courseList extends Component {
       borderRadius:0,
       marginLeft:0,
       marginRight:0,
-      marginTop:-320,
+      marginTop:-310,
       backgroundColor:"#18bdd6",
       marginBottom:600,
     }})},200)
@@ -208,7 +220,7 @@ export default class courseList extends Component {
   }
 
   addCourse(id){
-    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt}})
+    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
        console.warn(JSON.stringify(responseData))
@@ -339,9 +351,15 @@ export default class courseList extends Component {
                         <Text style={{paddingLeft:10}}>{course.postCount}</Text>
                       </View>
 
+                      <TouchableOpacity onPress={()=>this.getListofUser(course._id)}>
+                        <View style={{width:width/1.5,paddingLeft:10}}>
+                          <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Users</Text>
+                          <Text style={{paddingLeft:10}}>{course.userCount}</Text>
+                        </View>
+                      </TouchableOpacity>
 
                       <View style={{width:width/1.5,paddingLeft:10}}>
-                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Users</Text>
+                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
                         <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                           {[course.TAs].map(function(TA, i){
                             return(

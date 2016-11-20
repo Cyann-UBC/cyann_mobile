@@ -34,7 +34,11 @@ export default class comment extends Component {
     this.setState({uri:this.props.uri})
   }
   componentDidMount(){
-    fetch("http://localhost:3000/api/courses/"+this.props.id+"/posts",{method:"GET"})
+    fetch("http://localhost:3000/api/courses/"+this.props.id+"/posts",{method:"GET",
+    headers:{
+      'Authorization': 'Bearer '+this.props.jwt
+    }
+    })
     .then((response) => response.json())
     .then((responseData) => {
     //    console.warn(JSON.stringify(responseData.data))

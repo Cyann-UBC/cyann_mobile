@@ -95,7 +95,7 @@ export default class course extends Component {
     this.setState({questionList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.questionList)})
-    this.setState({jwt:this.props.jwt})
+    this.setState({jwt:this.props.jwt.token})
     this.setState({courseId:this.props.id})
   }
 
@@ -104,11 +104,11 @@ export default class course extends Component {
     this.fetchAssignmentAPI()
     this.fetchReadingsAPI()
     console.warn(this.props.id)
-    console.warn(this.props.jwt)
+    console.warn(this.props.jwt.token)
   }
 
   fetchPostsAPI(){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -131,8 +131,8 @@ export default class course extends Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    var url = "http://localhost:3000/"+"api/courses/582fd82c206bc731a84bb673/posts/"+this.state.quesitonIdAnswering+"/comments"
-    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Bearer '+this.props.jwt},body:formBody})
+    var url = "http://localhost:3000/"+"api/courses/"+this.props.id+"/posts/"+this.state.quesitonIdAnswering+"/comments"
+    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Bearer '+this.props.jwt.token},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
@@ -142,7 +142,7 @@ export default class course extends Component {
   }
 
   fetchAssignmentAPI(){
-    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
+    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response) => response.json())
     .then((responseData) => {
       //  console.warn(JSON.stringify(responseData))
@@ -153,7 +153,7 @@ export default class course extends Component {
   }
 
   fetchReadingsAPI(){
-    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt}})
+    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -164,24 +164,14 @@ export default class course extends Component {
   }
 
   deleteOwnPost(id){
-    var post = {
-    'userId': '5824217b40a0836d65adc165'
-    }
-    var formBody = []
-    for (var property in post) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(post[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-
     fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer '+this.props.jwt
-          },body:formBody})
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
     .then((response) => response.json())
     .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
       this.fetchPostsAPI()
     })
   }
@@ -194,10 +184,10 @@ export default class course extends Component {
     this.setState({quesitonIdAnswering:id})
   }
 
-  ifRenderCross(id,name){
-    if('5824217b40a0836d65adc165' === name){
+  ifRenderCross(id,authorId){
+    if(this.props.jwt.userId === authorId){
       return(
-        <TouchableOpacity onPress={()=>this.deleteOwnPost(id,name)}>
+        <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
           <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
@@ -359,7 +349,7 @@ export default class course extends Component {
     fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"POST",
     headers: {
      'Content-Type': 'application/x-www-form-urlencoded',
-     'Authorization': 'Bearer '+this.props.jwt
+     'Authorization': 'Bearer '+this.props.jwt.token
      },
     body:formBody})
     .then((response) => response.json())
@@ -377,10 +367,14 @@ export default class course extends Component {
   }
 
   viewQuestion=(id,title,content,author)=>{
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+'/'+'posts/'+id,{method:"GET"})
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+'/'+'posts/'+id,{method:"GET",
+    headers:{
+      'Authorization': 'Bearer '+this.props.jwt.token
+    }
+    })
     .then((response) => response.json())
     .then((responseData) => {
-      Actions.viewQuestion({data:responseData,courseId:this.state.courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author})
+      Actions.viewQuestion({data:responseData,courseId:this.state.courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.token})
     })
   }
 
