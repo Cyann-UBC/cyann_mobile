@@ -115,6 +115,7 @@ export default class courseList extends Component {
     note to self: when using the production build, change responseData to responseData.data
   */
   componentDidMount(){
+    console.warn(this.props.jwt)
     fetch('http://localhost:3000/api/courses',{method:"GET"})
     .then((response)=>response.json())
     .then((responseData)=>{

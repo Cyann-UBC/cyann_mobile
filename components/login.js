@@ -44,25 +44,32 @@ export default class Login extends Component {
       user:'',
       buttonText:'',
       access_token:'',
-      doneLogin:false
+      doneLogin:false,
+      jwt:'',
     }
   }
   componentWillMount(){
       var _this = this
-    FBLoginManager.getCredentials(function(error, data){
-      console.warn(JSON.stringify(data))
-      if(data === null){
-        _this.setState({user:null})
-        _this.setState({buttonText:'login'})
-      }else{
-        _this.setState({user:data.credentials})
-        _this.setState({buttonText:'logout'})
-        Actions.courseList()
-      }
-      if (!error) {
-        _this.setState({ user : data})
-      }
-    })
+      AsyncStorage.getItem('jwt')
+        .then(req => this.setState({jwt:req}))
+        .then(function(){
+          FBLoginManager.getCredentials(function(error, data){
+            console.warn(JSON.stringify(data))
+            if(data === null){
+              _this.setState({user:null})
+              _this.setState({buttonText:'login'})
+            }else{
+              _this.setState({user:data.credentials})
+              _this.setState({buttonText:'logout'})
+              Actions.courseList({jwt:_this.state.jwt})
+            }
+            if (!error) {
+              _this.setState({ user : data})
+            }
+          })
+        })
+        .catch(error => console.warn('error!'));
+
   }
 
   handleLogin(){
@@ -117,7 +124,7 @@ export default class Login extends Component {
     .then((response) => response.json())
     .then((responseData) => {
       AsyncStorage.setItem('jwt',responseData)
-      Actions.courseList()
+      Actions.courseList({jwt:responseData})
     })
   }
 
