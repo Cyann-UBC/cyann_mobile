@@ -9,6 +9,7 @@ import {
   StatusBar,
   TextInput,
   ScrollView,
+  Image,
   Text,
   View
 } from 'react-native';
@@ -103,6 +104,7 @@ export default class courseList extends Component {
       userAddCourseSwitch:false,
       renderPlus:true,
       userList:[],
+      showUserList:false,
     };
   }
 
@@ -157,7 +159,8 @@ export default class courseList extends Component {
       this.setState({userList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
-
+      console.warn(JSON.stringify(responseData))
+      this.setState({showUserList:true})
     })
   }
 
@@ -226,7 +229,25 @@ export default class courseList extends Component {
        this.setState({userAddCourseSwitch:false})
     })
   }
-
+  renderUserList(rowData){
+    return(
+      <TouchableOpacity onPress={()=>this.addCourse(rowData._id)}>
+      <Animatable.View animation="flipInY" style={{paddingRight:30,paddingLeft:30,height:80,flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,paddingLeft:10,borderBottomWidth:2,borderBottomColor:'white'}}>
+        <View>
+          <Animatable.Text animation="fadeInUp" easing="ease-in" duration={500} delay={500} style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>{rowData.name}</Animatable.Text>
+          <Animatable.Image
+            animation="fadeInUp" easing="ease-in" duration={500} delay={500}
+            style={{width: 36, height: 36,borderRadius:18}}
+            source={{uri: rowData.profileImg}}
+          />
+        </View>
+        <Animatable.View animation="fadeInUp" easing="ease-in" duration={500} delay={500} >
+          <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
+        </Animatable.View>
+      </Animatable.View>
+      </TouchableOpacity>
+    )
+  }
   renderCourses(rowData){
     let courseContainerStyle = [styles.courseContainer, this.state.courseStyle]
     return(
@@ -267,7 +288,7 @@ export default class courseList extends Component {
   }
   ifRenderScrollView(){
     LayoutAnimation.configureNext(animations.layout.spring)
-    if(this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true){
+    if(this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true && this.state.showUserList == false){
       return(
         <View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
@@ -294,6 +315,15 @@ export default class courseList extends Component {
         </View>
 
         </View>
+      )
+    }else if(this.state.showUserList){
+      return(
+        <ListView
+          showsVerticalScrollIndicator={false}
+          dataSource={this.state.userList}
+          renderRow={this.renderUserList.bind(this)}
+          horizontal={false}
+          removeClippedSubviews={true}/>
       )
     }else{
       var courses = this.state.listSource
