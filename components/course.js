@@ -233,8 +233,6 @@ export default class course extends Component {
     this.setState({quesitonIdAnswering:id})
   }
 
-
-
   ifRenderCross(id,authorId){
     if(this.props.jwt.userId === authorId){
       return(
@@ -249,6 +247,17 @@ export default class course extends Component {
     }
   }
 
+  renderUserPosts(rowData, sectionID, rowID, highlightRow){
+    return(
+      null
+    )
+  }
+
+  renderUserComments(rowData, sectionID, rowID, highlightRow){
+    return(
+      null
+    )
+  }
 
   renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
