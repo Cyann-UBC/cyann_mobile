@@ -261,13 +261,19 @@ export default class course extends Component {
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
-      null
+      <TouchableOpacity>
+        <Text>{rowData.title}</Text>
+        <Text>{rowData.content}</Text>
+      </TouchableOpacity>
     )
   }
 
   renderUserComments(rowData, sectionID, rowID, highlightRow){
     return(
-      null
+      <TouchableOpacity>
+        <Text>{rowData.title}</Text>
+        <Text>{rowData.content}</Text>
+      </TouchableOpacity>
     )
   }
 
@@ -679,8 +685,19 @@ export default class course extends Component {
               </View>
             </View>
 
+            <ListView
+              showsVerticalScrollIndicator={false}
+              dataSource={this.state.userComments}
+              renderRow={this.renderUserComments.bind(this)}
+              horizontal={false}
+              removeClippedSubviews={true}/>
 
-
+            <ListView
+              showsVerticalScrollIndicator={false}
+              dataSource={this.state.userPosts}
+              renderRow={this.renderUserPosts.bind(this)}
+              horizontal={false}
+              removeClippedSubviews={true}/>
 
             <View style={{width:30,height:30}}>
 

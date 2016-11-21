@@ -146,7 +146,7 @@ export default class courseList extends Component {
     fetch('http://localhost:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
-      console.warn(JSON.stringify(responseData))
+      console.warn('my courses '+JSON.stringify(responseData))
       this.setState({myCourse:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
