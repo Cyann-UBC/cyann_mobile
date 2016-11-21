@@ -238,7 +238,7 @@ export default class courseList extends Component {
   renderUserList(rowData){
     return(
       <TouchableOpacity onPress={()=>this.emailUser(rowData.email)}>
-      <Animatable.View animation="flipInY" style={{paddingRight:30,paddingLeft:30,height:80,flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,paddingLeft:10,borderBottomWidth:2,borderBottomColor:'white'}}>
+      <Animatable.View animation="flipInY" style={{paddingRight:20,paddingLeft:20,height:80,flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,paddingLeft:10,borderBottomWidth:2,borderBottomColor:'white'}}>
         <View style={{flex:1,flexDirection:'row',justifyContent:"flex-start",alignItems:"center"}}>
           <Animatable.Image
             animation="fadeInLeft" easing="ease-in" duration={500} delay={500}
@@ -253,9 +253,9 @@ export default class courseList extends Component {
               <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} >
                 <FontAwesomeIcon name="star-o" size={27} color={'white'}/>
               </Animatable.View>
-              <Animatable.Text animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:3,marginTop:5,color:'white'}}>{rowData.honour}</Animatable.Text>
+              <Animatable.Text animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:3,marginTop:5,marginRight:5,color:'white'}}>{rowData.honour}</Animatable.Text>
             </View>
-            <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} >
+            <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:10}}>
               <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
             </Animatable.View>
           </View>
