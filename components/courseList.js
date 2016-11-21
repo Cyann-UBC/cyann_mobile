@@ -387,7 +387,7 @@ export default class courseList extends Component {
                  marginRight:marginRight,
                  paddingLeft:20,
                  paddingRight:20,
-                 paddingBottom:60,
+                 paddingBottom:30,
                };
                var instructors = ['Farshid Agharebparast','Sathish Gopalakrishnan']
                var TAs = ['Bader Alahmad','John Deppe','Bibek Kaur','Theresa Mammarella','Nick Mulvenna']
@@ -425,7 +425,7 @@ export default class courseList extends Component {
                           </View>
                       </View>
 
-                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200}}>
+                        <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200,marginTop:20}}>
                           <View style={{}}>
                             <FontAwesomeIcon name={'file-text'} color={'#18bdd6'} size={27}/>
                             <Text style={{color:'gray',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.postCount}</Text>

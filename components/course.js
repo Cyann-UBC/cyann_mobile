@@ -299,7 +299,7 @@ export default class course extends Component {
             <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
               <Image
                 style={{width: 36, height: 36,borderRadius:18}}
-                source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+                source={{uri: rowData.author.profileImg}}
               />
             <View style={{height:36}}>
                 <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
