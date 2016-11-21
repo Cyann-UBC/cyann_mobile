@@ -103,6 +103,9 @@ export default class course extends Component {
     this.fetchPostsAPI()
     this.fetchAssignmentAPI()
     this.fetchReadingsAPI()
+    this.getUserInfo()
+    this.getUserComments()
+    this.getUserPosts()
     console.warn(this.props.id)
     console.warn(this.props.jwt.token)
   }
@@ -176,13 +179,61 @@ export default class course extends Component {
     })
   }
 
+  filterPost(){
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.fetchPostsAPI()
+    })
+  }
+
+  getUserInfo(){
+    fetch("http://localhost:3000/api/users/my",{method:"GET",
+          headers: {
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+    })
+  }
+
+  getUserComments(){
+    fetch("http://localhost:3000/api/users/my/comments",{method:"GET",
+          headers: {
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+    })
+  }
+
+  getUserPosts(){
+    fetch("http://localhost:3000/api/users/my/posts",{method:"GET",
+          headers: {
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+    })
+  }
+
   gotoFile(rowData,type){
-    Actions.fileView({uri:"http://localhost:3000/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData})
+    Actions.fileView({uri:"http://localhost:3000/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.token})
   }
 
   setQuestionID(id){
     this.setState({quesitonIdAnswering:id})
   }
+
+
 
   ifRenderCross(id,authorId){
     if(this.props.jwt.userId === authorId){
@@ -197,6 +248,8 @@ export default class course extends Component {
       )
     }
   }
+
+
   renderRow(rowData, sectionID, rowID, highlightRow){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if(rowID == 0){
@@ -212,7 +265,7 @@ export default class course extends Component {
             <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
               <Image
                 style={{width: 36, height: 36,borderRadius:18}}
-                source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+                source={{uri: rowData.author.profileImg}}
               />
             <View style={{height:36}}>
                 <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>

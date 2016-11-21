@@ -143,7 +143,7 @@ export default class courseList extends Component {
     })
   }
   getUserCourses(){
-    fetch('http://localhost:3000/api/users/5830e5127e74713d73206139/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       console.warn(JSON.stringify(responseData))

@@ -37,7 +37,7 @@ export default class fileView extends Component {
     return(
       <WebView
         scalesPageToFit={true}
-        source={{uri: this.state.uri}}
+        source={{uri: this.state.uri,method:'GET',headers:{'Authorization': 'Bearer '+this.props.jwt}}}
         style={{marginTop: 20}}
       />
     )
