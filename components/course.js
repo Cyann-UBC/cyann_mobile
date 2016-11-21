@@ -78,6 +78,10 @@ export default class course extends Component {
       quesitonIdAnswering:'',
       commentContent:'',
       jwt:'',
+      profileImg:'',
+      userName:'',
+      userPosts:[],
+      userComments:[]
     };
   }
 
@@ -199,7 +203,9 @@ export default class course extends Component {
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      console.warn('user info'+JSON.stringify(responseData))
+      this.setState({userName:responseData.userInfo.name})
+      this.setState({profileImg:responseData.userInfo.profileImg})
     })
   }
 
@@ -210,7 +216,10 @@ export default class course extends Component {
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      console.warn('user comments'+JSON.stringify(responseData))
+      this.setState({userComments:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData)})
     })
   }
 
@@ -221,7 +230,10 @@ export default class course extends Component {
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      console.warn('user posts'+JSON.stringify(responseData))
+      this.setState({userPosts:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData)})
     })
   }
 
@@ -315,7 +327,7 @@ export default class course extends Component {
     var content = (
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
         <Animatable.View ref="first" style={{backgroundColor:'#e2faff',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:10,paddingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10}}>
-          <Animatable.View key={rowID} style={{height:150}}>
+          <Animatable.View key={rowID} style={{height:130}}>
             <View style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:15,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>260?rowData.content.substring(0,260)+'...':rowData.content}</Text>
               </View>
@@ -656,12 +668,21 @@ export default class course extends Component {
             {this.renderFiles()}
           </View>
 
-          <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
-            <View style={{}}>
-
+          <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center',paddingTop:20,paddingBottom:20,backgroundColor:this.state.backgroundColor}}>
+            <View style={{width:width,height:height/5}}>
+              <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
+                <Image
+                  style={{width: 70, height: 70,borderRadius:35}}
+                  source={{uri: this.state.profileImg}}
+                />
+              <Text style={{color:'white',fontSize:22,fontWeight:'500'}}>{this.state.userName}</Text>
+              </View>
             </View>
 
-            <View style={{}}>
+
+
+
+            <View style={{width:30,height:30}}>
 
             </View>
           </View>

@@ -193,10 +193,10 @@ export default class courseList extends Component {
     this.setState({containerStyle:{
       flex:1,
       width:width,
+      marginLeft:-20,
+      marginRight:-20,
       backgroundColor:'white',
       borderRadius:20,
-      marginLeft:0,
-      marginRight:0,
       marginTop:-100,
       backgroundColor:"white",
       marginBottom:600,
@@ -208,11 +208,12 @@ export default class courseList extends Component {
     setTimeout(()=>{this.setState({containerStyle:{
       flex:1,
       width:width,
+      marginLeft:-20,
+      marginRight:-20,
       backgroundColor:'white',
       borderRadius:0,
-      marginLeft:0,
-      marginRight:0,
-      marginTop:-340,
+      marginTop:-380,
+      paddingBottom:100,
       backgroundColor:"#18bdd6",
       marginBottom:600,
     }})},200)
@@ -338,7 +339,7 @@ export default class courseList extends Component {
       return(
         <View>
           <TouchableOpacity onPress={()=>this.setState({showUserList:false})}>
-            <FontAwesomeIcon name='times' color={'white'} size={27} style={{marginLeft:20}}/>
+            <FontAwesomeIcon name='times' color={'white'} size={27} style={{marginLeft:320}}/>
           </TouchableOpacity>
           <View style={{height:height/2}}>
             <ListView
