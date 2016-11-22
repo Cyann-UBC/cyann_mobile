@@ -261,19 +261,40 @@ export default class course extends Component {
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
-      <TouchableOpacity>
-        <Text>{rowData.title}</Text>
-        <Text>{rowData.content}</Text>
-      </TouchableOpacity>
+      <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <View style={{height:40,marginBottom:10}}>
+          <View style={{flex:1,flexDirection:"column",justifyContent:'space-between',height:5}}>
+            <View style={{height:70}}>
+              <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
+                <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.course.name}</Text>
+                  <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
+                    <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
+                  </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+      </View>
+      <View style={{width:width/1.1,height:50}}>
+        <Text style={{fontSize:16,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+      </View>
+      </Animatable.View>
     )
   }
 
   renderUserComments(rowData, sectionID, rowID, highlightRow){
     return(
-      <TouchableOpacity>
-        <Text>{rowData.title}</Text>
-        <Text>{rowData.content}</Text>
-      </TouchableOpacity>
+      <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <View style={{height:40,marginBottom:10}}>
+          <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
+            <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.content}</Text>
+              <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
+                <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
+              </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
+        </View>
+      </Animatable.View>
     )
   }
 
@@ -470,6 +491,47 @@ export default class course extends Component {
     this.refs.titleView.fadeInDown(200)
   }
 
+  ifRenderUserComments(){
+    if(this.state.userComments._cachedRowCount == []){
+      return(
+        <View style={{width:width,height:30}}>
+          <Text>Looks like you haven't commented on anything</Text>
+        </View>
+      )
+    }
+    else{
+      return(
+        <ListView
+          style={{flex:1,flexDirection:'column',height:250}}
+          showsVerticalScrollIndicator={false}
+          dataSource={this.state.userComments}
+          renderRow={this.renderUserComments.bind(this)}
+          horizontal={false}
+          removeClippedSubviews={true}/>
+      )
+    }
+  }
+
+  ifRenderUserPosts(){
+    if(this.state.userPosts._cachedRowCount == []){
+      return(
+        <View style={{width:width,height:30}}>
+          <Text>Looks like you haven't posted anything</Text>
+        </View>
+      )
+    }
+    else{
+      return(
+        <ListView
+          style={{flex:1,flexDirection:'column',height:250}}
+          showsVerticalScrollIndicator={false}
+          dataSource={this.state.userPosts}
+          renderRow={this.renderUserPosts.bind(this)}
+          horizontal={false}
+          removeClippedSubviews={true}/>
+      )
+    }
+  }
   renderFiles(){
     if(this.state.ifrenderFile === 'none'){
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -674,8 +736,8 @@ export default class course extends Component {
             {this.renderFiles()}
           </View>
 
-          <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center',paddingTop:20,paddingBottom:20,backgroundColor:this.state.backgroundColor}}>
-            <View style={{width:width,height:height/5}}>
+          <View style={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}}>
+            <View style={{width:width,height:height/5,marginBottom:10}}>
               <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
                 <Image
                   style={{width: 70, height: 70,borderRadius:35}}
@@ -685,19 +747,18 @@ export default class course extends Component {
               </View>
             </View>
 
-            <ListView
-              showsVerticalScrollIndicator={false}
-              dataSource={this.state.userComments}
-              renderRow={this.renderUserComments.bind(this)}
-              horizontal={false}
-              removeClippedSubviews={true}/>
 
-            <ListView
-              showsVerticalScrollIndicator={false}
-              dataSource={this.state.userPosts}
-              renderRow={this.renderUserPosts.bind(this)}
-              horizontal={false}
-              removeClippedSubviews={true}/>
+            <View style={{width:width,marginBottom:20}}>
+              <Text>Past Comments</Text>
+              {this.ifRenderUserComments()}
+            </View>
+
+              <View style={{width:width,paddingBottom:20}}>
+                <Text>Past Posts</Text>
+                {this.ifRenderUserPosts()}
+              </View>
+
+
 
             <View style={{width:30,height:30}}>
 
