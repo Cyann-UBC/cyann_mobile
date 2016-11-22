@@ -753,7 +753,19 @@ export default class course extends Component {
 
 
             <View style={{width:width,marginBottom:20}}>
-              <Text>Past Comments</Text>
+              <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:30,paddingRight:30,marginBottom:10}}>
+                <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:false})}>
+                  <View>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'400'}}>Past Posts</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:true})}>
+                  <View>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'400'}}>Past Comments</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
               {this.state.ifRenderPostOrComments?this.ifRenderUserComments():this.ifRenderUserPosts()}
             </View>
 
