@@ -47,7 +47,7 @@ export default class course extends Component {
     this.state = {
       viewHeight:20,
       questionPosted:false,
-      backgroundColor:'#51c8e1',
+      backgroundColor:'#102942',
       questionList:[
         {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
         {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
@@ -250,7 +250,7 @@ export default class course extends Component {
     if(this.props.jwt.userId === authorId){
       return(
         <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-          <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
+          <Icon name={'close'} size={29} color={'white'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
     }else{
@@ -262,12 +262,12 @@ export default class course extends Component {
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View  animation={'fadeIn'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+      <Animatable.View  animation={'fadeIn'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
         <View style={{height:40,marginBottom:10}}>
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-            <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+            <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
               <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-                <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
+                <Icon name={'close'} size={29} color={'white'} style={{marginTop:10,marginRight:10}}/>
               </TouchableOpacity>
           </View>
         </View>
@@ -287,16 +287,17 @@ export default class course extends Component {
 
   renderUserComments(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View animation={'fadeIn'} delay={200} duration={300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+      <Animatable.View animation={'fadeIn'} delay={200} duration={300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
         <View style={{height:40,marginBottom:10}}>
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-            <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.content}</Text>
+            <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/13}}>{rowData.content}</Text>
               <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-                <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
+                <Icon name={'close'} size={29} color={'white'} style={{marginTop:10,marginRight:10}}/>
               </TouchableOpacity>
           </View>
         </View>
-        <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
+        <View>
+
         </View>
       </Animatable.View>
     )
@@ -306,10 +307,10 @@ export default class course extends Component {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if(rowID == 0){
       var header = (
-        <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-              <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+              <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
               {this.ifRenderCross(rowData._id,rowData.author._id)}
             </View>
           </View>
@@ -331,10 +332,10 @@ export default class course extends Component {
     }
     else{
       var header = (
-        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*100:300} duration={rowID<9?rowID*200:500} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-              <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+              <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
               {this.ifRenderCross(rowData._id,rowData.author._id)}
             </View>
           </View>
@@ -357,10 +358,10 @@ export default class course extends Component {
 
     var content = (
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-        <Animatable.View ref="first" style={{backgroundColor:'#e2faff',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'space-between',borderColor:'white',borderWidth:2,marginTop:10,paddingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10}}>
+        <Animatable.View ref="first" style={{backgroundColor:'#527ba6',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'space-between',marginTop:10,paddingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10}}>
           <Animatable.View key={rowID} style={{height:130}}>
             <View style={{flex:1,flexDirection:'row'}}>
-              <Text style={{fontSize:15,fontWeight:'400',width:width/1.25,color:'gray',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>260?rowData.content.substring(0,260)+'...':rowData.content}</Text>
+              <Text style={{fontSize:15,fontWeight:'400',width:width/1.25,color:'white',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>260?rowData.content.substring(0,260)+'...':rowData.content}</Text>
               </View>
           </Animatable.View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:15,paddingLeft:10,paddingRight:10}}>
@@ -369,7 +370,7 @@ export default class course extends Component {
                 <FontAwesomeIcon name="comments-o" size={30} color={'#18bdd6'}/>
               </TouchableOpacity>
               <View>
-                <Text style={{color:'gray',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
+                <Text style={{color:'white',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
               </View>
             </View>
             <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-end',alignItems:'center',paddingBottom:20}}>
@@ -398,8 +399,8 @@ export default class course extends Component {
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'assignments')}>
           <View style={styles.fileRow}>
-            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'gray'} style={{marginRight:20}}/>
-            <Text style={{fontSize:20,fontWeight:'500',color:'gray'}}>{rowData}</Text>
+            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'white'} style={{marginRight:20}}/>
+            <Text style={{fontSize:20,fontWeight:'500',color:'white'}}>{rowData}</Text>
             <View style={{height:15,width:15}}></View>
           </View>
         </TouchableOpacity>
@@ -416,8 +417,8 @@ export default class course extends Component {
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'readings')}>
           <View style={styles.fileRow}>
-            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'gray'} style={{marginRight:20}}/>
-            <Text style={{fontSize:20,fontWeight:'500',color:'gray'}}>{rowData.split('.')[0]}</Text>
+            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'white'} style={{marginRight:20}}/>
+            <Text style={{fontSize:20,fontWeight:'500',color:'white'}}>{rowData.split('.')[0]}</Text>
             <View style={{height:15,width:15}}></View>
           </View>
         </TouchableOpacity>
@@ -620,7 +621,7 @@ export default class course extends Component {
               horizontal={false}
               removeClippedSubviews={true}
             />
-          <ActionButton position="right" text="answer" buttonColor="#0f6088" onPress={()=>this.openModal4()}
+          <ActionButton position="right" text="answer" buttonColor="#6DD7E8" onPress={()=>this.openModal4()}
               icon={<FontAwesomeIcon name={'search'} size={22} color='#f6f7fb'/>}>
             </ActionButton>
 
@@ -765,7 +766,6 @@ export default class course extends Component {
                   </View>
                 </TouchableOpacity>
               </View>
-
               {this.state.ifRenderPostOrComments?this.ifRenderUserComments():this.ifRenderUserPosts()}
             </View>
 
@@ -824,7 +824,7 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
     width:width/1.3,
     height:height/10,
-    backgroundColor:"#0f6088",
+    backgroundColor:"#6DD7E8",
     borderRadius:height/100,
     marginBottom:10,
   },
@@ -835,7 +835,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: {height: 3.5,width: 0},
-    backgroundColor:"#e2faff",
+    backgroundColor:"#527ba6",
     borderRadius:height/100,
     padding:10,
     marginBottom:10,
@@ -847,7 +847,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     shadowOffset: {height: 3.5,width: 0},
-    backgroundColor:"#e2faff",
+    backgroundColor:"#527ba6",
     borderRadius:height/100,
     padding:10,
     marginBottom:10,
@@ -857,7 +857,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-between',
     alignItems:'center',
-    backgroundColor:"#e2faff",
+    backgroundColor:"#527ba6",
     height:height/7,
     borderRadius:height/80,
     marginTop:10,

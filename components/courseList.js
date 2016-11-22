@@ -385,7 +385,7 @@ export default class courseList extends Component {
                  alignItems:'center',
                  borderRadius:height/100,
                  width:width/1.2,
-                 backgroundColor:'#e2faff',
+                 backgroundColor:'#527ba6',
                  marginLeft:marginLeft,
                  marginRight:marginRight,
                  paddingLeft:20,
@@ -400,28 +400,28 @@ export default class courseList extends Component {
                     <View obj={course} key={i} style={courseCardStyle} >
 
                       <View style={{width:width/1.5,marginBottom:10}}>
-                        <Text style={{color:'gray',fontSize:25,fontWeight:'600',margin:10,textAlign:'center'}}>{course.courseName}</Text>
+                        <Text style={{color:'white',fontSize:25,fontWeight:'600',margin:10,textAlign:'center'}}>{course.courseName}</Text>
                       </View>
 
 
                       <View style={{height:70,width:width/1.5,paddingLeft:10,marginBottom:25}}>
-                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>Instructors</Text>
+                        <Text style={{color:'white',fontSize:18,fontWeight:'600',margin:10}}>Instructors</Text>
                         <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                           {instructors.map(function(instructor, i){
                             return(
-                              <Text style={{color:'gray',fontSize:13,fontWeight:'500',marginRight:15}}>{instructor}</Text>
+                              <Text style={{color:'white',fontSize:13,fontWeight:'500',marginRight:15}}>{instructor}</Text>
                             )
                           },this)}
                         </View>
                       </View>
 
                       <View style={{height:100,width:width/1.5,paddingLeft:10,marginBottom:25}}>
-                        <Text style={{color:'gray',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
+                        <Text style={{color:'white',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
                           <View>
                             <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                               {TAs.map(function(TA, i){
                                 return(
-                                  <Text style={{height:25,color:'gray',fontSize:13,fontWeight:'500',marginRight:15}}>{TA}</Text>
+                                  <Text style={{height:25,color:'white',fontSize:13,fontWeight:'500',marginRight:15}}>{TA}</Text>
                                 )
                               },this)}
                             </View>
@@ -430,14 +430,14 @@ export default class courseList extends Component {
 
                         <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200,marginTop:20}}>
                           <View style={{}}>
-                            <FontAwesomeIcon name={'file-text'} color={'#4D5078'} size={27}/>
-                            <Text style={{color:'gray',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.postCount}</Text>
+                            <FontAwesomeIcon name={'file-text'} color={'white'} size={27}/>
+                            <Text style={{color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.postCount}</Text>
                           </View>
 
                           <TouchableOpacity onPress={()=>this.getListofUser(course._id)}>
                             <View style={{}}>
-                              <FontAwesomeIcon name={'users'} color={'#4D5078'} size={27}/>
-                              <Text style={{color:'gray',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.userCount}</Text>
+                              <FontAwesomeIcon name={'users'} color={'white'} size={27}/>
+                              <Text style={{color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.userCount}</Text>
                             </View>
                           </TouchableOpacity>
                         </View>
@@ -480,7 +480,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'row',
     justifyContent: 'center',
-    backgroundColor:'#51c8e1',
+    backgroundColor:'#102942',
     alignItems: 'center',
   },
   welcome: {

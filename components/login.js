@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     justifyContent: 'center',
-    backgroundColor:'#51c8e1',
+    backgroundColor:'#102942',
     alignItems: 'center',
   },
 })
