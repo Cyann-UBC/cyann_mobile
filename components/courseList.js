@@ -220,13 +220,13 @@ export default class courseList extends Component {
     //   marginBottom:600,
     // }})},200)
 
-    // setTimeout(()=>{this.setState({viewToggle:'name'})},200)
-    setTimeout(()=>{Actions.course({type:'reset',id:id,jwt:this.props.jwt})},100)
+    setTimeout(()=>{this.setState({viewToggle:'name'})},200)
+    setTimeout(()=>{Actions.course({type:'reset',id:id,jwt:this.props.jwt})},250)
 
   }
 
   addCourse(id){
-    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.state.jwt.token}})
+    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
        console.warn(JSON.stringify(responseData))

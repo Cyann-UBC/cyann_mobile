@@ -107,7 +107,7 @@ const FacebookTabBar = React.createClass({
     LayoutAnimation.configureNext(animations.layout.spring)
     return <View  style={[styles.tabs, this.props.style, ]}>
       <Animatable.View animation={'bounceInDown'} duration={700} style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:20}}>
-        <TouchableOpacity onPress={()=>Actions.courseList({jwt:this.props.jwt})}>
+        <TouchableOpacity onPress={()=>Actions.courseList({type:'reset',jwt:this.props.jwt})}>
           <FontAwesomeIcon name={"arrow-left"} size={27} color={'white'} />
         </TouchableOpacity>
       </Animatable.View>
