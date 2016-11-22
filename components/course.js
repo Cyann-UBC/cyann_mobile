@@ -81,7 +81,8 @@ export default class course extends Component {
       profileImg:'',
       userName:'',
       userPosts:[],
-      userComments:[]
+      userComments:[],
+      ifRenderPostOrComments:false,
     };
   }
 
@@ -261,7 +262,7 @@ export default class course extends Component {
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+      <Animatable.View animation={'fadeInDown'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
         <View style={{height:40,marginBottom:10}}>
           <View style={{flex:1,flexDirection:"column",justifyContent:'space-between',height:5}}>
             <View style={{height:70}}>
@@ -283,7 +284,7 @@ export default class course extends Component {
 
   renderUserComments(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+      <Animatable.View animation={'fadeInDown'} delay={200} duration={300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
         <View style={{height:40,marginBottom:10}}>
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
             <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.content}</Text>
@@ -502,7 +503,7 @@ export default class course extends Component {
     else{
       return(
         <ListView
-          style={{flex:1,flexDirection:'column',height:250}}
+          style={{flex:1,flexDirection:'column',height:450}}
           showsVerticalScrollIndicator={false}
           dataSource={this.state.userComments}
           renderRow={this.renderUserComments.bind(this)}
@@ -523,7 +524,7 @@ export default class course extends Component {
     else{
       return(
         <ListView
-          style={{flex:1,flexDirection:'column',height:250}}
+          style={{flex:1,flexDirection:'column',height:450}}
           showsVerticalScrollIndicator={false}
           dataSource={this.state.userPosts}
           renderRow={this.renderUserPosts.bind(this)}
@@ -750,13 +751,9 @@ export default class course extends Component {
 
             <View style={{width:width,marginBottom:20}}>
               <Text>Past Comments</Text>
-              {this.ifRenderUserComments()}
+              {this.state.ifRenderPostOrComments?this.ifRenderUserComments():this.ifRenderUserPosts()}
             </View>
 
-              <View style={{width:width,paddingBottom:20}}>
-                <Text>Past Posts</Text>
-                {this.ifRenderUserPosts()}
-              </View>
 
 
 
