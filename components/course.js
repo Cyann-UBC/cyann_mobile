@@ -495,7 +495,7 @@ export default class course extends Component {
   ifRenderUserComments(){
     if(this.state.userComments._cachedRowCount == []){
       return(
-        <View style={{width:width,height:30}}>
+        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',width:width,height:450}}>
           <Text>Looks like you haven't commented on anything</Text>
         </View>
       )
@@ -516,7 +516,7 @@ export default class course extends Component {
   ifRenderUserPosts(){
     if(this.state.userPosts._cachedRowCount == []){
       return(
-        <View style={{width:width,height:30}}>
+        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',width:width,height:450}}>
           <Text>Looks like you haven't posted anything</Text>
         </View>
       )
