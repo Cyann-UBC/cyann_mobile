@@ -107,10 +107,12 @@ export default class courseList extends Component {
       renderPlus:true,
       userList:[],
       showUserList:false,
+      jwtToken:'',
     };
   }
 
   componentWillMount(){
+    this.setState({jwtToken:this.props.jwt.token})
     this.getAllCourses()
     this.getUserCourses()
     AsyncStorage.getItem('courseObjects')
@@ -190,41 +192,41 @@ export default class courseList extends Component {
     this.setState({selectedCourse:id})
     this.setState({showSearchBar:false})
     this.setState({renderPlus:false})
-    this.setState({containerStyle:{
-      flex:1,
-      width:width,
-      marginLeft:-20,
-      marginRight:-20,
-      backgroundColor:'white',
-      borderRadius:20,
-      marginTop:-100,
-      backgroundColor:"white",
-      marginBottom:600,
-    }})
-    this.setState({mainContainer:{
-      height:height
-    }})
+    // this.setState({containerStyle:{
+    //   flex:1,
+    //   width:width,
+    //   marginLeft:-20,
+    //   marginRight:-20,
+    //   backgroundColor:'white',
+    //   borderRadius:20,
+    //   marginTop:-100,
+    //   backgroundColor:"white",
+    //   marginBottom:600,
+    // }})
+    // this.setState({mainContainer:{
+    //   height:height
+    // }})
+    //
+    // setTimeout(()=>{this.setState({containerStyle:{
+    //   flex:1,
+    //   width:width,
+    //   marginLeft:-20,
+    //   marginRight:-20,
+    //   backgroundColor:'white',
+    //   borderRadius:0,
+    //   marginTop:-380,
+    //   paddingBottom:100,
+    //   backgroundColor:"#18bdd6",
+    //   marginBottom:600,
+    // }})},200)
 
-    setTimeout(()=>{this.setState({containerStyle:{
-      flex:1,
-      width:width,
-      marginLeft:-20,
-      marginRight:-20,
-      backgroundColor:'white',
-      borderRadius:0,
-      marginTop:-380,
-      paddingBottom:100,
-      backgroundColor:"#18bdd6",
-      marginBottom:600,
-    }})},200)
-
-    setTimeout(()=>{this.setState({viewToggle:'name'})},200)
-    setTimeout(()=>{Actions.course({type:'reset',id:id,jwt:this.props.jwt})},300)
+    // setTimeout(()=>{this.setState({viewToggle:'name'})},200)
+    setTimeout(()=>{Actions.course({type:'reset',id:id,jwt:this.props.jwt})},100)
 
   }
 
   addCourse(id){
-    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.state.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
        console.warn(JSON.stringify(responseData))
@@ -240,27 +242,27 @@ export default class courseList extends Component {
     return(
       <TouchableOpacity onPress={()=>this.emailUser(rowData.email)}>
       <Animatable.View animation="flipInY" style={{paddingRight:20,paddingLeft:20,height:80,flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,paddingLeft:10,borderBottomWidth:2,borderBottomColor:'white'}}>
-        <View style={{flex:1,flexDirection:'row',justifyContent:"flex-start",alignItems:"center"}}>
-          <Animatable.Image
-            animation="fadeInLeft" easing="ease-in" duration={500} delay={500}
-            style={{width: 36, height: 36,borderRadius:18}}
+        <Animatable.View animation="fadeInLeft" easing="ease-in" duration={500} delay={500} style={{flex:1,flexDirection:'row',justifyContent:"flex-start",alignItems:"center"}}>
+          <Image
+            style={{width: 50, height: 50,borderRadius:25}}
             source={{uri: rowData.profileImg}}
           />
-        <Animatable.Text animation="fadeInLeft" easing="ease-in" duration={500} delay={500} style={{marginLeft:10,color:'white',textAlign:'center',fontSize:16,fontWeight:'500'}}>{rowData.name}</Animatable.Text>
+        <Text style={{marginLeft:10,color:'white',textAlign:'center',fontSize:16,fontWeight:'500'}}>{rowData.name}</Text>
+        </Animatable.View>
+        <View style={{width:60}}>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+            <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} >
+              <FontAwesomeIcon name="star-o" size={27} color={'white'}/>
+            </Animatable.View>
+            <Animatable.Text animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:3,marginTop:5,marginRight:5,color:'white'}}>{rowData.honour}</Animatable.Text>
+          </View>
         </View>
-        <View style={{height:30,width:75}}>
-          <View style={{flex:1,flexDirection:'row',justifyContent:"space-around"}}>
-            <View style={{flex:1,flexDirection:'row'}}>
-              <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} >
-                <FontAwesomeIcon name="star-o" size={27} color={'white'}/>
-              </Animatable.View>
-              <Animatable.Text animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:3,marginTop:5,marginRight:5,color:'white'}}>{rowData.honour}</Animatable.Text>
-            </View>
+
+
             <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:10}}>
               <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
             </Animatable.View>
-          </View>
-        </View>
+
 
 
       </Animatable.View>
@@ -315,7 +317,7 @@ export default class courseList extends Component {
               style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center',width:200}}
               onChangeText={(text)=>this.filterCourses(text)}
               value={this.state.commentContent}
-              autoFocus={true}
+              autoFocus={false}
               placeholder="Tap here to search"
               placeholderTextColor={'white'}
             />
@@ -428,13 +430,13 @@ export default class courseList extends Component {
 
                         <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200,marginTop:20}}>
                           <View style={{}}>
-                            <FontAwesomeIcon name={'file-text'} color={'#18bdd6'} size={27}/>
+                            <FontAwesomeIcon name={'file-text'} color={'#4D5078'} size={27}/>
                             <Text style={{color:'gray',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.postCount}</Text>
                           </View>
 
                           <TouchableOpacity onPress={()=>this.getListofUser(course._id)}>
                             <View style={{}}>
-                              <FontAwesomeIcon name={'users'} color={'#18bdd6'} size={27}/>
+                              <FontAwesomeIcon name={'users'} color={'#4D5078'} size={27}/>
                               <Text style={{color:'gray',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.userCount}</Text>
                             </View>
                           </TouchableOpacity>
@@ -478,7 +480,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'row',
     justifyContent: 'center',
-    backgroundColor:'#51d1e1',
+    backgroundColor:'#51c8e1',
     alignItems: 'center',
   },
   welcome: {

@@ -49,6 +49,7 @@ export default class Login extends Component {
     }
   }
   componentWillMount(){
+    // this.handleLogout()
       var _this = this
       AsyncStorage.getItem('jwt')
         .then(req => JSON.parse(req))
@@ -126,8 +127,12 @@ export default class Login extends Component {
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
       AsyncStorage.setItem('jwt',JSON.stringify(responseData.data))
+      .then(function(){
+        console.warn(responseData.data)
+        this.setState(jwt:responseData.data)
+
+      })
       // AsyncStorage.setUserID('userId',responseData.data.userId)
-      Actions.courseList({jwt:responseData.data.jwt})
     })
   }
 
@@ -137,6 +142,7 @@ export default class Login extends Component {
     alert('Error fetching data: ' + error.toString());
   } else {
     this.retreiveJWT(result)
+    Actions.courseList({jwt:this.state.jwt})
     // console.warn(JSON.stringify(result))
   //  Actions.courseList()
   }
@@ -239,7 +245,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     justifyContent: 'center',
-    backgroundColor:'#4fc1e9',
+    backgroundColor:'#51c8e1',
     alignItems: 'center',
   },
 })

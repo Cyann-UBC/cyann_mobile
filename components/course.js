@@ -47,7 +47,7 @@ export default class course extends Component {
     this.state = {
       viewHeight:20,
       questionPosted:false,
-      backgroundColor:'#51d1e1',
+      backgroundColor:'#51c8e1',
       questionList:[
         {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
         {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
@@ -262,29 +262,32 @@ export default class course extends Component {
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View animation={'fadeInDown'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+      <Animatable.View  animation={'fadeIn'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
         <View style={{height:40,marginBottom:10}}>
-          <View style={{flex:1,flexDirection:"column",justifyContent:'space-between',height:5}}>
-            <View style={{height:70}}>
-              <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-                <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.course.name}</Text>
-                  <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-                    <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
-                  </TouchableOpacity>
+          <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
+            <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+              <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
+                <Icon name={'close'} size={29} color={'gray'} style={{marginTop:10,marginRight:10}}/>
+              </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20}}>
+          <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
+          <View style={{height:36}}>
+              <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
+                <Text style={{color:"#AAB2BD",fontSize:15}}>Course: {rowData.course.name}</Text>
               </View>
             </View>
           </View>
-      </View>
-      <View style={{width:width/1.1,height:50}}>
-        <Text style={{fontSize:16,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-      </View>
+        </View>
       </Animatable.View>
+
     )
   }
 
   renderUserComments(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View animation={'fadeInDown'} delay={200} duration={300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+      <Animatable.View animation={'fadeIn'} delay={200} duration={300} style={{backgroundColor:'#e2faff',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
         <View style={{height:40,marginBottom:10}}>
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
             <Text style={{fontSize:16,width:width/1.2,color:"gray",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.content}</Text>
@@ -604,7 +607,7 @@ export default class course extends Component {
           renderTabBar={() =><FacebookTabBar jwt={this.props.jwt} tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
           >
 
-          <View style={{flex:1,backgroundColor:'#51d1e1'}}>
+          <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
             <StatusBar
               backgroundColor="transparent"
               barStyle="light-content"
@@ -872,7 +875,7 @@ const styles = StyleSheet.create({
   },
     modal4: {
     height: 350,
-    backgroundColor:'#0f6088'
+    backgroundColor:'#393D69'
   },
   filterButton:{
     flex:1,
