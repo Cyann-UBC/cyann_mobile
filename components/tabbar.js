@@ -127,7 +127,7 @@ const FacebookTabBar = React.createClass({
           }
 
           return <TouchableOpacity key={tab} onPress={() => this.changeTextAndGo(i)} style={ styles.tab}>
-            <Animatable.View animation={'bounceInDown'} delay={i===0?100:i*150} duration={700}>
+            <Animatable.View animation={'bounceInDown'} delay={i===0?200:i*250} duration={700}>
               <FontAwesomeIcon
                 name={tab}
                 size={30}
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderBottomColor: 'rgba(0,0,0,0.05)',
-    backgroundColor:"#294a62",
+    backgroundColor:"#102942",
   },
 });
 

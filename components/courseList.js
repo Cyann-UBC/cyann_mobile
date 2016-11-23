@@ -249,14 +249,14 @@ export default class courseList extends Component {
           />
         <Text style={{marginLeft:10,color:'white',textAlign:'center',fontSize:16,fontWeight:'500'}}>{rowData.name}</Text>
         </Animatable.View>
-        <View style={{width:60}}>
+        <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{width:60}}>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-            <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} >
+            <View>
               <FontAwesomeIcon name="star-o" size={27} color={'white'}/>
-            </Animatable.View>
-            <Animatable.Text animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:3,marginTop:5,marginRight:5,color:'white'}}>{rowData.honour}</Animatable.Text>
+            </View>
+            <Text animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:3,marginTop:5,marginRight:5,color:'white'}}>{rowData.honour}</Text>
           </View>
-        </View>
+        </Animatable.View>
 
 
             <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:10}}>
@@ -298,7 +298,7 @@ export default class courseList extends Component {
     if(this.state.renderPlus){
       return(
         <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:true})}>
-          <FontAwesomeIcon name={'plus'} color={'#e2faff'} size={27} style={{marginLeft:320,marginBottom:20}}/>
+          <FontAwesomeIcon name={'plus'} color={'white'} size={27} style={{marginLeft:320,marginBottom:20}}/>
         </TouchableOpacity>
       )
     }else{
@@ -480,7 +480,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'row',
     justifyContent: 'center',
-    backgroundColor:'#102942',
+    backgroundColor:'#294a62',
     alignItems: 'center',
   },
   welcome: {

@@ -47,7 +47,7 @@ export default class course extends Component {
     this.state = {
       viewHeight:20,
       questionPosted:false,
-      backgroundColor:'#102942',
+      backgroundColor:'#294a62',
       questionList:[
         {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
         {title:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
@@ -322,7 +322,7 @@ export default class course extends Component {
               />
             <View style={{height:36}}>
                 <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                  <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
+                  <Text style={{color:"white",marginLeft:10}}>{rowData.author.name}</Text>
                 </View>
               </View>
             </View>
@@ -347,7 +347,7 @@ export default class course extends Component {
               />
             <View style={{height:36}}>
                 <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                  <Text style={{color:"#AAB2BD",marginLeft:10}}>{rowData.author.name}</Text>
+                  <Text style={{color:"white",marginLeft:10}}>{rowData.author.name}</Text>
                 </View>
               </View>
             </View>
@@ -367,7 +367,7 @@ export default class course extends Component {
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:15,paddingLeft:10,paddingRight:10}}>
             <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-start',alignItems:'center',paddingBottom:20}}>
               <TouchableOpacity onPress={()=>console.warn('asd')}>
-                <FontAwesomeIcon name="comments-o" size={30} color={'#18bdd6'}/>
+                <FontAwesomeIcon name="comments-o" size={30} color={'white'}/>
               </TouchableOpacity>
               <View>
                 <Text style={{color:'white',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
@@ -375,7 +375,7 @@ export default class course extends Component {
             </View>
             <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-end',alignItems:'center',paddingBottom:20}}>
               <TouchableOpacity onPress={()=>this.openModal5(rowData._id)}>
-                <FontAwesomeIcon name="pencil-square-o" size={30} color={'#18bdd6'}/>
+                <FontAwesomeIcon name="pencil-square-o" size={30} color={'white'}/>
               </TouchableOpacity>
             </View>
           </View>
@@ -544,14 +544,14 @@ export default class course extends Component {
         <View style={{flex:1,flexDirection:'column',alignItems:'center', justifyContent:'space-around',paddingTop:height/7,paddingBottom:height/7}}>
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
             <Animatable.View animation={'slideInRight'} delay={100} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-              <Ionicon name="ios-book" size={50} color={'#e2faff'}/>
+              <FontAwesomeIcon name="book" size={50} color={'white'}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>readings</Text>
             </Animatable.View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
             <Animatable.View animation={'slideInRight'} delay={200} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-              <Ionicon name="ios-paper" size={50} color={'#e2faff'}/>
+              <FontAwesomeIcon name="file-text" size={50} color={'white'}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>assignments</Text>
             </Animatable.View>
           </TouchableOpacity>
@@ -621,7 +621,7 @@ export default class course extends Component {
               horizontal={false}
               removeClippedSubviews={true}
             />
-          <ActionButton position="right" text="answer" buttonColor="#6DD7E8" onPress={()=>this.openModal4()}
+          <ActionButton position="right" text="answer" buttonColor="#102942" onPress={()=>this.openModal4()}
               icon={<FontAwesomeIcon name={'search'} size={22} color='#f6f7fb'/>}>
             </ActionButton>
 
@@ -636,7 +636,7 @@ export default class course extends Component {
                       iconColor={'white'}
                       labelStyle={{ fontWeight:'600',color:'white',fontSize:17,marginTop:15,marginLeft:10}}
                       inputStyle={styles.filterButtonText}
-                      style={{backgroundColor:'#286b95',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
+                      style={{backgroundColor:'#294a62',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
                     />
                 </View>
 
@@ -703,10 +703,11 @@ export default class course extends Component {
               </Animatable.View>
               <TextInput
                 multiline={true}
-                style={{height: 100,color:'black',fontSize:20}}
+                style={{height: 100,color:'white',fontSize:20}}
                 onChange={this.updateTitle.bind(this)}
                 value={this.state.questionTitle}
                 placeholder="Title"
+                placeholderTextColor="white"
               />
             </Animatable.View>
             <Animatable.View ref="contentView" animation={'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
@@ -718,10 +719,11 @@ export default class course extends Component {
               padding:10}}></Animatable.View>
               <TextInput
                 multiline={true}
-                style={{height: 230,color:'black',fontSize:20}}
+                style={{height: 230,color:'white',fontSize:20}}
                 onChange={this.updateContent.bind(this)}
                 value={this.state.questionContent}
                 placeholder="Content"
+                placeholderTextColor="white"
               />
             </Animatable.View>
 
@@ -824,7 +826,7 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 3.5,width: 0},
     width:width/1.3,
     height:height/10,
-    backgroundColor:"#6DD7E8",
+    backgroundColor:"#102942",
     borderRadius:height/100,
     marginBottom:10,
   },
@@ -887,7 +889,7 @@ const styles = StyleSheet.create({
   },
     modal4: {
     height: 350,
-    backgroundColor:'#393D69'
+    backgroundColor:'#102942'
   },
   filterButton:{
     flex:1,
@@ -896,7 +898,7 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     width:90,
     height:70,
-    backgroundColor:'#286b95',
+    backgroundColor:'#294a62',
     marginRight:20,
     borderRadius:35
   },
