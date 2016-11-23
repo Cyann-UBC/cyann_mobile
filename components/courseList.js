@@ -20,6 +20,7 @@ import {Motion, spring} from 'react-motion';
 import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Communications from 'react-native-communications';
+import ActionButton from 'react-native-action-button';
 
 var AutoComplete = require('react-native-autocomplete');
 var Dimensions = require('Dimensions');
@@ -31,9 +32,9 @@ var {
 var animations = {
   layout: {
     spring: {
-      duration: 850,
+      duration: 250,
       create: {
-        duration: 300,
+        duration:300,
         type: LayoutAnimation.Types.easeInEaseOut,
         property: LayoutAnimation.Properties.opacity,
       },
@@ -62,6 +63,7 @@ export default class courseList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      offset:15,
       container:{
         flex: 1,
         flexDirection:'row',
@@ -191,7 +193,8 @@ export default class courseList extends Component {
     LayoutAnimation.configureNext(animations.layout.spring)
     this.setState({selectedCourse:id})
     this.setState({showSearchBar:false})
-    this.setState({renderPlus:false})
+  //  this.setState({renderPlus:false})
+  //  this.setState({offset:-50})
     // this.setState({containerStyle:{
     //   flex:1,
     //   width:width,
@@ -296,10 +299,13 @@ export default class courseList extends Component {
 
   ifRenderPlus(){
     if(this.state.renderPlus){
+      // <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:true})}>
+      //   <FontAwesomeIcon name={'plus'} color={'white'} size={27} style={{marginLeft:320,marginBottom:20}}/>
+      // </TouchableOpacity>
       return(
-        <TouchableOpacity onPress={()=>this.setState({userAddCourseSwitch:true})}>
-          <FontAwesomeIcon name={'plus'} color={'white'} size={27} style={{marginLeft:320,marginBottom:20}}/>
-        </TouchableOpacity>
+        <ActionButton position="right" text="answer" offsetY={height/2} offsetX={this.state.offset} buttonColor="#26D3F2" onPress={()=>this.setState({userAddCourseSwitch:true})}
+            icon={<FontAwesomeIcon name={'plus'} size={22} color='#f6f7fb'/>}>
+          </ActionButton>
       )
     }else{
       return(
@@ -357,7 +363,7 @@ export default class courseList extends Component {
       var courses = this.state.listSource
       return(
         <View>
-          {this.ifRenderPlus()}
+
 
 
           <ScrollView
@@ -365,6 +371,8 @@ export default class courseList extends Component {
             contentContainer={{justifyContent:'center'}}
             horizontal ={true}
             pagingEnabled ={true}
+            onScroll={()=>this.setState({offset:40})}
+            onMomentumScrollEnd={()=>this.setState({offset:15})}
             >
             {this.state.listSource.map(function(course, i){
 
@@ -448,6 +456,7 @@ export default class courseList extends Component {
               )
             },this)}
           </ScrollView>
+          {this.ifRenderPlus()}
         </View>
       )
     }
@@ -505,6 +514,15 @@ const styles = StyleSheet.create({
         borderColor: 'lightblue',
         borderWidth: 1
     },
+    btnShadow: {
+    shadowOpacity: 0.3,
+    shadowOffset: {
+      width: 0, height: 8,
+    },
+    shadowColor: '#000',
+    shadowRadius: 4,
+    elevation: 8,
+  }
 
 
 });
