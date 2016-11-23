@@ -304,7 +304,10 @@ export default class course extends Component {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if(rowID == 0){
       var header = (
-        <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{shadowColor: "#000000",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        shadowOffset: {height: 3.5,width: 0},backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
               <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
@@ -329,7 +332,10 @@ export default class course extends Component {
     }
     else{
       var header = (
-        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*200:300} duration={rowID<9?rowID*350:500} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*200:300} duration={rowID<9?rowID*350:500} style={{shadowColor: "#000000",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        shadowOffset: {height: 3.5,width: 0},backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
               <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>

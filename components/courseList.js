@@ -396,8 +396,13 @@ export default class courseList extends Component {
                  backgroundColor:'#527ba6',
                  marginLeft:marginLeft,
                  marginRight:marginRight,
+                 marginBottom:10,
                  paddingLeft:20,
                  paddingRight:20,
+                 shadowColor: "#000000",
+                 shadowOpacity: 0.3,
+                 shadowRadius: 2,
+                 shadowOffset: {height: 5.5,width: -1.5},
                  paddingBottom:30,
                };
                var instructors = ['Farshid Agharebparast','Sathish Gopalakrishnan']
