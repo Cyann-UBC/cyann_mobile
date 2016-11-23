@@ -275,7 +275,7 @@ export default class course extends Component {
           <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
           <View style={{height:36}}>
               <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                <Text style={{color:"#AAB2BD",fontSize:15}}>Course: {rowData.course.name}</Text>
+                <Text style={{color:"white",fontSize:15}}>Course: {rowData.course.name}</Text>
               </View>
             </View>
           </View>
@@ -288,16 +288,13 @@ export default class course extends Component {
   renderUserComments(rowData, sectionID, rowID, highlightRow){
     return(
       <Animatable.View animation={'fadeIn'} delay={200} duration={300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
-        <View style={{height:40,marginBottom:10}}>
+        <View style={{height:80,marginBottom:10}}>
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-            <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/13}}>{rowData.content}</Text>
+            <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/12}}>{rowData.content.length>80?rowData.content.substring(0,80)+'...':rowData.content}</Text>
               <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
                 <Icon name={'close'} size={29} color={'white'} style={{marginTop:10,marginRight:10}}/>
               </TouchableOpacity>
           </View>
-        </View>
-        <View>
-
         </View>
       </Animatable.View>
     )
@@ -621,7 +618,7 @@ export default class course extends Component {
               horizontal={false}
               removeClippedSubviews={true}
             />
-          <ActionButton position="right" text="answer" buttonColor="#102942" onPress={()=>this.openModal4()}
+          <ActionButton position="right" text="answer" buttonColor="#26D3F2" onPress={()=>this.openModal4()}
               icon={<FontAwesomeIcon name={'search'} size={22} color='#f6f7fb'/>}>
             </ActionButton>
 

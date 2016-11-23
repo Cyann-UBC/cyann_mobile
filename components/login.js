@@ -25,6 +25,7 @@ import { Actions } from 'react-native-router-flux';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 var {FBLogin, FBLoginManager,FBLoginView} = require('react-native-facebook-login');
 var Dimensions = require('Dimensions');
@@ -231,8 +232,8 @@ onPermissionsMissing(data){
             />
       <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-            <Ionicon style={{marginRight:10}} name={'logo-facebook'} color={'white'} size={30} />
-            <Text style={{fontSize:19,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"Logout"}</Text>
+            <FontAwesomeIcon style={{marginRight:10}} name={'facebook-square'} color={'white'} size={37} />
+            <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"Logout"}</Text>
           </View>
         </TouchableOpacity>
       </View>
