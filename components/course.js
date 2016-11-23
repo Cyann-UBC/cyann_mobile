@@ -13,9 +13,6 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/EvilIcons';
-import Ionicon from 'react-native-vector-icons/Ionicons'
-import Octicon from 'react-native-vector-icons/Octicons'
 import Drawer from 'react-native-drawer';
 import TimerMixin from 'react-timer-mixin';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
@@ -23,14 +20,11 @@ import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-import Tabbar from 'react-native-tabbar'
-import Collapsible from 'react-native-collapsible';
 var Accordion = require('react-native-accordion');
 import ActionButton from 'react-native-action-button';
-import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 var Modal   = require('react-native-modalbox');
-import { Sae,Hoshi,Makiko,Jiro,Fumi,Kaede,Madoka,Kohana } from 'react-native-textinput-effects';
+import { Kohana } from 'react-native-textinput-effects';
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Dimensions = require('Dimensions');
@@ -39,8 +33,7 @@ var {
   height
 } = Dimensions.get('window');
 
-const COLLAPSIBLE_PROPS = Object.keys(Collapsible.propTypes);
-const VIEW_PROPS = Object.keys(View.propTypes);
+
 export default class course extends Component {
   constructor(props) {
     super(props);
@@ -250,7 +243,7 @@ export default class course extends Component {
     if(this.props.jwt.userId === authorId){
       return(
         <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-          <Icon name={'close'} size={29} color={'white'} style={{marginTop:10,marginRight:10}}/>
+          <FontAwesomeIcon name={'times'} size={25} color={'white'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
     }else{
@@ -267,7 +260,7 @@ export default class course extends Component {
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
             <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
               <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-                <Icon name={'close'} size={29} color={'white'} style={{marginTop:10,marginRight:10}}/>
+                <FontAwesomeIcon name={'times'} size={27} color={'white'} style={{marginTop:10,marginRight:10}}/>
               </TouchableOpacity>
           </View>
         </View>
@@ -292,7 +285,7 @@ export default class course extends Component {
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
             <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/12}}>{rowData.content.length>80?rowData.content.substring(0,80)+'...':rowData.content}</Text>
               <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-                <Icon name={'close'} size={29} color={'white'} style={{marginTop:10,marginRight:10}}/>
+                <FontAwesomeIcon name={'times'} size={27} color={'white'} style={{marginTop:10,marginRight:10}}/>
               </TouchableOpacity>
           </View>
         </View>
@@ -304,10 +297,7 @@ export default class course extends Component {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if(rowID == 0){
       var header = (
-        <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{shadowColor: "#000000",
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
-        shadowOffset: {height: 3.5,width: 0},backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <Animatable.View animation={this.state.delayFirst?'slideInDown':undefined} delay={this.state.delayFirst?1900:200} duration={this.state.delayFirst?900:300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
               <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
@@ -332,10 +322,7 @@ export default class course extends Component {
     }
     else{
       var header = (
-        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*200:300} duration={rowID<9?rowID*350:500} style={{shadowColor: "#000000",
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
-        shadowOffset: {height: 3.5,width: 0},backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <Animatable.View  animation={rowID==0 && this.state.questionPosted ?"slideInDown" : "flipInX" } delay={rowID<9?rowID*200:300} duration={rowID<9?rowID*350:500} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
               <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
@@ -361,7 +348,10 @@ export default class course extends Component {
 
     var content = (
       <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
-        <Animatable.View ref="first" style={{backgroundColor:'#527ba6',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'space-between',marginTop:10,paddingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10}}>
+        <Animatable.View ref="first" style={{shadowColor: "#000000",
+        shadowOpacity: 0.4,
+        shadowRadius: 2.5,
+        shadowOffset: {height: 3.5,width: 2},backgroundColor:'#527ba6',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'space-between',marginTop:10,paddingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10,marginBottom:5}}>
           <Animatable.View key={rowID} style={{height:130}}>
             <View style={{flex:1,flexDirection:'row'}}>
               <Text style={{fontSize:15,fontWeight:'400',width:width/1.25,color:'white',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>260?rowData.content.substring(0,260)+'...':rowData.content}</Text>
@@ -547,14 +537,14 @@ export default class course extends Component {
         <View style={{flex:1,flexDirection:'column',alignItems:'center', justifyContent:'space-around',paddingTop:height/7,paddingBottom:height/7}}>
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
             <Animatable.View animation={'slideInRight'} delay={100} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-              <FontAwesomeIcon name="book" size={50} color={'white'}/>
+              <FontAwesomeIcon name="book" size={50} color={'white'} style={{marginBottom:10}}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>readings</Text>
             </Animatable.View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
             <Animatable.View animation={'slideInRight'} delay={200} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-              <FontAwesomeIcon name="file-text" size={50} color={'white'}/>
+              <FontAwesomeIcon name="file-text" size={50} color={'white'} style={{marginBottom:10}}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>assignments</Text>
             </Animatable.View>
           </TouchableOpacity>
@@ -567,7 +557,7 @@ export default class course extends Component {
         return(
           <Animatable.View animation={'fadeIn'} duration={500}>
             <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
-              <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
+              <FontAwesomeIcon name="times" size={27} color={'white'} style={{margin:10}}/>
             </TouchableOpacity>
             <ListView
               showsVerticalScrollIndicator={false}
@@ -586,7 +576,7 @@ export default class course extends Component {
         return(
           <Animatable.View animation={'fadeIn'} duration={500}>
             <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'none'})}>
-              <Icon name="close" size={30} color={'white'} style={{margin:10}}/>
+              <FontAwesomeIcon name="times" size={27} color={'white'} style={{margin:10}}/>
             </TouchableOpacity>
             <ListView
               showsVerticalScrollIndicator={false}

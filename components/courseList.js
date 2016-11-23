@@ -22,7 +22,6 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Communications from 'react-native-communications';
 import ActionButton from 'react-native-action-button';
 
-var AutoComplete = require('react-native-autocomplete');
 var Dimensions = require('Dimensions');
 var {
   width,
@@ -64,6 +63,7 @@ export default class courseList extends Component {
     super(props);
     this.state = {
       offset:15,
+      radius:3.5,
       container:{
         flex: 1,
         flexDirection:'row',
@@ -400,16 +400,16 @@ export default class courseList extends Component {
                  paddingLeft:20,
                  paddingRight:20,
                  shadowColor: "#000000",
-                 shadowOpacity: 0.3,
-                 shadowRadius: 2,
-                 shadowOffset: {height: 5.5,width: -1.5},
+                 shadowOpacity: 0.4,
+                 shadowRadius: this.state.radius,
+                 shadowOffset: {height: 5.5,width: -3.5},
                  paddingBottom:30,
                };
                var instructors = ['Farshid Agharebparast','Sathish Gopalakrishnan']
                var TAs = ['Bader Alahmad','John Deppe','Bibek Kaur','Theresa Mammarella','Nick Mulvenna']
                var courseCardStyle=[containerStyle,this.state.containerStyle]
                 return(
-                  <TouchableOpacity onPress={()=>this.gotoCourse(course._id)}>
+                  <TouchableOpacity onPressIn={()=>this.setState({radius:1.5})} onPressOut={()=>this.setState({radius:3.5})} onPress={()=>this.gotoCourse(course._id)}>
                     <View obj={course} key={i} style={courseCardStyle} >
 
                       <View style={{width:width/1.5,marginBottom:10}}>
@@ -443,7 +443,7 @@ export default class courseList extends Component {
 
                         <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200,marginTop:20}}>
                           <View style={{}}>
-                            <FontAwesomeIcon name={'file-text'} color={'white'} size={27}/>
+                            <FontAwesomeIcon name={'list-alt'} color={'white'} size={28}/>
                             <Text style={{color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.postCount}</Text>
                           </View>
 
