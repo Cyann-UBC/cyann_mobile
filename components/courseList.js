@@ -112,6 +112,7 @@ export default class courseList extends Component {
       jwtToken:'',
       currentCourseId:'',
       currentCourseName:'',
+      showInfo:false,
     };
   }
 
@@ -278,12 +279,9 @@ export default class courseList extends Component {
           </View>
         </Animatable.View>
 
-
-            <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:10}}>
-              <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
-            </Animatable.View>
-
-
+        <Animatable.View animation="fadeInRight" easing="ease-in" duration={500} delay={500} style={{marginLeft:10}}>
+          <FontAwesomeIcon name="commenting-o" size={27} color={'white'}/>
+        </Animatable.View>
 
       </Animatable.View>
       </TouchableOpacity>
@@ -322,7 +320,7 @@ export default class courseList extends Component {
       return(
         <ActionButton position="right" text="answer" offsetY={height/2} offsetX={this.state.offset} buttonColor="#26D3F2" verticalOrientation='down' degrees={90}
             icon={<FontAwesomeIcon name={'list-ul'} size={22} color='#f6f7fb'/>}>
-            <ActionButton.Item buttonColor='#ed5565' >
+            <ActionButton.Item buttonColor='#ed5565' onPress={()=>this.setState({showInfo:true,showUserList:false})}>
               <FontAwesomeIcon name="info" size={22} color={'white'} />
             </ActionButton.Item>
             <ActionButton.Item buttonColor='#A0D468' onPress={()=>this.setState({userAddCourseSwitch:true})}>
@@ -338,7 +336,7 @@ export default class courseList extends Component {
   }
   ifRenderScrollView(){
     LayoutAnimation.configureNext(animations.layout.spring)
-    if(this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true && this.state.showUserList == false){
+    if(this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true && this.state.showUserList == false && this.state.showInfo == false){
       return(
         <View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
@@ -366,7 +364,14 @@ export default class courseList extends Component {
 
         </View>
       )
-    }else if(this.state.showUserList){
+    }else if(this.state.showInfo && !this.state.showUserList){
+      return(
+        <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+          <Text style={{width:width,color:'white'}}>alkshfaklsdhlkahsdfljkahdsljkhalkdjsfhalkjsdfhlkajbvkljbsdklfadslkjfhalkjshflkajsdhflkashdlfkjahsdlkjfhalkjsdhflkajsdhflkjahsdlkjfhalksdhflkasdhflkahsdlkfhaslkdfhlkasdhfklahlskdf</Text>
+        </View>
+      )
+    }
+    else if(!this.state.showInfo && this.state.showUserList){
       return(
         <View>
           <TouchableOpacity onPress={()=>this.setState({showUserList:false})}>
@@ -387,14 +392,12 @@ export default class courseList extends Component {
       return(
         <View>
 
-
-
           <ScrollView
             style={{flex:1,flexDirection:'row'}}
             contentContainer={{justifyContent:'center'}}
             horizontal ={true}
             pagingEnabled ={true}
-            onScroll={()=>this.setState({offset:40})}
+            onScroll={()=>this.setState({offset:30})}
             onMomentumScrollEnd={()=>this.setState({offset:15})}
             >
             {this.state.listSource.map(function(course, i){
