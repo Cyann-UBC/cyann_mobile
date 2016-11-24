@@ -147,7 +147,11 @@ export default class courseList extends Component {
       //  console.warn("all course: "+JSON.stringify(responseData))
       this.setState({allCourseFilter:responseData.data})
     })
+    .catch((error) => {
+        this.refs.modal6.open();
+      });
   }
+
   getUserCourses(){
     fetch('http://localhost:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
@@ -158,6 +162,9 @@ export default class courseList extends Component {
       }).cloneWithRows(responseData)})
       this.setState({listSource:responseData})
       console.warn(JSON.stringify(this.state.myCourse))
+    })
+    .catch((error)=>{
+      this.refs.modal6.open();
     })
   }
 
@@ -170,6 +177,9 @@ export default class courseList extends Component {
       }).cloneWithRows(responseData)})
       console.warn(JSON.stringify(responseData))
       this.setState({showUserList:true})
+    })
+    .catch((error)=>{
+      this.refs.modal6.open();
     })
   }
 
@@ -239,6 +249,9 @@ export default class courseList extends Component {
        console.warn(JSON.stringify(responseData))
        this.getUserCourses()
        this.setState({userAddCourseSwitch:false})
+    })
+    .catch((error)=>{
+      this.refs.modal6.open();
     })
   }
 

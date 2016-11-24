@@ -117,6 +117,9 @@ export default class course extends Component {
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
     })
+    .catch((error)=>{
+      this.refs.modal6.open()
+    })
   }
 
   postAnswer(){
@@ -141,6 +144,9 @@ export default class course extends Component {
       this.fetchPostsAPI()
       this.refs.modal5.close()
     })
+    .catch((error)=>{
+      this.refs.modal6.open()
+    })
   }
 
   fetchAssignmentAPI(){
@@ -151,6 +157,9 @@ export default class course extends Component {
       this.setState({assignmentList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
+    })
+    .catch((error)=>{
+      this.refs.modal6.open()
     })
   }
 
@@ -163,18 +172,8 @@ export default class course extends Component {
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
     })
-  }
-
-  deleteOwnPost(id){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
-          headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer '+this.props.jwt.token
-          }})
-    .then((response) => response.json())
-    .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
-      this.fetchPostsAPI()
+    .catch((error)=>{
+      this.refs.modal6.open()
     })
   }
 
@@ -189,6 +188,9 @@ export default class course extends Component {
       console.warn(JSON.stringify(responseData))
       this.fetchPostsAPI()
     })
+    .catch((error)=>{
+      this.refs.modal6.open()
+    })
   }
 
   getUserInfo(){
@@ -201,6 +203,9 @@ export default class course extends Component {
       console.warn('user info'+JSON.stringify(responseData))
       this.setState({userName:responseData.userInfo.name})
       this.setState({profileImg:responseData.userInfo.profileImg})
+    })
+    .catch((error)=>{
+      this.refs.modal6.open()
     })
   }
 
@@ -216,6 +221,9 @@ export default class course extends Component {
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
     })
+    .catch((error)=>{
+      this.refs.modal6.open()
+    })
   }
 
   getUserPosts(){
@@ -230,6 +238,9 @@ export default class course extends Component {
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
     })
+    .catch((error)=>{
+      this.refs.modal6.open()
+    })
   }
 
   gotoFile(rowData,type){
@@ -240,10 +251,39 @@ export default class course extends Component {
     this.setState({quesitonIdAnswering:id})
   }
 
+  ifWantToDelete(id,authorId){
+    this.setState({postIdToDelete:id})
+    this.setState({authorOfPost:authorId})
+    this.refs.modal7.open()
+  }
+
+  dontDelete(){
+    this.setState({postIdToDelete:""})
+    this.setState({authorOfPost:""})
+    this.refs.modal7.close()
+  }
+
+  deleteOwnPost(){
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postIdToDelete,{method:"DELETE",
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.fetchPostsAPI()
+      this.refs.modal7.close()
+    })
+    .catch((error)=>{
+      this.refs.modal6.open()
+    })
+  }
+
   ifRenderCross(id,authorId){
     if(this.props.jwt.userId === authorId){
       return(
-        <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
+        <TouchableOpacity onPress={()=>this.ifWantToDelete(id,authorId)}>
           <FontAwesomeIcon name={'times'} size={25} color={'white'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
@@ -477,6 +517,9 @@ export default class course extends Component {
     .then((responseData) => {
       Actions.viewQuestion({data:responseData,courseId:this.state.courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.token})
     })
+    .catch((error)=>{
+      this.refs.modal6.open()
+    })
   }
 
   updateTitle(event){
@@ -679,10 +722,50 @@ export default class course extends Component {
                   />
                 </Animatable.View>
                 <TouchableOpacity onPress={()=>this.postAnswer()}>
-                  <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/1.3,height:height/13,backgroundColor:'#4fd6df',borderRadius:height/100}}>
+                  <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/1.3,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
                     <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Answer</Text>
                   </View>
                 </TouchableOpacity>
+              </View>
+            </Modal>
+            <Modal style={[styles.modal1, styles.modal4]} ref={"modal6"} backdropOpacity={0.2}>
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:50}}>
+                  <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                    <Text style={{marginBottom:70,color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Something Went Wrong...</Text>
+                    <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Please check your network and try again</Text>
+                  </View>
+                </Animatable.View>
+                <TouchableOpacity onPress={()=>this.refs.modal6.close()}>
+                  <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/1.3,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                    <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Got It</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </Modal>
+            <Modal style={[styles.modal1, styles.modal5]} ref={"modal7"} backdropOpacity={0.2}>
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center'}}>
+                <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:20}}>
+                  <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                    <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Are you sure you want to delete your post</Text>
+                  </View>
+                </Animatable.View>
+
+                <View style={{height:30,width:width,marginBottom:20}}>
+                  <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'auto'}}>
+                    <TouchableOpacity onPress={()=>this.deleteOwnPost()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Yes</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.refs.modal7.close()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>No</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
               </View>
             </Modal>
           </View>
@@ -774,6 +857,7 @@ export default class course extends Component {
 
             </View>
           </View>
+
         </ScrollableTabView>
 
     );
@@ -885,6 +969,10 @@ const styles = StyleSheet.create({
   },
     modal4: {
     height: 350,
+    backgroundColor:'#102942'
+  },
+    modal5: {
+    height: 250,
     backgroundColor:'#102942'
   },
   filterButton:{
