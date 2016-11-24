@@ -367,7 +367,10 @@ export default class courseList extends Component {
       )
     }else if(this.state.showInfo && !this.state.showUserList){
       return(
-        <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+          <TouchableOpacity onPress={()=>this.setState({showInfo:false})}>
+            <FontAwesomeIcon name='times' color={'white'} size={27} style={{marginLeft:320}}/>
+          </TouchableOpacity>
           <Text style={{width:width,color:'white'}}>alkshfaklsdhlkahsdfljkahdsljkhalkdjsfhalkjsdfhlkajbvkljbsdklfadslkjfhalkjshflkajsdhflkashdlfkjahsdlkjfhalkjsdhflkajsdhflkjahsdlkjfhalksdhflkasdhflkahsdlkfhaslkdfhlkasdhfklahlskdf</Text>
         </View>
       )
