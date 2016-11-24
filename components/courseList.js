@@ -110,6 +110,8 @@ export default class courseList extends Component {
       userList:[],
       showUserList:false,
       jwtToken:'',
+      currentCourseId:'',
+      currentCourseName:'',
     };
   }
 
@@ -155,6 +157,7 @@ export default class courseList extends Component {
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
       this.setState({listSource:responseData})
+      console.warn(JSON.stringify(this.state.myCourse))
     })
   }
 
@@ -189,22 +192,23 @@ export default class courseList extends Component {
     this.setState({showSearchBar:!this.state.showSearchBar})
   }
 
+  // setNextCourseState(i){
+  //   var myCourseList = this.state.myCourse._dataBlob.s1
+  //   if(i !== myCourseList.length){
+  //     this.setState({currentCourseId:myCourseList[i]._id})
+  //     this.setState({currentCourseName:myCourseList[i].courseName})
+  //   }
+  // }
   gotoCourse=(id)=>{
     LayoutAnimation.configureNext(animations.layout.spring)
     this.setState({selectedCourse:id})
     this.setState({showSearchBar:false})
-  //  this.setState({renderPlus:false})
+    // this.setState({renderPlus:false})
   //  this.setState({offset:-50})
     // this.setState({containerStyle:{
-    //   flex:1,
-    //   width:width,
-    //   marginLeft:-20,
-    //   marginRight:-20,
-    //   backgroundColor:'white',
-    //   borderRadius:20,
-    //   marginTop:-100,
-    //   backgroundColor:"white",
-    //   marginBottom:600,
+    //   // flex:1,
+    //   marginLeft:10,
+    //   marginRight:10,
     // }})
     // this.setState({mainContainer:{
     //   height:height
@@ -303,8 +307,14 @@ export default class courseList extends Component {
       //   <FontAwesomeIcon name={'plus'} color={'white'} size={27} style={{marginLeft:320,marginBottom:20}}/>
       // </TouchableOpacity>
       return(
-        <ActionButton position="right" text="answer" offsetY={height/2} offsetX={this.state.offset} buttonColor="#26D3F2" onPress={()=>this.setState({userAddCourseSwitch:true})}
-            icon={<FontAwesomeIcon name={'plus'} size={22} color='#f6f7fb'/>}>
+        <ActionButton position="right" text="answer" offsetY={height/2} offsetX={this.state.offset} buttonColor="#26D3F2" verticalOrientation='down' degrees={90}
+            icon={<FontAwesomeIcon name={'list-ul'} size={22} color='#f6f7fb'/>}>
+            <ActionButton.Item buttonColor='#A0D468' onPress={()=>this.setState({userAddCourseSwitch:true})}>
+              <FontAwesomeIcon name="plus" size={22} color={'white'} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#ed5565' >
+              <FontAwesomeIcon name="minus" size={22} color={'white'} />
+            </ActionButton.Item>
           </ActionButton>
       )
     }else{
@@ -442,19 +452,21 @@ export default class courseList extends Component {
                       </View>
 
                         <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200,marginTop:20}}>
-                          <View style={{}}>
+                          <View>
+                            <FontAwesomeIcon name={'times'} color={'white'} size={28} style={{marginRight:5}}/>
+                          </View>
+                          <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                             <FontAwesomeIcon name={'list-alt'} color={'white'} size={28}/>
-                            <Text style={{color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.postCount}</Text>
+                            <Text style={{marginLeft:7,color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10,marginBottom:10}}>{course.postCount}</Text>
                           </View>
 
                           <TouchableOpacity onPress={()=>this.getListofUser(course._id)}>
-                            <View style={{}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
                               <FontAwesomeIcon name={'users'} color={'white'} size={27}/>
-                              <Text style={{color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10}}>{course.userCount}</Text>
+                              <Text style={{marginLeft:7,color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10,marginBottom:10}}>{course.userCount}</Text>
                             </View>
                           </TouchableOpacity>
                         </View>
-
 
                     </View>
                   </TouchableOpacity>

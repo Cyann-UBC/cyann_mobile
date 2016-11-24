@@ -139,6 +139,7 @@ export default class course extends Component {
       console.warn(JSON.stringify(responseData))
       this.setState({commentContent:''})
       this.fetchPostsAPI()
+      this.refs.modal5.close()
     })
   }
 
@@ -424,6 +425,7 @@ export default class course extends Component {
   }
 
   askQuestion(){
+    this.setState({pageNumber:1})
     this.setState({buttonExit:true})
     this.refs.titleView.bounce(500)
     this.refs.contentView.bounce(500)
@@ -458,7 +460,7 @@ export default class course extends Component {
       }).cloneWithRows(responseData.posts)})
     })
     setTimeout(()=>{this.setState({pageNumber:0})},800)
-    setTimeout(()=>{this.setState({pageNumber:undefined})},810)
+    setTimeout(()=>{this.setState({pageNumber:undefined})},850)
     setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},1000)
     setTimeout(()=>{this.setState({buttonExit:false})},800)
@@ -598,6 +600,7 @@ export default class course extends Component {
           onChangeTab={this.fetchPostsAPI.bind(this)}
           page={this.state.pageNumber}
           prerenderingSiblingsNumber={0}
+          keyboardDismissMode="on-drag"
           renderTabBar={() =><FacebookTabBar jwt={this.props.jwt} tabs={['ios-add',"ios-alert",'ios-add','ios-add']}/>}
           >
 
