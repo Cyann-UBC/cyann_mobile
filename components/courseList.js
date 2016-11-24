@@ -341,6 +341,7 @@ export default class courseList extends Component {
         <View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
             <TextInput
+              selectionColor={'white'}
               style={{padding:10,height: 50,color:'white',fontSize:20,textAlign:'center',width:200}}
               onChangeText={(text)=>this.filterCourses(text)}
               value={this.state.commentContent}

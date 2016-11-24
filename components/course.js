@@ -712,6 +712,7 @@ export default class course extends Component {
               <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
                 <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{backgroundColor:'#286b95',width:width-30,borderRadius:5}}>
                   <TextInput
+                    selectionColor={'white'}
                     multiline={true}
                     style={{padding:10,height: 250,color:'white',fontSize:20}}
                     onChangeText={(text)=>this.setState({commentContent:text})}
@@ -781,6 +782,7 @@ export default class course extends Component {
               padding:10}}>
               </Animatable.View>
               <TextInput
+                selectionColor={'white'}
                 multiline={true}
                 style={{height: 100,color:'white',fontSize:20}}
                 onChange={this.updateTitle.bind(this)}
@@ -797,6 +799,7 @@ export default class course extends Component {
               borderRadius:20,
               padding:10}}></Animatable.View>
               <TextInput
+                selectionColor={'white'}
                 multiline={true}
                 style={{height: 230,color:'white',fontSize:20}}
                 onChange={this.updateContent.bind(this)}
