@@ -368,9 +368,13 @@ export default class courseList extends Component {
     }else if(this.state.showInfo && !this.state.showUserList){
       return(
         <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-          <TouchableOpacity onPress={()=>this.setState({showInfo:false})}>
-            <FontAwesomeIcon name='times' color={'white'} size={27} style={{marginLeft:320}}/>
-          </TouchableOpacity>
+          <View style={{height:height/20}}>
+            <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',width:width,paddingLeft:10,marginBottom:10}}>
+              <TouchableOpacity onPress={()=>this.setState({showInfo:false})}>
+                <FontAwesomeIcon name='times' color={'white'} size={27} />
+              </TouchableOpacity>
+            </View>
+          </View>
           <Text style={{width:width,color:'white'}}>alkshfaklsdhlkahsdfljkahdsljkhalkdjsfhalkjsdfhlkajbvkljbsdklfadslkjfhalkjshflkajsdhflkashdlfkjahsdlkjfhalkjsdhflkajsdhflkjahsdlkjfhalksdhflkasdhflkahsdlkfhaslkdfhlkasdhfklahlskdf</Text>
         </View>
       )
@@ -378,9 +382,13 @@ export default class courseList extends Component {
     else if(!this.state.showInfo && this.state.showUserList){
       return(
         <View>
-          <TouchableOpacity onPress={()=>this.setState({showUserList:false})}>
-            <FontAwesomeIcon name='times' color={'white'} size={27} style={{marginLeft:320}}/>
-          </TouchableOpacity>
+          <View style={{height:height/20}}>
+            <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',width:width,paddingLeft:10,marginBottom:10}}>
+              <TouchableOpacity onPress={()=>this.setState({showInfo:false})}>
+                <FontAwesomeIcon name='times' color={'white'} size={27} />
+              </TouchableOpacity>
+            </View>
+          </View>
           <View style={{height:height/2}}>
             <ListView
               showsVerticalScrollIndicator={false}
