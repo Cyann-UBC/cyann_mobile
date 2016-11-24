@@ -121,7 +121,7 @@ export default class courseList extends Component {
   renderRow(rowData){
     return(
       <TouchableOpacity>
-        <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'#51d1e1'}}>
+        <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'#294a62'}}>
           <View style={{height:height/10,width:width,padding:10,paddingLeft:20,}}>
             <View style={{flex:1,alignSelf:'flex-start',flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
               <Text style={{fontSize:17,fontWeight:'500',marginBottom:3,color:'gray'}}>{rowData.content}</Text>
@@ -182,7 +182,7 @@ export default class courseList extends Component {
           <TouchableOpacity
             style={{marginLeft:15}}
             onPress={this.onBackPress}>
-            <FontAwesomeIcon name={"angle-left"} size={30} color={'white'} />
+            <FontAwesomeIcon name={"arrow-left"} size={27} color={'white'} />
           </TouchableOpacity>
 
             <Text style={styles.courseTitle}>{this.props.courseName}</Text>
@@ -192,11 +192,11 @@ export default class courseList extends Component {
               style={{height:20,width:20,marginRight: 15}}>
             </TouchableOpacity>
         </View>
-          <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#51d1e1',paddingLeft:15,paddingRight:15}}>
+          <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#294a62',paddingLeft:15,paddingRight:15}}>
             <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
           </ScrollView>
 
-        <View style={{flex:1,height:height/1.5,backgroundColor:'#51d1e1',paddingLeft:7,paddingRight:7}}>
+        <View style={{flex:1,height:height/1.5,backgroundColor:'#294a62',paddingLeft:7,paddingRight:7}}>
             {this.renderScrollView()}
         </View>
         <ActionButton position="right" text="answer" buttonColor="#0f6088" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'column',
     justifyContent: 'center',
-    backgroundColor:'#4fc1e9',
+    backgroundColor:'#294a62',
     alignItems: 'center',
   },
   welcome: {
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: '#51d1e1',
+      backgroundColor: '#294a62',
       paddingTop: 20,
   },
 });

@@ -433,7 +433,7 @@ export default class course extends Component {
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'assignments')}>
           <View style={styles.fileRow}>
-            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'white'} style={{marginRight:20}}/>
+            <FontAwesomeIcon name={rowData.split('.')[1]==='pdf'?'file-pdf-o':'file-o'} size={30} color={'white'} style={{marginRight:20}}/>
             <Text style={{fontSize:20,fontWeight:'500',color:'white'}}>{rowData}</Text>
             <View style={{height:15,width:15}}></View>
           </View>
@@ -451,7 +451,7 @@ export default class course extends Component {
       return(
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'readings')}>
           <View style={styles.fileRow}>
-            <Octicon name={rowData.split('.')[1]==='pdf'?'file-pdf':'file'} size={30} color={'white'} style={{marginRight:20}}/>
+            <FontAwesomeIcon name={rowData.split('.')[1]==='pdf'?'file-pdf-o':'file-o'} size={30} color={'white'} style={{marginRight:20}}/>
             <Text style={{fontSize:20,fontWeight:'500',color:'white'}}>{rowData.split('.')[0]}</Text>
             <View style={{height:15,width:15}}></View>
           </View>
@@ -838,12 +838,12 @@ export default class course extends Component {
               <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:30,paddingRight:30,marginBottom:10}}>
                 <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:false})}>
                   <View>
-                    <Text style={{color:'white',fontSize:15,fontWeight:'400'}}>Past Posts</Text>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Past Posts</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:true})}>
                   <View>
-                    <Text style={{color:'white',fontSize:15,fontWeight:'400'}}>Past Comments</Text>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Past Comments</Text>
                   </View>
                 </TouchableOpacity>
               </View>
