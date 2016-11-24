@@ -40,6 +40,7 @@ export default class courseList extends Component {
       postId:'',
       courseId:'',
       userId:'',
+      showAnswer:false,
     };
   }
 
@@ -89,26 +90,42 @@ export default class courseList extends Component {
       this.getComments()
     })
   }
+  showAnswer(answer){
+    this.setState({answer:answer})
+    this.setState({showAnswer:true})
+  }
   renderScrollView=()=>{
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     if(this.state.ifTypingAnswering == true){
       return(
-          <View style={{flex:1,backgroundColor:'#e2faff',borderRadius:height/100,margin:7}}>
+          <View style={{flex:1,backgroundColor:'#527ba6',borderRadius:height/100,margin:7}}>
             <TouchableOpacity onPress={()=>this.cancelAnswer()}>
-              <FontAwesomeIcon name={"close"} size={25} color={'gray'} style={{marginTop:10,marginLeft:10,}}/>
+              <FontAwesomeIcon name={"close"} size={25} color={'white'} style={{marginTop:10,marginLeft:10,}}/>
             </TouchableOpacity>
             <TextInput
               onChangeText={(text)=>this.setState({commentContent:text})}
-              style={{height:height/1.5,fontSize:20,width:width,padding:20}}
+              style={{color:'white',height:height/1.5,fontSize:20,width:width,padding:20}}
               multiline={true}
               value={this.state.commentContent}
-              placeholder={'your answer here'} />
+              placeholder={'your answer here'}
+              placeholderTextColor='white' />
           </View>
+      )
+    }else if(this.state.showAnswer == true){
+      return(
+        <View style={{flex:1,backgroundColor:'#527ba6',borderRadius:height/100,margin:7}}>
+          <TouchableOpacity onPress={()=>this.setState({showAnswer:false})}>
+            <FontAwesomeIcon name={"close"} size={25} color={'white'} style={{marginTop:10,marginLeft:10,}}/>
+          </TouchableOpacity>
+          <ScrollView>
+            <Text style={{color:'white',height:height/1.5,fontSize:20,width:width-25,padding:20}}>{this.state.answer}</Text>
+          </ScrollView>
+        </View>
       )
     }else{
       return(
           <ListView
-            style={{flex:1,backgroundColor:'#e2faff',borderRadius:height/100,margin:7}}
+            style={{flex:1,backgroundColor:'#527ba6',borderRadius:height/100,margin:7}}
             showsVerticalScrollIndicator={false}
             dataSource={this.state.commentList}
             renderRow={this.renderRow.bind(this)}
@@ -120,16 +137,16 @@ export default class courseList extends Component {
   }
   renderRow(rowData){
     return(
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>this.showAnswer(rowData.content)}>
         <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'#294a62'}}>
           <View style={{height:height/10,width:width,padding:10,paddingLeft:20,}}>
             <View style={{flex:1,alignSelf:'flex-start',flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
-              <Text style={{fontSize:17,fontWeight:'500',marginBottom:3,color:'gray'}}>{rowData.content}</Text>
+              <Text style={{height:70,fontSize:17,fontWeight:'500',marginBottom:3,color:'white'}}>{rowData.content.length>110?rowData.content.substring(0,110)+'...':rowData.content}</Text>
             </View>
           </View>
           <View style={{alignSelf:'flex-start',flex:1,flexDirection:'row', justifyContent:'flex-start', alignItems:'center'}}>
-            <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} /></TouchableOpacity>
-            <Text>{rowData.upvotes}</Text>
+            <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} color={'white'}/></TouchableOpacity>
+            <Text style={{color:'white'}}>{rowData.upvotes}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -192,14 +209,17 @@ export default class courseList extends Component {
               style={{height:20,width:20,marginRight: 15}}>
             </TouchableOpacity>
         </View>
-          <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#294a62',paddingLeft:15,paddingRight:15}}>
-            <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
-          </ScrollView>
+
+              <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#294a62',paddingLeft:15,paddingRight:15,paddingTop:7}}>
+              <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
+              </ScrollView>
+
+
 
         <View style={{flex:1,height:height/1.5,backgroundColor:'#294a62',paddingLeft:7,paddingRight:7}}>
             {this.renderScrollView()}
         </View>
-        <ActionButton position="right" text="answer" buttonColor="#0f6088" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
+        <ActionButton position="right" text="answer" buttonColor="#26D3F2" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
           icon={this.state.ifTypingAnswering?<FontAwesomeIcon name={'send-o'} size={23} color='#f6f7fb'/>
         :<FontAwesomeIcon name={'pencil'} size={23} color='#f6f7fb'/>}>
         </ActionButton>

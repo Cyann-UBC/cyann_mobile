@@ -397,6 +397,7 @@ export default class courseList extends Component {
             contentContainer={{justifyContent:'center'}}
             horizontal ={true}
             pagingEnabled ={true}
+            indicatorStyle ={'white'}
             onScroll={()=>this.setState({offset:30})}
             onMomentumScrollEnd={()=>this.setState({offset:15})}
             >
