@@ -15,7 +15,6 @@ import courseList from './components/courseList';
 import course from './components/course';
 import viewQuestion from './components/viewQuestion';
 import fileView from './components/fileView';
-import comment from './components/comment'
 import login from './components/login';
 
 export default class cyann_mobile extends Component {
@@ -26,7 +25,6 @@ export default class cyann_mobile extends Component {
         <Scene hideNavBar={true}  panHandlers={null} key="course" duration={500} animation="fade" component={course} title="course"/>
         <Scene hideNavBar={true}  key="viewQuestion" component={viewQuestion} duration={500} title="viewQuestion"/>
         <Scene hideNavBar={true}  key="fileView" component={fileView} duration={500} title="fileView"/>
-        <Scene hideNavBar={true}  key="comment" component={comment} duration={500} title="comment"/>
         <Scene hideNavBar={true}  key="login" component={login} duration={500} title="login" initial={true}/>
       </Router>
     )
