@@ -534,6 +534,10 @@ export default class course extends Component {
   }
 
   askQuestion(){
+    if(this.state.questionTitle.length == 0 || this.state.questionContent.length == 0){
+      this.refs.postErrorModal.open()
+      return
+    }
     this.setState({pageNumber:1})
     this.setState({buttonExit:true})
     this.refs.titleView.bounce(500)
@@ -894,7 +898,7 @@ export default class course extends Component {
               <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>10?"flash":undefined} style={{
               width:0,
               height:0,
-              backgroundColor:this.state.questionTitle.length>10?"#A0D468":"#F64848",
+              backgroundColor:this.state.questionTitle.length>0?"#A0D468":"#F64848",
               borderRadius:20,
               padding:10}}>
               </Animatable.View>
@@ -912,7 +916,7 @@ export default class course extends Component {
               <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>20?"flash":undefined} style={{
               width:0,
               height:0,
-              backgroundColor:this.state.questionContent.length>20?"#A0D468":"#F64848",
+              backgroundColor:this.state.questionContent.length>0?"#A0D468":"#F64848",
               borderRadius:20,
               padding:10}}></Animatable.View>
               <TextInput
@@ -934,8 +938,22 @@ export default class course extends Component {
 
             <View>
             </View>
-
           </View>
+          <Modal style={[styles.modal1, styles.modal4]} ref={"postErrorModal"} backdropOpacity={0.2}>
+            <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+              <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:50}}>
+                <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                  <Text style={{marginBottom:70,color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>OOPS</Text>
+                  <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Looks like something is missing</Text>
+                </View>
+              </Animatable.View>
+              <TouchableOpacity onPress={()=>this.refs.postErrorModal.close()}>
+                <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/1.3,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                  <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Got It</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </Modal>
           </KeyboardAwareScrollView>
 
           <View style={{flex:1,backgroundColor:this.state.backgroundColor}}>
