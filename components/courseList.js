@@ -320,7 +320,7 @@ export default class courseList extends Component {
       return(
         <ActionButton position="right" text="answer" offsetY={height/2} offsetX={this.state.offset} buttonColor="#26D3F2" verticalOrientation='down' degrees={90}
             icon={<FontAwesomeIcon name={'list-ul'} size={22} color='#f6f7fb'/>}>
-            <ActionButton.Item buttonColor='#ed5565' onPress={()=>this.setState({showInfo:true,showUserList:false})}>
+            <ActionButton.Item buttonColor='#F64848' onPress={()=>this.setState({showInfo:true,showUserList:false})}>
               <FontAwesomeIcon name="info" size={22} color={'white'} />
             </ActionButton.Item>
             <ActionButton.Item buttonColor='#A0D468' onPress={()=>this.setState({userAddCourseSwitch:true})}>

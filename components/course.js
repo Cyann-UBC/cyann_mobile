@@ -57,6 +57,7 @@ export default class course extends Component {
       readingList:{},
       questionTitle:'',
       questionContent:'',
+      editPostText:'',
       activeSection:0,
       titleContainer:{},
       contentContainer:{},
@@ -76,6 +77,8 @@ export default class course extends Component {
       userPosts:[],
       userComments:[],
       ifRenderPostOrComments:false,
+      postId:'',
+      authorOfPost:'',
     };
   }
 
@@ -118,7 +121,7 @@ export default class course extends Component {
       }).cloneWithRows(responseData.data)})
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -145,7 +148,7 @@ export default class course extends Component {
       this.refs.modal5.close()
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -159,7 +162,7 @@ export default class course extends Component {
       }).cloneWithRows(responseData.files)})
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -173,7 +176,7 @@ export default class course extends Component {
       }).cloneWithRows(responseData.files)})
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -189,7 +192,7 @@ export default class course extends Component {
       this.fetchPostsAPI()
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -205,7 +208,7 @@ export default class course extends Component {
       this.setState({profileImg:responseData.userInfo.profileImg})
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -222,7 +225,7 @@ export default class course extends Component {
       }).cloneWithRows(responseData)})
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -239,7 +242,7 @@ export default class course extends Component {
       }).cloneWithRows(responseData)})
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -252,19 +255,19 @@ export default class course extends Component {
   }
 
   ifWantToDelete(id,authorId){
-    this.setState({postIdToDelete:id})
+    this.setState({postId:id})
     this.setState({authorOfPost:authorId})
-    this.refs.modal7.open()
+    this.refs.deleteModal.open()
   }
 
   dontDelete(){
-    this.setState({postIdToDelete:""})
+    this.setState({postId:""})
     this.setState({authorOfPost:""})
-    this.refs.modal7.close()
+    this.refs.deleteModal.close()
   }
 
   deleteOwnPost(){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postIdToDelete,{method:"DELETE",
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Bearer '+this.props.jwt.token
@@ -273,10 +276,49 @@ export default class course extends Component {
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
       this.fetchPostsAPI()
-      this.refs.modal7.close()
+      this.refs.deleteModal.close()
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
+    })
+  }
+
+  ifEdit(id,authorId,title,content){
+    this.setState({postId:id})
+    this.setState({authorOfPost:authorId})
+    this.setState({editPostTitle:title})
+    this.setState({editPostText:content})
+    this.refs.editModal.open()
+  }
+
+  editPost(){
+    var post = {
+    'title': this.state.editPostTitle,
+    'content': this.state.editPostText,
+    }
+
+    var formBody = []
+
+    for (var property in post) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(post[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"PUT",
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer '+this.props.jwt.token
+        },body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.fetchPostsAPI()
+      this.refs.editModal.close()
+    })
+    .catch((error)=>{
+      this.refs.errorModal.open()
     })
   }
 
@@ -284,7 +326,7 @@ export default class course extends Component {
     if(this.props.jwt.userId === authorId){
       return(
         <TouchableOpacity onPress={()=>this.ifWantToDelete(id,authorId)}>
-          <FontAwesomeIcon name={'times'} size={25} color={'white'} style={{marginTop:10,marginRight:10}}/>
+          <FontAwesomeIcon name={'times'} size={25} color={'#F64848'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
     }else{
@@ -293,11 +335,11 @@ export default class course extends Component {
       )
     }
   }
-  ifRenderEdit(id,authorId){
+  ifRenderEdit(id,authorId,title,content){
     if(this.props.jwt.userId === authorId){
       return(
-        <TouchableOpacity onPress={()=>this.ifWantToDelete(id,authorId)}>
-          <FontAwesomeIcon name={'pencil-square-o'} size={25} color={'white'} style={{marginTop:10,marginRight:10}}/>
+        <TouchableOpacity onPress={()=>this.ifEdit(id,authorId,title,content)}>
+          <FontAwesomeIcon name={'pencil-square-o'} size={25} color={'#A0D468'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
     }else{
@@ -371,7 +413,7 @@ export default class course extends Component {
                   </View>
                 </View>
               </View>
-              {this.ifRenderEdit(rowData._id,rowData.author._id)}
+              {this.ifRenderEdit(rowData._id,rowData.author._id,rowData.title,rowData.content)}
             </View>
           </View>
         </Animatable.View>
@@ -399,7 +441,7 @@ export default class course extends Component {
                   </View>
                 </View>
               </View>
-              {this.ifRenderEdit(rowData._id,rowData.author._id)}
+              {this.ifRenderEdit(rowData._id,rowData.author._id,rowData.title,rowData.content)}
             </View>
           </View>
         </Animatable.View>
@@ -537,7 +579,7 @@ export default class course extends Component {
       Actions.viewQuestion({data:responseData,courseId:this.state.courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.token})
     })
     .catch((error)=>{
-      this.refs.modal6.open()
+      this.refs.errorModal.open()
     })
   }
 
@@ -748,7 +790,7 @@ export default class course extends Component {
                 </TouchableOpacity>
               </View>
             </Modal>
-            <Modal style={[styles.modal1, styles.modal4]} ref={"modal6"} backdropOpacity={0.2}>
+            <Modal style={[styles.modal1, styles.modal4]} ref={"errorModal"} backdropOpacity={0.2}>
               <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
                 <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:50}}>
                   <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
@@ -756,14 +798,14 @@ export default class course extends Component {
                     <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Please check your network and try again</Text>
                   </View>
                 </Animatable.View>
-                <TouchableOpacity onPress={()=>this.refs.modal6.close()}>
+                <TouchableOpacity onPress={()=>this.refs.errorModal.close()}>
                   <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/1.3,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
                     <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Got It</Text>
                   </View>
                 </TouchableOpacity>
               </View>
             </Modal>
-            <Modal style={[styles.modal1, styles.modal5]} ref={"modal7"} backdropOpacity={0.2}>
+            <Modal style={[styles.modal1, styles.modal5]} ref={"deleteModal"} backdropOpacity={0.2}>
               <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center'}}>
                 <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:20}}>
                   <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
@@ -778,14 +820,55 @@ export default class course extends Component {
                         <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Yes</Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>this.refs.modal7.close()}>
+                    <TouchableOpacity onPress={()=>this.refs.deleteModal.close()}>
                       <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
                         <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>No</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
                 </View>
-
+              </View>
+            </Modal>
+            <Modal style={[styles.modal1, styles.modal6]} position={"top"} ref={"editModal"} backdropOpacity={0.2}>
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                <Animatable.View animation={'fadeIn'} duration={1000} style={{backgroundColor:'#286b95',width:width-30,borderRadius:5}}>
+                  <TextInput
+                    selectionColor={'white'}
+                    multiline={true}
+                    style={{padding:10,height: 50,color:'white',fontSize:20}}
+                    onChangeText={(text)=>this.setState({editPostTitle:text})}
+                    value={this.state.editPostTitle}
+                    autoFocus={true}
+                    placeholder="Edit my post"
+                    placeholderTextColor={'white'}
+                  />
+                </Animatable.View>
+                <Animatable.View animation={'fadeIn'} duration={1000} style={{backgroundColor:'#286b95',width:width-30,borderRadius:5}}>
+                  <TextInput
+                    selectionColor={'white'}
+                    multiline={true}
+                    style={{padding:10,height: 250,color:'white',fontSize:20}}
+                    onChangeText={(text)=>this.setState({editPostText:text})}
+                    value={this.state.editPostText}
+                    autoFocus={true}
+                    placeholder="Edit my post"
+                    placeholderTextColor={'white'}
+                  />
+                </Animatable.View>
+                <View style={{height:30,width:width,marginBottom:20}}>
+                  <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
+                    <TouchableOpacity onPress={()=>this.editPost()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Edit</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.refs.editModal.close()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Cancel</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </Modal>
           </View>
@@ -796,7 +879,7 @@ export default class course extends Component {
               <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>10?"flash":undefined} style={{
               width:0,
               height:0,
-              backgroundColor:this.state.questionTitle.length>10?"#A0D468":"#ED5565",
+              backgroundColor:this.state.questionTitle.length>10?"#A0D468":"#F64848",
               borderRadius:20,
               padding:10}}>
               </Animatable.View>
@@ -814,7 +897,7 @@ export default class course extends Component {
               <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>20?"flash":undefined} style={{
               width:0,
               height:0,
-              backgroundColor:this.state.questionContent.length>20?"#A0D468":"#ED5565",
+              backgroundColor:this.state.questionContent.length>20?"#A0D468":"#F64848",
               borderRadius:20,
               padding:10}}></Animatable.View>
               <TextInput
@@ -995,6 +1078,10 @@ const styles = StyleSheet.create({
   },
     modal5: {
     height: 250,
+    backgroundColor:'#102942'
+  },
+    modal6: {
+    height: 400,
     backgroundColor:'#102942'
   },
   filterButton:{
