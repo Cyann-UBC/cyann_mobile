@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  RefreshControl,
   ListView,
   LayoutAnimation,
   StatusBar,
@@ -38,6 +39,7 @@ export default class course extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isRefreshing: false,
       viewHeight:20,
       questionPosted:false,
       backgroundColor:'#294a62',
@@ -110,6 +112,12 @@ export default class course extends Component {
     console.warn(this.props.id)
     console.warn(this.props.jwt.token)
   }
+
+  _onRefresh = () => {
+    this.setState({isRefreshing: true})
+    this.fetchPostsAPI()
+    this.setState({isRefreshing:false})
+  };
 
   fetchPostsAPI(){
     fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
@@ -720,6 +728,13 @@ export default class course extends Component {
               renderRow={this.renderRow.bind(this)}
               horizontal={false}
               removeClippedSubviews={true}
+              refreshControl={
+              <RefreshControl
+                tintColor={'white'}
+                refreshing={this.state.isRefreshing}
+                onRefresh={this._onRefresh.bind(this)}
+              />
+            }
             />
           <ActionButton position="right" text="answer" buttonColor="#26D3F2" onPress={()=>this.openModal4()}
               icon={<FontAwesomeIcon name={'search'} size={22} color='#f6f7fb'/>}>
