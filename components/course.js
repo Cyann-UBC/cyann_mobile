@@ -20,6 +20,7 @@ import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import dismissKeyboard from 'react-native-dismiss-keyboard';
 
 var Accordion = require('react-native-accordion');
 import ActionButton from 'react-native-action-button';
@@ -84,6 +85,10 @@ export default class course extends Component {
     };
   }
 
+  onChangeTab(){
+    this.fetchPostsAPI()
+    dismissKeyboard()
+  }
   openModal4() {
     this.refs.modal4.open();
   }
@@ -726,7 +731,7 @@ export default class course extends Component {
     let buttonStyle = [styles.askButton, this.state.askButton]
     return (
         <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
-          onChangeTab={this.fetchPostsAPI.bind(this)}
+          onChangeTab={()=>this.onChangeTab()}
           page={this.state.pageNumber}
           prerenderingSiblingsNumber={0}
           keyboardDismissMode="on-drag"
@@ -1000,7 +1005,7 @@ export default class course extends Component {
               </View>
               {this.state.ifRenderPostOrComments?this.ifRenderUserComments():this.ifRenderUserPosts()}
             </View>
-            
+
             <View style={{width:30,height:30}}>
 
             </View>

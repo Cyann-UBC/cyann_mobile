@@ -44,9 +44,9 @@ export default class fileView extends Component {
           source={{uri: this.state.uri,method:'GET',headers:{'Authorization': 'Bearer '+this.props.jwt}}}
           style={{height:height,width:width}}
         />
-        <ActionButton position="right" text="answer" buttonColor="#26D3F2" verticalOrientation='down' degrees={90}
+      <ActionButton position="left" offsetY={560} offsetX={20} text="answer" buttonColor="transparent" verticalOrientation='down' degrees={90}
             onPress={()=>Actions.pop()}
-            icon={<FontAwesomeIcon name={'arrow-left'} size={22} color='#f6f7fb'/>}>
+            icon={<FontAwesomeIcon name={'arrow-left'} size={30} color='#26D3F2'/>}>
           </ActionButton>
       </View>
 

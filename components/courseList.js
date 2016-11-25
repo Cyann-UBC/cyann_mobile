@@ -381,12 +381,12 @@ export default class courseList extends Component {
         </View>
       )
     }
-    else if(!this.state.showInfo && this.state.showUserList){
+    else if(this.state.showUserList){
       return(
         <View>
           <View style={{height:height/20}}>
             <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',width:width,paddingLeft:10,marginBottom:10}}>
-              <TouchableOpacity onPress={()=>this.setState({showInfo:false})}>
+              <TouchableOpacity onPress={()=>this.setState({showUserList:false})}>
                 <FontAwesomeIcon name='times' color={'white'} size={27} />
               </TouchableOpacity>
             </View>

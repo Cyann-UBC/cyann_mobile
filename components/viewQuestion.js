@@ -7,6 +7,7 @@ import {
   ListView,
   LayoutAnimation,
   TextInput,
+  Image,
   Text,
   View
 } from 'react-native';
@@ -144,11 +145,24 @@ export default class viewQuestion extends Component {
               <Text style={{height:70,fontSize:17,fontWeight:'500',marginBottom:3,color:'white'}}>{rowData.content.length>110?rowData.content.substring(0,110)+'...':rowData.content}</Text>
             </View>
           </View>
-          <View style={{alignSelf:'flex-start',height:30}}>
-            <View style={{width:width/2,backgroundColor:'blue',alignSelf:'flex-start',flex:1,flexDirection:'row', justifyContent:'flex-start', alignItems:'center'}}>
-              <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} color={'white'}/></TouchableOpacity>
-              <Text style={{color:'white'}}>{rowData.upvotes}</Text>
-              {this.ifRenderInstructor(rowData.author.userType)}
+          <View style={{height:30}}>
+            <View style={{width:width-20,flex:1,flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+              <View style={{width:width/2}}>
+                <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                  <Image
+                    style={{width: 36, height: 36,borderRadius:18}}
+                    source={{uri: rowData.author.profileImg}}
+                  />
+                  <Text style={{color:"white",marginLeft:10}}>{rowData.author.name}</Text>
+                  {this.ifRenderInstructor(rowData.author.userType)}
+                </View>
+              </View>
+              <View style={{width:50,marginRight:20}}>
+                <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                  <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><FontAwesomeIcon name={'thumbs-up'} size={25} color={'white'}/></TouchableOpacity>
+                  <Text style={{marginLeft:5,color:'white'}}>{rowData.upvotes}</Text>
+                </View>
+              </View>
             </View>
           </View>
 
@@ -158,21 +172,22 @@ export default class viewQuestion extends Component {
   }
 
   ifRenderInstructor(userType){
-    if(userType === "Student"){
+    if(userType === "Instructor"){
       return(
-        <View style={{}}>
-          <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>INS</Text>
+        <View style={{width:40}}>
+          <Text style={{marginLeft:10,extAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>INS</Text>
         </View>
       )
     }else if(userType === "TA"){
       return(
-        <View style={{marginTop:13,marginRight:15,height:height/17,width:30,borderRadius:height/100}}>
-          <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>TA</Text>
+        <View style={{width:40}}>
+          <Text style={{marginLeft:10,extAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>TA</Text>
         </View>
-      )
+    )
     }else{
       return(
-        null
+        <View style={{width:40}}>
+        </View>
       )
     }
   }
