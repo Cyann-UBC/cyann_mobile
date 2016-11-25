@@ -63,7 +63,7 @@ const FacebookTabBar = React.createClass({
     return {
       tabs: [
         'list-alt',
-        'pencil-square-o',
+        'pencil',
         'paperclip',
         'user'
       ],

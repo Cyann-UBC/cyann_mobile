@@ -293,6 +293,19 @@ export default class course extends Component {
       )
     }
   }
+  ifRenderEdit(id,authorId){
+    if(this.props.jwt.userId === authorId){
+      return(
+        <TouchableOpacity onPress={()=>this.ifWantToDelete(id,authorId)}>
+          <FontAwesomeIcon name={'pencil-square-o'} size={25} color={'white'} style={{marginTop:10,marginRight:10}}/>
+        </TouchableOpacity>
+      )
+    }else{
+      return(
+        <View style={{height:20,width:30,marginTop:10,marginRight:10,backgroundColor:'transparent'}}></View>
+      )
+    }
+  }
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
@@ -346,16 +359,19 @@ export default class course extends Component {
             </View>
           </View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
-            <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
-              <Image
-                style={{width: 36, height: 36,borderRadius:18}}
-                source={{uri: rowData.author.profileImg}}
-              />
-            <View style={{height:36}}>
-                <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                  <Text style={{color:"white",marginLeft:10}}>{rowData.author.name}</Text>
+            <View style={{flex:1,flexDirection:"row",justifyContent:'space-between',height:5}}>
+              <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
+                <Image
+                  style={{width: 36, height: 36,borderRadius:18}}
+                  source={{uri: rowData.author.profileImg}}
+                />
+              <View style={{height:36}}>
+                  <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
+                    <Text style={{color:"white",marginLeft:10}}>{rowData.author.name}</Text>
+                  </View>
                 </View>
               </View>
+              {this.ifRenderEdit(rowData._id,rowData.author._id)}
             </View>
           </View>
         </Animatable.View>
@@ -371,16 +387,19 @@ export default class course extends Component {
             </View>
           </View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
-            <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
-              <Image
-                style={{width: 36, height: 36,borderRadius:18}}
-                source={{uri: rowData.author.profileImg}}
-              />
-            <View style={{height:36}}>
-                <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                  <Text style={{color:"white",marginLeft:10}}>{rowData.author.name}</Text>
+            <View style={{flex:1,flexDirection:"row",justifyContent:'space-between',height:5}}>
+              <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
+                <Image
+                  style={{width: 36, height: 36,borderRadius:18}}
+                  source={{uri: rowData.author.profileImg}}
+                />
+              <View style={{height:36}}>
+                  <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
+                    <Text style={{color:"white",marginLeft:10}}>{rowData.author.name}</Text>
+                  </View>
                 </View>
               </View>
+              {this.ifRenderEdit(rowData._id,rowData.author._id)}
             </View>
           </View>
         </Animatable.View>
