@@ -100,6 +100,7 @@ export default class courseList extends Component {
       viewToggle:'list',
       selectedCourse:'',
       myCourse:[],
+      myCourseEmpty:true,
       courseObjects:[],
       showSearchBar: false,
       query:'',
@@ -117,6 +118,7 @@ export default class courseList extends Component {
   }
 
   componentWillMount(){
+    console.warn(this.props.if)
     this.setState({jwtToken:this.props.jwt.token})
     this.getAllCourses()
     this.getUserCourses()
@@ -239,7 +241,7 @@ export default class courseList extends Component {
     // }})},200)
 
     setTimeout(()=>{this.setState({viewToggle:'name'})},200)
-    setTimeout(()=>{Actions.course({type:'reset',id:id,jwt:this.props.jwt})},250)
+    setTimeout(()=>{Actions.course({id:id,jwt:this.props.jwt})},250)
 
   }
 

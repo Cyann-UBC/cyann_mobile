@@ -895,7 +895,7 @@ export default class course extends Component {
           <KeyboardAwareScrollView keyboardDismissMode={'on-drag'} contentContainerStyle={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}} >
           <View style={{}}>
             <Animatable.View ref="titleView" animation={'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
-              <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>10?"flash":undefined} style={{
+              <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>0?"flash":undefined} style={{
               width:0,
               height:0,
               backgroundColor:this.state.questionTitle.length>0?"#A0D468":"#F64848",
@@ -913,7 +913,7 @@ export default class course extends Component {
               />
             </Animatable.View>
             <Animatable.View ref="contentView" animation={'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
-              <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>20?"flash":undefined} style={{
+              <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>0?"flash":undefined} style={{
               width:0,
               height:0,
               backgroundColor:this.state.questionContent.length>0?"#A0D468":"#F64848",
