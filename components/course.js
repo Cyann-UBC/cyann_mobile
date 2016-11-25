@@ -330,13 +330,27 @@ export default class course extends Component {
     })
   }
 
-  ifRenderCross(id,authorId){
+  ifRenderCross(id,authorId,userType){
     if(this.props.jwt.userId === authorId){
       return(
         <TouchableOpacity onPress={()=>this.ifWantToDelete(id,authorId)}>
           <FontAwesomeIcon name={'times'} size={25} color={'#F64848'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
+    }else if(userType === "Instructor"){
+      return(
+        <View style={{height:15,width:30,backgroundColor:''}}>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+            <Text style={{fontSize:12,color:'white',fontWeight:'500'}}>INSTR</Text>
+          </View>
+        </View>
+      )
+    }else if(userType === "TA"){
+      <View style={{height:15,width:30,backgroundColor:''}}>
+        <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+          <Text style={{fontSize:12,color:'white',fontWeight:'500'}}>TA</Text>
+        </View>
+      </View>
     }else{
       return(
         <View style={{height:20,width:30,marginTop:10,marginRight:10,backgroundColor:'transparent'}}></View>
@@ -405,7 +419,7 @@ export default class course extends Component {
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
               <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-              {this.ifRenderCross(rowData._id,rowData.author._id)}
+              {this.ifRenderCross(rowData._id,rowData.author._id,rowData.author.userType)}
             </View>
           </View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
@@ -433,7 +447,7 @@ export default class course extends Component {
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
               <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-              {this.ifRenderCross(rowData._id,rowData.author._id)}
+              {this.ifRenderCross(rowData._id,rowData.author._id,rowData.author.userType)}
             </View>
           </View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20,paddingLeft:7}}>
