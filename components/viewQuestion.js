@@ -24,7 +24,7 @@ var {
   height
 } = Dimensions.get('window');
 
-export default class courseList extends Component {
+export default class viewQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -258,5 +258,5 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('courseList', () => courseList);
+AppRegistry.registerComponent('viewQuestion', () => viewQuestion);
 //
