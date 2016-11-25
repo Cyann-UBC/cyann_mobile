@@ -125,7 +125,7 @@ export default class course extends Component {
   };
 
   fetchPostsAPI(){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch("http://128.189.65.118:3000/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -151,7 +151,7 @@ export default class course extends Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    var url = "http://localhost:3000/"+"api/courses/"+this.props.id+"/posts/"+this.state.quesitonIdAnswering+"/comments"
+    var url = "http://128.189.65.118:3000/"+"api/courses/"+this.props.id+"/posts/"+this.state.quesitonIdAnswering+"/comments"
     fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Bearer '+this.props.jwt.token},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
@@ -166,7 +166,7 @@ export default class course extends Component {
   }
 
   fetchAssignmentAPI(){
-    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch("http://128.189.65.118:3000/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response) => response.json())
     .then((responseData) => {
       //  console.warn(JSON.stringify(responseData))
@@ -180,7 +180,7 @@ export default class course extends Component {
   }
 
   fetchReadingsAPI(){
-    fetch("http://localhost:3000/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch("http://128.189.65.118:3000/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -194,7 +194,7 @@ export default class course extends Component {
   }
 
   filterPost(){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
+    fetch("http://128.189.65.118:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Bearer '+this.props.jwt.token
@@ -210,7 +210,7 @@ export default class course extends Component {
   }
 
   getUserInfo(){
-    fetch("http://localhost:3000/api/users/my",{method:"GET",
+    fetch("http://128.189.65.118:3000/api/users/my",{method:"GET",
           headers: {
           'Authorization': 'Bearer '+this.props.jwt.token
           }})
@@ -226,7 +226,7 @@ export default class course extends Component {
   }
 
   getUserComments(){
-    fetch("http://localhost:3000/api/users/my/comments",{method:"GET",
+    fetch("http://128.189.65.118:3000/api/users/my/comments",{method:"GET",
           headers: {
           'Authorization': 'Bearer '+this.props.jwt.token
           }})
@@ -243,7 +243,7 @@ export default class course extends Component {
   }
 
   getUserPosts(){
-    fetch("http://localhost:3000/api/users/my/posts",{method:"GET",
+    fetch("http://128.189.65.118:3000/api/users/my/posts",{method:"GET",
           headers: {
           'Authorization': 'Bearer '+this.props.jwt.token
           }})
@@ -260,7 +260,7 @@ export default class course extends Component {
   }
 
   gotoFile(rowData,type){
-    Actions.fileView({uri:"http://localhost:3000/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.token})
+    Actions.fileView({uri:"http://128.189.65.118:3000/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.token})
   }
 
   setQuestionID(id){
@@ -280,7 +280,7 @@ export default class course extends Component {
   }
 
   deleteOwnPost(){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"DELETE",
+    fetch("http://128.189.65.118:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Bearer '+this.props.jwt.token
@@ -319,7 +319,7 @@ export default class course extends Component {
     }
     formBody = formBody.join("&");
 
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"PUT",
+    fetch("http://128.189.65.118:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"PUT",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Bearer '+this.props.jwt.token
@@ -578,7 +578,7 @@ export default class course extends Component {
     }
     formBody = formBody.join("&");
 
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts",{method:"POST",
+    fetch("http://128.189.65.118:3000/api/courses/"+this.state.courseId+"/posts",{method:"POST",
     headers: {
      'Content-Type': 'application/x-www-form-urlencoded',
      'Authorization': 'Bearer '+this.props.jwt.token
@@ -599,7 +599,7 @@ export default class course extends Component {
   }
 
   viewQuestion=(id,title,content,author)=>{
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+'/'+'posts/'+id,{method:"GET",
+    fetch("http://128.189.65.118:3000/api/courses/"+this.state.courseId+'/'+'posts/'+id,{method:"GET",
     headers:{
       'Authorization': 'Bearer '+this.props.jwt.token
     }

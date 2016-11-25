@@ -22,6 +22,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Communications from 'react-native-communications';
 import ActionButton from 'react-native-action-button';
 
+var DeviceInfo = require('react-native-device-info');
 var Dimensions = require('Dimensions');
 var {
   width,
@@ -114,10 +115,16 @@ export default class courseList extends Component {
       currentCourseId:'',
       currentCourseName:'',
       showInfo:false,
+      offsetY:height/2-10
     };
   }
 
   componentWillMount(){
+    var model = DeviceInfo.getModel();
+    console.warn(model)
+    if(model === 'iPhone 6 Plus' || model === 'iPhone 6s Plus' || model ==='iPhone 7 Plus'){
+      this.setState({offsetY:height/2-40})
+    }
     console.warn(this.props.if)
     this.setState({jwtToken:this.props.jwt.token})
     this.getAllCourses()
@@ -140,7 +147,7 @@ export default class courseList extends Component {
   }
 
   getAllCourses(){
-    fetch('http://localhost:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://128.189.65.118:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
       //console.warn(JSON.stringify(responseData))
@@ -156,7 +163,7 @@ export default class courseList extends Component {
   }
 
   getUserCourses(){
-    fetch('http://localhost:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://128.189.65.118:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       console.warn('my courses '+JSON.stringify(responseData))
@@ -172,7 +179,7 @@ export default class courseList extends Component {
   }
 
   getListofUser(id){
-    fetch('http://localhost:3000/api/courses/users/'+id,{method:"GET",headers:{'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://128.189.65.118:3000/api/courses/users/'+id,{method:"GET",headers:{'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       this.setState({userList:new ListView.DataSource({
@@ -246,7 +253,7 @@ export default class courseList extends Component {
   }
 
   addCourse(id){
-    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://128.189.65.118:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
        console.warn(JSON.stringify(responseData))
@@ -320,7 +327,7 @@ export default class courseList extends Component {
       //   <FontAwesomeIcon name={'plus'} color={'white'} size={27} style={{marginLeft:320,marginBottom:20}}/>
       // </TouchableOpacity>
       return(
-        <ActionButton position="right" text="answer" offsetY={height/2} offsetX={this.state.offset} buttonColor="#26D3F2" verticalOrientation='down' degrees={90}
+        <ActionButton position="right" text="answer" offsetY={this.state.offsetY} offsetX={this.state.offset} buttonColor="#26D3F2" verticalOrientation='down' degrees={90}
             icon={<FontAwesomeIcon name={'list-ul'} size={22} color='#f6f7fb'/>}>
             <ActionButton.Item buttonColor='#F64848' onPress={()=>this.setState({showInfo:true,showUserList:false})}>
               <FontAwesomeIcon name="info" size={22} color={'white'} />
