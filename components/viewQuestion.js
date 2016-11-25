@@ -144,13 +144,37 @@ export default class viewQuestion extends Component {
               <Text style={{height:70,fontSize:17,fontWeight:'500',marginBottom:3,color:'white'}}>{rowData.content.length>110?rowData.content.substring(0,110)+'...':rowData.content}</Text>
             </View>
           </View>
-          <View style={{alignSelf:'flex-start',flex:1,flexDirection:'row', justifyContent:'flex-start', alignItems:'center'}}>
-            <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} color={'white'}/></TouchableOpacity>
-            <Text style={{color:'white'}}>{rowData.upvotes}</Text>
+          <View style={{alignSelf:'flex-start',height:30}}>
+            <View style={{width:width/2,backgroundColor:'blue',alignSelf:'flex-start',flex:1,flexDirection:'row', justifyContent:'flex-start', alignItems:'center'}}>
+              <TouchableOpacity onPress={()=>this.upvoteComment(rowData._id)}><Icon name={'like'} size={30} color={'white'}/></TouchableOpacity>
+              <Text style={{color:'white'}}>{rowData.upvotes}</Text>
+              {this.ifRenderInstructor(rowData.author.userType)}
+            </View>
           </View>
+
         </View>
       </TouchableOpacity>
     )
+  }
+
+  ifRenderInstructor(userType){
+    if(userType === "Student"){
+      return(
+        <View style={{}}>
+          <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>INS</Text>
+        </View>
+      )
+    }else if(userType === "TA"){
+      return(
+        <View style={{marginTop:13,marginRight:15,height:height/17,width:30,borderRadius:height/100}}>
+          <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>TA</Text>
+        </View>
+      )
+    }else{
+      return(
+        null
+      )
+    }
   }
   onBackPress(){
     Actions.pop();

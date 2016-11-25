@@ -1000,10 +1000,7 @@ export default class course extends Component {
               </View>
               {this.state.ifRenderPostOrComments?this.ifRenderUserComments():this.ifRenderUserPosts()}
             </View>
-
-
-
-
+            
             <View style={{width:30,height:30}}>
 
             </View>
