@@ -332,6 +332,9 @@ export default class course extends Component {
 
   ifRenderCross(id,authorId,userType){
     if(this.props.jwt.userId === authorId){
+      // <TouchableOpacity onPress={()=>this.ifWantToDelete(id,authorId)}>
+      //   <FontAwesomeIcon name={'times'} size={25} color={'#F64848'} style={{marginTop:10,marginRight:10}}/>
+      // </TouchableOpacity>
       return(
         <TouchableOpacity onPress={()=>this.ifWantToDelete(id,authorId)}>
           <FontAwesomeIcon name={'times'} size={25} color={'#F64848'} style={{marginTop:10,marginRight:10}}/>
@@ -339,17 +342,13 @@ export default class course extends Component {
       )
     }else if(userType === "Instructor"){
       return(
-        <View style={{height:15,width:30,backgroundColor:''}}>
-          <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontSize:12,color:'white',fontWeight:'500'}}>INSTR</Text>
-          </View>
+        <View style={{marginTop:13,marginRight:15,height:height/17,width:30,borderRadius:height/100}}>
+          <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>INS</Text>
         </View>
       )
     }else if(userType === "TA"){
-      <View style={{height:15,width:30,backgroundColor:''}}>
-        <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-          <Text style={{fontSize:12,color:'white',fontWeight:'500'}}>TA</Text>
-        </View>
+      <View style={{marginTop:13,marginRight:15,height:height/17,width:30,borderRadius:height/100}}>
+        <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>TA</Text>
       </View>
     }else{
       return(
