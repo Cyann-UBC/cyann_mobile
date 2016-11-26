@@ -82,6 +82,9 @@ export default class course extends Component {
       ifRenderPostOrComments:false,
       postId:'',
       authorOfPost:'',
+      weeksAgo:0,
+      keywords:'',
+      userId:'',
     };
   }
 
@@ -99,6 +102,9 @@ export default class course extends Component {
     this.refs.modal5.open();
   }
 
+  updateKeywords(e){
+    this.setState({keywords:e.nativeEvent.text},()=>{this.filterPost()})
+  }
   componentWillMount(){
     this.setState({questionList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
@@ -193,8 +199,10 @@ export default class course extends Component {
     })
   }
 
+
   filterPost(){
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+id,{method:"DELETE",
+    var keywords = this.state.keywords
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/search?keyword="+this.state.keywords+"&weeksAgo=1",{method:"GET",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Bearer '+this.props.jwt.token
@@ -202,7 +210,6 @@ export default class course extends Component {
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
-      this.fetchPostsAPI()
     })
     .catch((error)=>{
       this.refs.errorModal.open()
@@ -774,6 +781,7 @@ export default class course extends Component {
                       labelStyle={{ fontWeight:'600',color:'white',fontSize:17,marginTop:15,marginLeft:10}}
                       inputStyle={styles.filterButtonText}
                       style={{backgroundColor:'#294a62',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
+                      onChange={this.updateKeywords.bind(this)}
                     />
                 </View>
 

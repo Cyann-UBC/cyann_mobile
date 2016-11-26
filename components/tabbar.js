@@ -94,9 +94,9 @@ const FacebookTabBar = React.createClass({
 
   //color between rgb(59,89,152) and rgb(204,204,204)
   iconColor(progress) {
-    const red = 255 + (215 - 255) * progress;
-    const green = 255 + (215 - 255) * progress;
-    const blue = 255 + (215 - 255) * progress;
+    const red = 255 + (155 - 255) * progress;
+    const green = 255 + (155 - 255) * progress;
+    const blue = 255 + (155 - 255) * progress;
     return `rgb(${red}, ${green}, ${blue})`;
   },
 
@@ -131,7 +131,7 @@ const FacebookTabBar = React.createClass({
               <FontAwesomeIcon
                 name={tab}
                 size={30}
-                color={this.props.activeTab === i ? 'rgb(255,255,255)' : 'rgb(204,204,204)'}
+                color={this.props.activeTab === i ? 'rgb(255,255,255)' : 'rgb(155,155,155)'}
                 ref={(icon) => { this.tabIcons[i] = icon; }}
               />
             </Animatable.View>
