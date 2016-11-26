@@ -86,17 +86,11 @@ export default class courseList extends Component {
     containerStyle:{},
     mainContainer:{flex:1,flexDirection:'column',height:height/2,justifyContent:'space-around',},
     allCourseList:[
-      {courseName:'Lorem Ipsum?',comments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'a'},
-      {courseName:'Lorem Ipsum?',ccomments:[],content:'"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."',author:'b'},
+      {courseName:'',comments:[],content:'',author:''},
+      {courseName:'',ccomments:[],content:'',author:''},
     ],
       password:'',
-      listSource:[
-        {name:'CPEN 321'},
-        {name:'CPEN 281'},
-        {name:'ELEC 221'},
-        {name:'STAT 302'},
-        {name:'ECON 101'}
-      ],
+      listSource:[],
       ifRenderList:false,
       commentSource:{},
       viewToggle:'list',
