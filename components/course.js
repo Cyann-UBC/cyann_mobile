@@ -384,26 +384,27 @@ export default class course extends Component {
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View  animation={'fadeIn'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
-        <View style={{height:40,marginBottom:10}}>
-          <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
-            <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-              <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
-                <FontAwesomeIcon name={'times'} size={27} color={'white'} style={{marginTop:10,marginRight:10}}/>
-              </TouchableOpacity>
+      <Animatable.View animation={'fadeIn'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+        <TouchableOpacity onPress={()=>this.viewQuestion(rowData.course._id,rowData._id,rowData.title, rowData.content, rowData.author)}>
+          <View style={{height:40,marginBottom:10}}>
+            <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
+              <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
+                <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
+                  <FontAwesomeIcon name={'times'} size={27} color={'white'} style={{marginTop:10,marginRight:10}}/>
+                </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20}}>
-          <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
-          <View style={{height:36}}>
-              <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
-                <Text style={{color:"white",fontSize:15}}>Course: {rowData.course.name}</Text>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'flex-start',height:30,marginBottom:20}}>
+            <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',height:5}}>
+            <View style={{height:36}}>
+                <View style={{flex:1,flexDirection:"row",justifyContent:'flex-start',alignItems:'center'}}>
+                  <Text style={{color:"white",fontSize:15}}>Course: {rowData.course.name}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </Animatable.View>
-
     )
   }
 
@@ -482,7 +483,7 @@ export default class course extends Component {
     }
 
     var content = (
-      <TouchableOpacity onPress={()=>this.viewQuestion(rowData._id,rowData.title, rowData.content, rowData.author)}>
+      <TouchableOpacity onPress={()=>this.viewQuestion(rowData.course,rowData._id,rowData.title, rowData.content, rowData.author)}>
         <Animatable.View ref="first" style={{shadowColor: "#000000",
         shadowOpacity: 0.4,
         shadowRadius: 2.5,
@@ -605,15 +606,15 @@ export default class course extends Component {
     setTimeout(()=>{this.setState({delayFirst:false})},2100)
   }
 
-  viewQuestion=(id,title,content,author)=>{
-    fetch("http://localhost:3000/api/courses/"+this.state.courseId+'/'+'posts/'+id,{method:"GET",
+  viewQuestion=(courseId,id,title,content,author)=>{
+    fetch("http://localhost:3000/api/courses/"+courseId+'/'+'posts/'+id,{method:"GET",
     headers:{
       'Authorization': 'Bearer '+this.props.jwt.token
     }
     })
     .then((response) => response.json())
     .then((responseData) => {
-      Actions.viewQuestion({data:responseData,courseId:this.state.courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.token})
+      Actions.viewQuestion({data:responseData,courseId:courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.token})
     })
     .catch((error)=>{
       this.refs.errorModal.open()
