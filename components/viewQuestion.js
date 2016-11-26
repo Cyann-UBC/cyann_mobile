@@ -61,6 +61,18 @@ export default class viewQuestion extends Component {
     this.getComments()
   }
 
+  renderAnswerLabel(isAnswer){
+    if(isAnswer){
+      return(
+        <Text style={{textAlign:'left',fontSize:13,color:'#26D3F2',fontWeight:'500',marginTop:5,marginBottom:-10,marginLeft:5,}}>ANSWER</Text>
+      )
+    }else{
+      return(
+        null
+      )
+    }
+  }
+
   getComments(){
     var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url
@@ -148,8 +160,9 @@ export default class viewQuestion extends Component {
   renderRow(rowData){
     return(
       <TouchableOpacity onPress={()=>this.showAnswer(rowData.content,rowData._id)}>
-        <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'#294a62'}}>
-          <View style={{height:height/10,width:width,padding:10,paddingLeft:20,}}>
+        {this.renderAnswerLabel(rowData.isAnswer)}
+        <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'#294a62'}}>
+          <View style={{height:height/10,width:width,padding:3,paddingLeft:20,}}>
             <View style={{flex:1,alignSelf:'flex-start',flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
               <Text style={{height:70,fontSize:17,fontWeight:'500',marginBottom:3,color:'white'}}>{rowData.content.length>110?rowData.content.substring(0,110)+'...':rowData.content}</Text>
             </View>
