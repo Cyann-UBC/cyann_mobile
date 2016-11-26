@@ -42,6 +42,7 @@ export default class viewQuestion extends Component {
       courseId:'',
       userId:'',
       showAnswer:false,
+      setAsAnswerID:'',
     };
   }
 
@@ -50,7 +51,6 @@ export default class viewQuestion extends Component {
     console.warn(this.props.questionId)
     this.setState({courseId:this.props.courseId})
     this.setState({postId:this.props.questionId})
-    this.setState({userId:'5824217b40a0836d65adc165'})
     console.warn(JSON.stringify(this.props.data))
     this.setState({commentList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
@@ -91,8 +91,9 @@ export default class viewQuestion extends Component {
       this.getComments()
     })
   }
-  showAnswer(answer){
+  showAnswer(answer,id){
     this.setState({answer:answer})
+    this.setState({setAnserId:id})
     this.setState({showAnswer:true})
   }
   renderScrollView=()=>{
@@ -115,9 +116,17 @@ export default class viewQuestion extends Component {
     }else if(this.state.showAnswer == true){
       return(
         <View style={{flex:1,backgroundColor:'#527ba6',borderRadius:height/100,margin:7}}>
-          <TouchableOpacity onPress={()=>this.setState({showAnswer:false})}>
-            <FontAwesomeIcon name={"close"} size={25} color={'white'} style={{marginTop:10,marginLeft:10,}}/>
-          </TouchableOpacity>
+          <View style={{height:40}}>
+            <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <TouchableOpacity onPress={()=>this.setState({showAnswer:false})}>
+                <FontAwesomeIcon name={"close"} size={25} color={'white'} style={{marginTop:10,marginLeft:10,}}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.setAsAnswer()}>
+                <FontAwesomeIcon name={"star"} size={25} color={'white'} style={{marginTop:10,marginRight:10,}}/>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           <ScrollView>
             <Text style={{color:'white',height:height/1.5,fontSize:20,width:width-25,padding:20}}>{this.state.answer}</Text>
           </ScrollView>
@@ -138,7 +147,7 @@ export default class viewQuestion extends Component {
   }
   renderRow(rowData){
     return(
-      <TouchableOpacity onPress={()=>this.showAnswer(rowData.content)}>
+      <TouchableOpacity onPress={()=>this.showAnswer(rowData.content,rowData._id)}>
         <View style={{flex:1,flexDirection:'column', justifyContent:'space-around', alignItems:'center',height:height/5,marginTop:7,marginBottom:7,borderBottomWidth:1.5,borderBottomColor:'#294a62'}}>
           <View style={{height:height/10,width:width,padding:10,paddingLeft:20,}}>
             <View style={{flex:1,alignSelf:'flex-start',flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
@@ -202,6 +211,19 @@ export default class viewQuestion extends Component {
     this.setState({ifTypingAnswering:false})
     this.setState({ifPostAnser:false})
   }
+
+  setAsAnswer(){
+    var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments/"+this.state.setAnserId+"/setAsAnswer"
+    fetch(url,{method:"PUT",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer '+this.props.jwt}})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+    })
+  }
+
   postAnswer(){
     var comment = {
     'content': this.state.commentContent,

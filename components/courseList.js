@@ -263,6 +263,7 @@ export default class courseList extends Component {
   }
 
   emailUser=(to)=>{
+    console.warn(to)
     Communications.email(to,null,null,'email from Cyann User','')
   }
   renderUserList(rowData){
