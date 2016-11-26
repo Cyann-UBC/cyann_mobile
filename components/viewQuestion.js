@@ -64,7 +64,7 @@ export default class viewQuestion extends Component {
   renderAnswerLabel(isAnswer){
     if(isAnswer){
       return(
-        <Text style={{textAlign:'left',fontSize:13,color:'#26D3F2',fontWeight:'500',marginTop:5,marginBottom:-10,marginLeft:5,}}>ANSWER</Text>
+        <Text style={{textAlign:'left',fontSize:13,color:'#26D3F2',fontWeight:'500',marginTop:5,marginBottom:-5,marginLeft:5,}}>ANSWER</Text>
       )
     }else{
       return(

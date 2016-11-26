@@ -85,6 +85,7 @@ export default class course extends Component {
       weeksAgo:0,
       keywords:'',
       userId:'',
+      deleteUserOwnCourseId:''
     };
   }
 
@@ -280,6 +281,13 @@ export default class course extends Component {
     this.refs.deleteModal.open()
   }
 
+  ifUserWantToDelete(id,courseId){
+    this.setState({postId:id})
+    this.setState({deleteUserOwnCourseId:courseId})
+    this.setState({authorOfPost:this.props.jwt.userId})
+    this.refs.deleteUserModal.open()
+  }
+
   dontDelete(){
     this.setState({postId:""})
     this.setState({authorOfPost:""})
@@ -297,11 +305,31 @@ export default class course extends Component {
       console.warn(JSON.stringify(responseData))
       this.fetchPostsAPI()
       this.refs.deleteModal.close()
+      this.refs.deleteUserModal.close()
     })
     .catch((error)=>{
       this.refs.errorModal.open()
     })
   }
+
+  deleteUserOwnPost(){
+    fetch("http://localhost:3000/api/courses/"+this.state.deleteUserOwnCourseId+"/posts/"+this.state.postId,{method:"DELETE",
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.fetchPostsAPI()
+      this.refs.deleteModal.close()
+      this.refs.deleteUserModal.close()
+    })
+    .catch((error)=>{
+      this.refs.errorModal.open()
+    })
+  }
+
 
   ifEdit(id,authorId,title,content){
     this.setState({postId:id})
@@ -384,12 +412,12 @@ export default class course extends Component {
 
   renderUserPosts(rowData, sectionID, rowID, highlightRow){
     return(
-      <Animatable.View animation={'fadeIn'} delay={rowID*200} duration={rowID*300} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
+      <Animatable.View animation={'fadeIn'} delay={rowID*150} duration={rowID*200} style={{backgroundColor:'#527ba6',flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',marginLeft:10,marginRight:10,marginTop:17,borderRadius:5,paddingLeft:10}}>
         <TouchableOpacity onPress={()=>this.viewQuestion(rowData.course._id,rowData._id,rowData.title, rowData.content, rowData.author)}>
           <View style={{height:40,marginBottom:10}}>
             <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
               <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/17}}>{rowData.title}</Text>
-                <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
+                <TouchableOpacity onPress={()=>this.ifUserWantToDelete(rowData._id,rowData.course._id)}>
                   <FontAwesomeIcon name={'times'} size={27} color={'white'} style={{marginTop:10,marginRight:10}}/>
                 </TouchableOpacity>
             </View>
@@ -1007,7 +1035,7 @@ export default class course extends Component {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:true})}>
-                  <View>
+                  <View style={{borderRadius:10}}>
                     <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Past Comments</Text>
                   </View>
                 </TouchableOpacity>
@@ -1018,6 +1046,30 @@ export default class course extends Component {
             <View style={{width:30,height:30}}>
 
             </View>
+            <Modal style={[styles.modal1, styles.modal5]} ref={"deleteUserModal"} backdropOpacity={0.2}>
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center'}}>
+                <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:20}}>
+                  <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                    <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Are you sure you want to delete your post</Text>
+                  </View>
+                </Animatable.View>
+
+                <View style={{height:30,width:width,marginBottom:20}}>
+                  <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'auto'}}>
+                    <TouchableOpacity onPress={()=>this.deleteUserOwnPost()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Yes</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.refs.deleteUserModal.close()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>No</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
           </View>
 
         </ScrollableTabView>
