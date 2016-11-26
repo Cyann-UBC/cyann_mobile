@@ -62,7 +62,7 @@ export default class viewQuestion extends Component {
   }
 
   getComments(){
-    var url = "http://128.189.65.118:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
+    var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url
     ,{method:"GET",
       headers:{
@@ -81,7 +81,7 @@ export default class viewQuestion extends Component {
   }
   upvoteComment(id){
 // /api/courses/:courseId/posts/:postId/comments/:commentId/upvote
-    fetch("http://128.189.65.118:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId +"/comments/"+id+'/upvote',{method:"put",
+    fetch("http://localhost:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId +"/comments/"+id+'/upvote',{method:"put",
           headers: {
           'Authorization': 'Bearer '+this.props.jwt
           }})
@@ -215,7 +215,7 @@ export default class viewQuestion extends Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    var url = "http://128.189.65.118:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
+    var url = "http://localhost:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url,{method:"POST",
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

@@ -21,6 +21,7 @@ import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Communications from 'react-native-communications';
 import ActionButton from 'react-native-action-button';
+import Swiper from 'react-native-swiper';
 
 var DeviceInfo = require('react-native-device-info');
 var Dimensions = require('Dimensions');
@@ -100,7 +101,7 @@ export default class courseList extends Component {
       commentSource:{},
       viewToggle:'list',
       selectedCourse:'',
-      myCourse:[],
+      myCourse:{_dataBlob:{s1:[]}},
       myCourseEmpty:true,
       courseObjects:[],
       showSearchBar: false,
@@ -115,7 +116,7 @@ export default class courseList extends Component {
       currentCourseId:'',
       currentCourseName:'',
       showInfo:false,
-      offsetY:height/2-10
+      offsetY:470
     };
   }
 
@@ -123,7 +124,7 @@ export default class courseList extends Component {
     var model = DeviceInfo.getModel();
     console.warn(model)
     if(model === 'iPhone 6 Plus' || model === 'iPhone 6s Plus' || model ==='iPhone 7 Plus'){
-      this.setState({offsetY:height/2-40})
+      this.setState({offsetY:510})
     }
     console.warn(this.props.if)
     this.setState({jwtToken:this.props.jwt.token})
@@ -147,7 +148,7 @@ export default class courseList extends Component {
   }
 
   getAllCourses(){
-    fetch('http://128.189.65.118:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
       //console.warn(JSON.stringify(responseData))
@@ -160,10 +161,11 @@ export default class courseList extends Component {
     .catch((error) => {
         this.refs.modal6.open();
       });
+    console.log(this.state.myCourse.length)
   }
 
   getUserCourses(){
-    fetch('http://128.189.65.118:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       console.warn('my courses '+JSON.stringify(responseData))
@@ -172,6 +174,7 @@ export default class courseList extends Component {
       }).cloneWithRows(responseData)})
       this.setState({listSource:responseData})
       console.warn(JSON.stringify(this.state.myCourse))
+      console.warn(this.state.myCourse._dataBlob.s1.length)
     })
     .catch((error)=>{
       this.refs.modal6.open();
@@ -179,7 +182,7 @@ export default class courseList extends Component {
   }
 
   getListofUser(id){
-    fetch('http://128.189.65.118:3000/api/courses/users/'+id,{method:"GET",headers:{'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:3000/api/courses/users/'+id,{method:"GET",headers:{'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       this.setState({userList:new ListView.DataSource({
@@ -253,7 +256,7 @@ export default class courseList extends Component {
   }
 
   addCourse(id){
-    fetch('http://128.189.65.118:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
        console.warn(JSON.stringify(responseData))
@@ -327,14 +330,9 @@ export default class courseList extends Component {
       //   <FontAwesomeIcon name={'plus'} color={'white'} size={27} style={{marginLeft:320,marginBottom:20}}/>
       // </TouchableOpacity>
       return(
-        <ActionButton position="right" text="answer" offsetY={this.state.offsetY} offsetX={this.state.offset} buttonColor="#26D3F2" verticalOrientation='down' degrees={90}
-            icon={<FontAwesomeIcon name={'list-ul'} size={22} color='#f6f7fb'/>}>
-            <ActionButton.Item buttonColor='#F64848' onPress={()=>this.setState({showInfo:true,showUserList:false})}>
-              <FontAwesomeIcon name="info" size={22} color={'white'} />
-            </ActionButton.Item>
-            <ActionButton.Item buttonColor='#A0D468' onPress={()=>this.setState({userAddCourseSwitch:true})}>
-              <FontAwesomeIcon name="plus" size={22} color={'white'} />
-            </ActionButton.Item>
+        <ActionButton position="right" text="answer" offsetY={this.state.offsetY} offsetX={this.state.offset} buttonColor="#26D3F2"
+            onPress={()=>this.setState({userAddCourseSwitch:true})}
+            icon={<FontAwesomeIcon name={'plus'} size={22} color='#f6f7fb'/>}>
           </ActionButton>
       )
     }else{
@@ -343,11 +341,13 @@ export default class courseList extends Component {
       )
     }
   }
+
+
   ifRenderScrollView(){
     LayoutAnimation.configureNext(animations.layout.spring)
-    if(this.state.myCourse.length == 0 || this.state.userAddCourseSwitch == true && this.state.showUserList == false && this.state.showInfo == false){
+    if(this.state.myCourse._dataBlob.s1.length == 0 || this.state.userAddCourseSwitch == true && this.state.showUserList == false && this.state.showInfo == false){
       return(
-        <View>
+        <View style={{position:'absolute',top:-70,left:0,right:0}}>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
             <TextInput
               selectionColor={'white'}
@@ -363,7 +363,7 @@ export default class courseList extends Component {
             </TouchableOpacity>
           </View>
 
-        <View style={{height:height/2}}>
+        <View style={{height:height/-100,marginBottom:50,}}>
           <ListView
             showsVerticalScrollIndicator={false}
             dataSource={this.state.allCourseList}
@@ -411,16 +411,17 @@ export default class courseList extends Component {
     }else{
       var courses = this.state.listSource
       return(
-        <View>
+        <View style={{height:height,paddingTop:height/4.5}}>
 
-          <ScrollView
-            style={{flex:1,flexDirection:'row'}}
+          <Swiper
+            height={height/1.5}
+            loop={true}
+            activeDot = {<View style={{backgroundColor: 'white', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
             contentContainer={{justifyContent:'center'}}
             horizontal ={true}
             pagingEnabled ={true}
-            indicatorStyle ={'white'}
-            onScroll={()=>this.setState({offset:30})}
-            onMomentumScrollEnd={()=>this.setState({offset:15})}
+            onTouchStart={()=>this.setState({offset:-50})}
+            onTouchEnd={()=>this.setState({offset:15})}
             >
             {this.state.listSource.map(function(course, i){
 
@@ -432,7 +433,7 @@ export default class courseList extends Component {
                 var marginRight = width/10
               }
               else
-               var marginLeft=width/6;
+               var marginLeft=width/12;
 
                var containerStyle = {
                  flex:1,
@@ -510,7 +511,8 @@ export default class courseList extends Component {
                   </TouchableOpacity>
               )
             },this)}
-          </ScrollView>
+          </Swiper>
+
           {this.ifRenderPlus()}
         </View>
       )
@@ -528,7 +530,6 @@ export default class courseList extends Component {
           />
 
           <View style={this.state.mainContainer}>
-
               {this.ifRenderScrollView()}
 
           </View>
