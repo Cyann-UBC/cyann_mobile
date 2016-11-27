@@ -230,12 +230,18 @@ onPermissionsMissing(data){
           backgroundColor="transparent"
           barStyle="light-content"
             />
-      <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
+          <View></View>
+          <View>
+            <Image style={{height:130,width:130}} resizeMode={Image.resizeMode.contain} source={require('../logo1.png')}/>
+          </View>
+          <View></View>
+        <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
             <FontAwesomeIcon style={{marginRight:10}} name={'facebook-square'} color={'white'} size={37} />
             <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"Logout"}</Text>
           </View>
         </TouchableOpacity>
+        <View></View>
       </View>
     )
   }
@@ -245,7 +251,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection:'column',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     backgroundColor:'#294a62',
     alignItems: 'center',
   },
