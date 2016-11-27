@@ -175,6 +175,7 @@ export default class Login extends Component {
           barStyle="light-content"
             />
           <View></View>
+          <View></View>
           <Animatable.View animation={"fadeIn"} duration={500}>
             <Image style={{height:110,width:110}} resizeMode={Image.resizeMode.contain} source={require('../logo1.png')}/>
           </Animatable.View>

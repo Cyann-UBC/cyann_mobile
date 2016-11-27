@@ -117,8 +117,8 @@ export default class course extends Component {
 
   componentDidMount(){
 
-    this.fetchAssignmentAPI()
-    this.fetchReadingsAPI()
+
+
     this.getUserInfo()
     this.getUserComments()
     this.getUserPosts()
@@ -131,6 +131,15 @@ export default class course extends Component {
     this.fetchPostsAPI()
     this.setState({isRefreshing:false})
   };
+
+  toggleReading(){
+this.fetchReadingsAPI()
+
+  }
+
+  toggleAssignment(){
+this.fetchAssignmentAPI()
+  }
 
   fetchPostsAPI(){
     fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
@@ -181,6 +190,7 @@ export default class course extends Component {
       this.setState({assignmentList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
+      this.setState({ifrenderFile:'assignments'})
     })
     .catch((error)=>{
       this.refs.errorModal.open()
@@ -195,6 +205,7 @@ export default class course extends Component {
       this.setState({readingList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
+      this.setState({ifrenderFile:'readings'})
     })
     .catch((error)=>{
       this.refs.errorModal.open()
@@ -306,9 +317,10 @@ export default class course extends Component {
       console.warn(JSON.stringify(responseData))
       this.fetchPostsAPI()
       this.refs.deleteModal.close()
-      this.refs.deleteUserModal.close()
+      // this.refs.deleteUserModal.close()
     })
     .catch((error)=>{
+      console.warn(error)
       this.refs.errorModal.open()
     })
   }
@@ -708,14 +720,14 @@ export default class course extends Component {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
       return(
         <View style={{flex:1,flexDirection:'column',alignItems:'center', justifyContent:'space-around',paddingTop:height/7,paddingBottom:height/7}}>
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'readings'})}>
+          <TouchableOpacity onPress={()=>this.toggleReading()}>
             <Animatable.View animation={'slideInRight'} delay={100} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <FontAwesomeIcon name="book" size={50} color={'white'} style={{marginBottom:10}}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>readings</Text>
             </Animatable.View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>this.setState({ifrenderFile:'assignments'})}>
+          <TouchableOpacity onPress={()=>this.toggleAssignment()}>
             <Animatable.View animation={'slideInRight'} delay={200} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <FontAwesomeIcon name="file-text" size={50} color={'white'} style={{marginBottom:10}}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>assignments</Text>
