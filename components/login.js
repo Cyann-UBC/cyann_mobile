@@ -11,6 +11,7 @@ import {
   WebView,
   Image,
   Text,
+  Animated,
   View
 } from 'react-native';
 const FBSDK = require('react-native-fbsdk');
@@ -50,7 +51,7 @@ export default class Login extends Component {
     }
   }
   componentWillMount(){
-    // this.handleLogout()
+    this.handleLogout()
       var _this = this
       AsyncStorage.getItem('jwt')
         .then(req => JSON.parse(req))
@@ -165,64 +166,7 @@ export default class Login extends Component {
               )
               new GraphRequestManager().addRequest(infoRequest).start()
   }
-/*
-the commented code could be used for alternaive for another login mechanism
-*/
 
-/*
-login button:
-<FBLogin style={{ marginBottom: 10, }}
-  ref={(fbLogin) => { this.fbLogin = fbLogin }}
-  permissions={["email","user_friends"]}
-  loginBehavior={FBLoginManager.LoginBehaviors.Native}
-  onLogin={(data)=>this.onLogin(data)}
-  onLogout={()=>this.onLogout()}
-  onLoginFound={(data)=>this.onLoginFound(data)}
-  onLoginNotFound={()=>this.onLoginNotFound()}
-  onError={(data)=>this.onError(data)}
-  onCancel={()=>this.onCancel()}
-  onPermissionsMissing={(data)=>this.onPermissionsMissing(data)}
-/>
-*/
-
-/*
-login methods
-onLogin(data){
-  console.warn("logged in!")
-  console.warn(JSON.stringify(data))
-  this.setState({user:data.credentials})
-}
-
-onLogout(){
-  console.warn("logged out")
-  this.setState({user:null})
-}
-
-onLoginFound(data){
-  console.warn('existing login found')
-  console.warn(JSON.stringify(data))
-  this.setState({user:data.credentials})
-}
-
-onLoginNotFound(){
-  console.warn("no user logged in ")
-  this.setState({user:null})
-}
-
-onError(data){
-  console.warn("error")
-  console.warn(JSON.stringify(data))
-}
-
-onCancel(){
-  console.warn("user cancelled")
-}
-
-onPermissionsMissing(data){
-  console.warn("check permissions")
-  console.warn(JSON.stringify(data))
-}
-*/
   render(){
     return(
       <View style={styles.container}>
@@ -231,16 +175,24 @@ onPermissionsMissing(data){
           barStyle="light-content"
             />
           <View></View>
+          <Animatable.View animation={"fadeIn"} duration={500}>
+            <Image style={{height:110,width:110}} resizeMode={Image.resizeMode.contain} source={require('../logo1.png')}/>
+          </Animatable.View>
           <View>
-            <Image style={{height:130,width:130}} resizeMode={Image.resizeMode.contain} source={require('../logo1.png')}/>
+            <Text style={{marginLeft:10,marginTop:-30,fontSize:27,fontWeight:'700',color:'white'}}>Cyann</Text>
           </View>
           <View></View>
+          <View></View>
         <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
-          <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-            <FontAwesomeIcon style={{marginRight:10}} name={'facebook-square'} color={'white'} size={37} />
-            <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"Logout"}</Text>
+          <View style={{width:width/1.5,height:70}}>
+            <View style={{borderRadius:35,backgroundColor:'#26D3F2',flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+              <FontAwesomeIcon style={{marginRight:10}} name={'facebook-square'} color={'white'} size={37} />
+              <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"Logout"}</Text>
+            </View>
           </View>
+
         </TouchableOpacity>
+        <View></View>
         <View></View>
       </View>
     )

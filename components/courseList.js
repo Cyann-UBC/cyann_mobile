@@ -142,7 +142,7 @@ export default class courseList extends Component {
   }
 
   getAllCourses(){
-    fetch('http://localhost:3000/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:8080/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
       //console.warn(JSON.stringify(responseData))
@@ -159,7 +159,7 @@ export default class courseList extends Component {
   }
 
   getUserCourses(){
-    fetch('http://localhost:3000/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:8080/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       console.warn('my courses '+JSON.stringify(responseData))
@@ -176,7 +176,7 @@ export default class courseList extends Component {
   }
 
   getListofUser(id){
-    fetch('http://localhost:3000/api/courses/users/'+id,{method:"GET",headers:{'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:8080/api/courses/users/'+id,{method:"GET",headers:{'Authorization': 'Bearer '+this.props.jwt.token}})
     .then(response=>response.json())
     .then(responseData=>{
       this.setState({userList:new ListView.DataSource({
@@ -250,7 +250,7 @@ export default class courseList extends Component {
   }
 
   addCourse(id){
-    fetch('http://localhost:3000/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch('http://localhost:8080/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
     .then((response)=>response.json())
     .then((responseData)=>{
        console.warn(JSON.stringify(responseData))
