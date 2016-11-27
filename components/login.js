@@ -188,7 +188,7 @@ export default class Login extends Component {
           <View style={{width:width/1.5,height:70}}>
             <View style={{borderRadius:35,backgroundColor:'#26D3F2',flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
               <FontAwesomeIcon style={{marginRight:10}} name={'facebook-square'} color={'white'} size={37} />
-              <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>{this.state.user===null?"Login":"Logout"}</Text>
+              <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>Login</Text>
             </View>
           </View>
 

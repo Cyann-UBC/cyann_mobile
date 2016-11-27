@@ -12,6 +12,14 @@ import {
   Text,
   View
 } from 'react-native';
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginButton,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager
+} = FBSDK;
+
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
 import Drawer from 'react-native-drawer';
@@ -27,6 +35,7 @@ import ActionButton from 'react-native-action-button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 var Modal   = require('react-native-modalbox');
 import { Kohana } from 'react-native-textinput-effects';
+var {FBLogin, FBLoginManager,FBLoginView} = require('react-native-facebook-login');
 
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 var Dimensions = require('Dimensions');
@@ -89,6 +98,19 @@ export default class course extends Component {
     };
   }
 
+  handleLogout(){
+    var _this = this
+    FBLoginManager.logout(function(error, data){
+      if (!error) {
+        console.warn(JSON.stringify(data))
+        _this.setState({ user : null});
+        Actions.login()
+      } else {
+
+      }
+    });
+  }
+
   onChangeTab(){
     this.fetchPostsAPI()
     dismissKeyboard()
@@ -116,14 +138,9 @@ export default class course extends Component {
   }
 
   componentDidMount(){
-
-
-
     this.getUserInfo()
     this.getUserComments()
     this.getUserPosts()
-    console.warn(this.props.id)
-    console.warn(this.props.jwt.token)
   }
 
   _onRefresh = () => {
@@ -536,9 +553,7 @@ this.fetchAssignmentAPI()
           </Animatable.View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:15,paddingLeft:10,paddingRight:10}}>
             <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-start',alignItems:'center',paddingBottom:20}}>
-              <TouchableOpacity onPress={()=>console.warn('asd')}>
                 <FontAwesomeIcon name="comments-o" size={30} color={'white'}/>
-              </TouchableOpacity>
               <View>
                 <Text style={{color:'white',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
               </View>
@@ -1044,12 +1059,22 @@ this.fetchAssignmentAPI()
               <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:30,paddingRight:30,marginBottom:10}}>
                 <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:false})}>
                   <View>
-                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Past Posts</Text>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Posts</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:true})}>
                   <View style={{borderRadius:10}}>
-                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Past Comments</Text>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Comments</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.handleLogout()}>
+                  <View style={{borderRadius:10}}>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Log out</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:true})}>
+                  <View style={{borderRadius:10}}>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>About</Text>
                   </View>
                 </TouchableOpacity>
               </View>
