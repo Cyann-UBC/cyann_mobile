@@ -94,7 +94,8 @@ export default class course extends Component {
       weeksAgo:0,
       keywords:'',
       userId:'',
-      deleteUserOwnCourseId:''
+      deleteUserOwnCourseId:'',
+      deleteUserOwnCommentId:'',
     };
   }
 
@@ -317,6 +318,14 @@ this.fetchAssignmentAPI()
     this.refs.deleteUserModal.open()
   }
 
+  ifUserWantToDeleteComments(commentId,courseId,postId){
+    this.setState({postId:postId})
+    this.setState({deleteUserOwnCourseId:courseId})
+    this.setState({deleteUserOwnCommentId:commentId})
+    this.setState({authorOfPost:this.props.jwt.userId})
+    this.refs.deleteUserCommentModal.open()
+  }
+
   dontDelete(){
     this.setState({postId:""})
     this.setState({authorOfPost:""})
@@ -351,7 +360,7 @@ this.fetchAssignmentAPI()
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
-      this.fetchPostsAPI()
+      this.getUserPosts()
       this.refs.deleteModal.close()
       this.refs.deleteUserModal.close()
     })
@@ -360,6 +369,23 @@ this.fetchAssignmentAPI()
     })
   }
 
+  deleteUserOwnComment(){
+    fetch("http://localhost:8080/api/courses/"+this.state.deleteUserOwnCourseId+"/posts/"+this.state.postId+'/comments/'+this.state.deleteUserOwnCommentId,{method:"DELETE",
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer '+this.props.jwt.token
+          }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.warn(JSON.stringify(responseData))
+      this.getUserComments()
+      this.refs.deleteModal.close()
+      this.refs.deleteUserCommentModal.close()
+    })
+    .catch((error)=>{
+      this.refs.errorModal.open()
+    })
+  }
 
   ifEdit(id,authorId,title,content){
     this.setState({postId:id})
@@ -472,7 +498,7 @@ this.fetchAssignmentAPI()
         <View style={{height:80,marginBottom:10}}>
           <View style={{flex:0.6,flexDirection:"row",justifyContent:'space-between',height:5}}>
             <Text style={{fontSize:16,width:width/1.2,color:"white",marginTop:10,fontWeight:'bold',height:height/12}}>{rowData.content.length>80?rowData.content.substring(0,80)+'...':rowData.content}</Text>
-              <TouchableOpacity onPress={()=>this.deleteOwnPost(id,authorId)}>
+              <TouchableOpacity onPress={()=>this.ifUserWantToDeleteComments(rowData._id,rowData.course._id,rowData.post._id)}>
                 <FontAwesomeIcon name={'times'} size={27} color={'white'} style={{marginTop:10,marginRight:10}}/>
               </TouchableOpacity>
           </View>
@@ -1072,11 +1098,6 @@ this.fetchAssignmentAPI()
                     <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Log out</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.setState({ifRenderPostOrComments:true})}>
-                  <View style={{borderRadius:10}}>
-                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>About</Text>
-                  </View>
-                </TouchableOpacity>
               </View>
               {this.state.ifRenderPostOrComments?this.ifRenderUserComments():this.ifRenderUserPosts()}
             </View>
@@ -1100,6 +1121,30 @@ this.fetchAssignmentAPI()
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>this.refs.deleteUserModal.close()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>No</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+            <Modal style={[styles.modal1, styles.modal5]} ref={"deleteUserCommentModal"} backdropOpacity={0.2}>
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center'}}>
+                <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:20}}>
+                  <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                    <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Are you sure you want to delete your comment</Text>
+                  </View>
+                </Animatable.View>
+
+                <View style={{height:30,width:width,marginBottom:20}}>
+                  <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'auto'}}>
+                    <TouchableOpacity onPress={()=>this.deleteUserOwnComment()}>
+                      <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                        <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Yes</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.refs.deleteUserCommentModal.close()}>
                       <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
                         <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>No</Text>
                       </View>

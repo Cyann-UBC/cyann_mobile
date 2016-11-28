@@ -51,7 +51,7 @@ export default class Login extends Component {
     }
   }
   componentWillMount(){
-    this.handleLogout()
+    // this.handleLogout()
       var _this = this
       AsyncStorage.getItem('jwt')
         .then(req => JSON.parse(req))
@@ -185,7 +185,7 @@ export default class Login extends Component {
           <View></View>
           <View></View>
         <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
-          <View style={{width:width/1.5,height:70}}>
+          <View style={{width:width/1.3,height:70}}>
             <View style={{borderRadius:35,backgroundColor:'#26D3F2',flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
               <FontAwesomeIcon style={{marginRight:10}} name={'facebook-square'} color={'white'} size={37} />
               <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>Login</Text>

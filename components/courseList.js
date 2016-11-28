@@ -409,7 +409,7 @@ export default class courseList extends Component {
         <View style={{height:height,paddingTop:height/4.5}}>
 
           <Swiper
-            height={height/1.5}
+            height={height/1.45}
             loop={true}
             activeDot = {<View style={{backgroundColor: 'white', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
             contentContainer={{justifyContent:'center'}}
@@ -448,6 +448,7 @@ export default class courseList extends Component {
                  shadowRadius: this.state.radius,
                  shadowOffset: {height: 5.5,width: -3.5},
                  paddingBottom:30,
+                 height:height/1.77,
                };
                var instructors = ['Farshid Agharebparast','Sathish Gopalakrishnan']
                var TAs = ['Bader Alahmad','John Deppe','Bibek Kaur','Theresa Mammarella','Nick Mulvenna']
@@ -462,23 +463,23 @@ export default class courseList extends Component {
 
 
                       <View style={{height:70,width:width/1.5,paddingLeft:10,marginBottom:25}}>
-                        <Text style={{color:'white',fontSize:18,fontWeight:'600',margin:10}}>Instructors</Text>
+                        <Text style={{color:'white',fontSize:18,fontWeight:'700',margin:10}}>Instructors</Text>
                         <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                           {instructors.map(function(instructor, i){
                             return(
-                              <Text style={{color:'white',fontSize:13,fontWeight:'500',marginRight:15}}>{instructor}</Text>
+                              <Text style={{color:'white',fontSize:15,fontWeight:'500',marginRight:15}}>{instructor}</Text>
                             )
                           },this)}
                         </View>
                       </View>
 
                       <View style={{height:100,width:width/1.5,paddingLeft:10,marginBottom:25}}>
-                        <Text style={{color:'white',fontSize:18,fontWeight:'600',margin:10}}>TAs</Text>
+                        <Text style={{color:'white',fontSize:18,fontWeight:'700',margin:10}}>TAs</Text>
                           <View>
                             <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',paddingLeft:10}}>
                               {TAs.map(function(TA, i){
                                 return(
-                                  <Text style={{height:25,color:'white',fontSize:13,fontWeight:'500',marginRight:15}}>{TA}</Text>
+                                  <Text style={{height:25,color:'white',fontSize:15,fontWeight:'500',marginRight:15}}>{TA}</Text>
                                 )
                               },this)}
                             </View>
