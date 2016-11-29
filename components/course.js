@@ -864,9 +864,8 @@ this.fetchAssignmentAPI()
             </ActionButton>
 
             <Modal style={[styles.modal, styles.modal4]} position={"bottom"} ref={"modal4"} backdropOpacity={0.2}>
-              <TouchableOpacity style={{flex:1}}>
-                <Text style={{color:'white',fontSize:20,fontWeight:'500',textAlign:'center'}}>Filter by</Text>
-                  <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                <Text delay={300} duartion={400} style={{color:'white',fontSize:20,fontWeight:'500',textAlign:'center'}}>Filter by</Text>
+                  <Animatable.View animation={'bounce'} delay={300} duartion={300} style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
                     <Kohana
                         style={{ backgroundColor: '#f9f5ed' }}
                         label={'Keyword'}
@@ -878,21 +877,31 @@ this.fetchAssignmentAPI()
                         style={{backgroundColor:'#294a62',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
                         onChange={this.updateKeywords.bind(this)}
                       />
-                  </View>
+                  </Animatable.View>
 
                 <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
                   </View>
-                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
+                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'center',marginTop:-20}}>
                     <TouchableOpacity
-                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterUserType==='instructor'?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
                       onPress={()=>{this.state.filterUserType!=="instructor"?this.setState({filterUserType:"instructor"},()=>{this.filterPost()}):this.setState({filterUserType:""},()=>{this.filterPost()})}}>
-                      <View><Text style={styles.filterButtonText}>Instructor</Text></View>
+                      <Animatable.View
+                         animation={'bounce'}
+                         duartion={300}
+                         delay={200}
+                         style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2.35,height:70,backgroundColor:this.state.filterUserType==='instructor'?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}>
+                         <Text style={styles.filterButtonText}>Instructor</Text>
+                         </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterUserType==='student'?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
                       onPress={()=>{this.state.filterUserType!=="student"?this.setState({filterUserType:"student"},()=>{this.filterPost()}):this.setState({filterUserType:""},()=>{this.filterPost()})}}>
-                      <View><Text style={styles.filterButtonText}>Me</Text></View>
+                      <Animatable.View
+                        animation={'bounce'}
+                        duartion={500}
+                        delay={100}
+                        style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2.35,height:70,backgroundColor:this.state.filterUserType==='student'?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}>
+                        <Text style={styles.filterButtonText}>Me</Text>
+                      </Animatable.View>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -900,34 +909,40 @@ this.fetchAssignmentAPI()
                 <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
                   </View>
-                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
+                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'center',marginTop:-20}}>
                     <TouchableOpacity
-                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterWeeks==1?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
                       onPress={()=>{this.state.filterWeeks!==1?this.setState({filterWeeks:1},()=>{this.filterPost()}):this.setState({filterWeeks:""},()=>{this.filterPost()})}}>
-                      <View>
+                      <Animatable.View
+                        animation={'bounce'}
+                        duartion={800}
+                        style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/3.6,height:70,backgroundColor:this.state.filterWeeks==1?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                        >
                         <Text style={styles.filterButtonText}>1 week</Text>
-                      </View>
+                      </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterWeeks==2?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
                       onPress={()=>{this.state.filterWeeks!==2?this.setState({filterWeeks:2},()=>{this.filterPost()}):this.setState({filterWeeks:""},()=>{this.filterPost()})}}>
-
-                      <View>
+                      <Animatable.View
+                        animation={'bounce'}
+                        duration={1000}
+                        style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/3.6,height:70,backgroundColor:this.state.filterWeeks==2?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                        >
                         <Text style={styles.filterButtonText}>2 week</Text>
-                      </View>
+                      </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterWeeks==3?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
                       onPress={()=>{this.state.filterWeeks!==3?this.setState({filterWeeks:3},()=>{this.filterPost()}):this.setState({filterWeeks:""},()=>{this.filterPost()})}}>
-
-                      <View>
+                      <Animatable.View
+                        animation={'bounce'}
+                        duration={800}
+                        delay={0}
+                        style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/3.6,height:70,backgroundColor:this.state.filterWeeks==3?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                        >
                         <Text style={styles.filterButtonText}>3 week</Text>
-                      </View>
+                      </Animatable.View>
                     </TouchableOpacity>
                   </View>
                 </View>
-              </TouchableOpacity>
-
             </Modal>
             <Modal style={[styles.modal1, styles.modal4]} position={"top"} ref={"modal5"} backdropOpacity={0.2}>
               <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>

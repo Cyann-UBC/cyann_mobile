@@ -51,7 +51,7 @@ export default class Login extends Component {
     }
   }
   componentWillMount(){
-    this.handleLogout()
+    // this.handleLogout()
       var _this = this
       AsyncStorage.getItem('jwt')
         .then(req => JSON.parse(req))
