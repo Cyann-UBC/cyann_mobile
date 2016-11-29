@@ -869,6 +869,7 @@ this.fetchAssignmentAPI()
                     <Kohana
                         style={{ backgroundColor: '#f9f5ed' }}
                         label={'Keyword'}
+                        value={this.state.keywords}
                         iconClass={FontAwesomeIcon}
                         iconName={'search'}
                         iconColor={'white'}
