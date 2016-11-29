@@ -71,6 +71,11 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>cyann.tech</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>

@@ -51,7 +51,7 @@ export default class Login extends Component {
     }
   }
   componentWillMount(){
-    // this.handleLogout()
+    this.handleLogout()
       var _this = this
       AsyncStorage.getItem('jwt')
         .then(req => JSON.parse(req))
@@ -107,6 +107,7 @@ export default class Login extends Component {
     }
 
   retreiveJWT(result){
+    var _this = this
     // console.warn(this.state.access_token)
     var body = {
     'userType': 'Student',
@@ -124,14 +125,14 @@ export default class Login extends Component {
     }
     formBody = formBody.join("&");
 
-    fetch('http://localhost:3000/api/users/register',{method:'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
+    fetch('http://localhost:8080/api/users/register',{method:'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      console.warn('a')
       AsyncStorage.setItem('jwt',JSON.stringify(responseData.data))
       .then(function(){
         console.warn(responseData.data)
-        this.setState(jwt:responseData.data)
+        _this.setState({jwt:responseData.data})
 
       })
       // AsyncStorage.setUserID('userId',responseData.data.userId)

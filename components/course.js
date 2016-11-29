@@ -96,6 +96,8 @@ export default class course extends Component {
       userId:'',
       deleteUserOwnCourseId:'',
       deleteUserOwnCommentId:'',
+      filterUserType:'',
+      filterWeeks:99
     };
   }
 
@@ -133,7 +135,7 @@ export default class course extends Component {
     this.setState({questionList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.state.questionList)})
-    this.setState({jwt:this.props.jwt.token})
+    this.setState({jwt:this.props.jwt.jwt})
     this.setState({courseId:this.props.id},()=>{this.fetchPostsAPI()})
 
   }
@@ -160,7 +162,7 @@ this.fetchAssignmentAPI()
   }
 
   fetchPostsAPI(){
-    fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -187,7 +189,7 @@ this.fetchAssignmentAPI()
     }
     formBody = formBody.join("&");
     var url = "http://localhost:8080/"+"api/courses/"+this.props.id+"/posts/"+this.state.quesitonIdAnswering+"/comments"
-    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Bearer '+this.props.jwt.token},body:formBody})
+    fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Bearer '+this.props.jwt.jwt},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
@@ -201,7 +203,7 @@ this.fetchAssignmentAPI()
   }
 
   fetchAssignmentAPI(){
-    fetch("http://localhost:8080/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch("http://localhost:8080/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
       //  console.warn(JSON.stringify(responseData))
@@ -216,7 +218,7 @@ this.fetchAssignmentAPI()
   }
 
   fetchReadingsAPI(){
-    fetch("http://localhost:8080/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.token}})
+    fetch("http://localhost:8080/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
         console.warn(JSON.stringify(responseData))
@@ -232,15 +234,21 @@ this.fetchAssignmentAPI()
 
 
   filterPost(){
+    // console.warn(this.state.keywords)
     var keywords = this.state.keywords
-    fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/search?keyword="+this.state.keywords+"&weeksAgo=1",{method:"GET",
+    var weeksAgo = this.state.filterWeeks
+    var filterUserType = this.state.filterUserType
+    fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/search?keyword="+keywords+"&weeksAgo="+weeksAgo+"&type="+filterUserType,{method:"GET",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
           }})
     .then((response) => response.json())
     .then((responseData) => {
       console.warn(JSON.stringify(responseData))
+      this.setState({questionList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.data)})
     })
     .catch((error)=>{
       this.refs.errorModal.open()
@@ -250,7 +258,7 @@ this.fetchAssignmentAPI()
   getUserInfo(){
     fetch("http://localhost:8080/api/users/my",{method:"GET",
           headers: {
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
           }})
     .then((response) => response.json())
     .then((responseData) => {
@@ -266,7 +274,7 @@ this.fetchAssignmentAPI()
   getUserComments(){
     fetch("http://localhost:8080/api/users/my/comments",{method:"GET",
           headers: {
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
           }})
     .then((response) => response.json())
     .then((responseData) => {
@@ -283,7 +291,7 @@ this.fetchAssignmentAPI()
   getUserPosts(){
     fetch("http://localhost:8080/api/users/my/posts",{method:"GET",
           headers: {
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
           }})
     .then((response) => response.json())
     .then((responseData) => {
@@ -298,7 +306,7 @@ this.fetchAssignmentAPI()
   }
 
   gotoFile(rowData,type){
-    Actions.fileView({uri:"http://localhost:8080/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.token})
+    Actions.fileView({uri:"http://localhost:8080/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.jwt})
   }
 
   setQuestionID(id){
@@ -336,7 +344,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
           }})
     .then((response) => response.json())
     .then((responseData) => {
@@ -355,7 +363,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/courses/"+this.state.deleteUserOwnCourseId+"/posts/"+this.state.postId,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
           }})
     .then((response) => response.json())
     .then((responseData) => {
@@ -373,7 +381,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/courses/"+this.state.deleteUserOwnCourseId+"/posts/"+this.state.postId+'/comments/'+this.state.deleteUserOwnCommentId,{method:"DELETE",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
           }})
     .then((response) => response.json())
     .then((responseData) => {
@@ -413,7 +421,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"PUT",
           headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer '+this.props.jwt.token
+          'Authorization': 'Bearer '+this.props.jwt.jwt
         },body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
@@ -671,7 +679,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts",{method:"POST",
     headers: {
      'Content-Type': 'application/x-www-form-urlencoded',
-     'Authorization': 'Bearer '+this.props.jwt.token
+     'Authorization': 'Bearer '+this.props.jwt.jwt
      },
     body:formBody})
     .then((response) => response.json())
@@ -691,12 +699,12 @@ this.fetchAssignmentAPI()
   viewQuestion=(courseId,id,title,content,author)=>{
     fetch("http://localhost:8080/api/courses/"+courseId+'/'+'posts/'+id,{method:"GET",
     headers:{
-      'Authorization': 'Bearer '+this.props.jwt.token
+      'Authorization': 'Bearer '+this.props.jwt.jwt
     }
     })
     .then((response) => response.json())
     .then((responseData) => {
-      Actions.viewQuestion({data:responseData,courseId:courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.token})
+      Actions.viewQuestion({data:responseData,courseId:courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.jwt})
     })
     .catch((error)=>{
       this.refs.errorModal.open()
@@ -816,10 +824,13 @@ this.fetchAssignmentAPI()
     }
   }
   render() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+
     let titleStyle = [styles.titleContainer, this.state.titleContainer]
     let contentStyle = [styles.contentContainer, this.state.contentContainer]
     let buttonStyle = [styles.askButton, this.state.askButton]
     return (
+
         <ScrollableTabView style={{backgroundColor:this.state.backgroundColor}}
           onChangeTab={()=>this.onChangeTab()}
           page={this.state.pageNumber}
@@ -853,49 +864,70 @@ this.fetchAssignmentAPI()
             </ActionButton>
 
             <Modal style={[styles.modal, styles.modal4]} position={"bottom"} ref={"modal4"} backdropOpacity={0.2}>
-              <Text style={{color:'white',fontSize:20,fontWeight:'500'}}>Filter by</Text>
+              <TouchableOpacity style={{flex:1}}>
+                <Text style={{color:'white',fontSize:20,fontWeight:'500',textAlign:'center'}}>Filter by</Text>
+                  <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                    <Kohana
+                        style={{ backgroundColor: '#f9f5ed' }}
+                        label={'Keyword'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'search'}
+                        iconColor={'white'}
+                        labelStyle={{ fontWeight:'600',color:'white',fontSize:17,marginTop:15,marginLeft:10}}
+                        inputStyle={styles.filterButtonText}
+                        style={{backgroundColor:'#294a62',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
+                        onChange={this.updateKeywords.bind(this)}
+                      />
+                  </View>
+
                 <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
-                  <Kohana
-                      style={{ backgroundColor: '#f9f5ed' }}
-                      label={'Keyword'}
-                      iconClass={FontAwesomeIcon}
-                      iconName={'search'}
-                      iconColor={'white'}
-                      labelStyle={{ fontWeight:'600',color:'white',fontSize:17,marginTop:15,marginLeft:10}}
-                      inputStyle={styles.filterButtonText}
-                      style={{backgroundColor:'#294a62',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
-                      onChange={this.updateKeywords.bind(this)}
-                    />
+                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
+                  </View>
+                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
+                    <TouchableOpacity
+                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterUserType==='instructor'?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                      onPress={()=>{this.state.filterUserType!=="instructor"?this.setState({filterUserType:"instructor"},()=>{this.filterPost()}):this.setState({filterUserType:""},()=>{this.filterPost()})}}>
+                      <View><Text style={styles.filterButtonText}>Instructor</Text></View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterUserType==='student'?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                      onPress={()=>{this.state.filterUserType!=="student"?this.setState({filterUserType:"student"},()=>{this.filterPost()}):this.setState({filterUserType:""},()=>{this.filterPost()})}}>
+                      <View><Text style={styles.filterButtonText}>Me</Text></View>
+                    </TouchableOpacity>
+                  </View>
                 </View>
 
-              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
-                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
-                </View>
-                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
-                  <TouchableOpacity style={styles.filterButton}>
-                    <View><Text style={styles.filterButtonText}>Instructor</Text></View>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton}>
-                    <View><Text style={styles.filterButtonText}>Me</Text></View>
-                  </TouchableOpacity>
-                </View>
-              </View>
+                <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
+                  </View>
+                  <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
+                    <TouchableOpacity
+                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterWeeks==1?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                      onPress={()=>{this.state.filterWeeks!==1?this.setState({filterWeeks:1},()=>{this.filterPost()}):this.setState({filterWeeks:""},()=>{this.filterPost()})}}>
+                      <View>
+                        <Text style={styles.filterButtonText}>1 week</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterWeeks==2?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                      onPress={()=>{this.state.filterWeeks!==2?this.setState({filterWeeks:2},()=>{this.filterPost()}):this.setState({filterWeeks:""},()=>{this.filterPost()})}}>
 
-              <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
-                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start'}}>
+                      <View>
+                        <Text style={styles.filterButtonText}>2 week</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:90,height:70,backgroundColor:this.state.filterWeeks==3?"#26D3F2":'#294a62',marginRight:20,borderRadius:35}}
+                      onPress={()=>{this.state.filterWeeks!==3?this.setState({filterWeeks:3},()=>{this.filterPost()}):this.setState({filterWeeks:""},()=>{this.filterPost()})}}>
+
+                      <View>
+                        <Text style={styles.filterButtonText}>3 week</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <View style={{flex:1,width:width,flexDirection:'row',justifyContent:'flex-start',marginTop:-20}}>
-                  <TouchableOpacity style={styles.filterButton}>
-                    <View><Text style={styles.filterButtonText}>1 week</Text></View>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton}>
-                    <View><Text style={styles.filterButtonText}>2 week</Text></View>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton}>
-                    <View><Text style={styles.filterButtonText}>3 week</Text></View>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              </TouchableOpacity>
+
             </Modal>
             <Modal style={[styles.modal1, styles.modal4]} position={"top"} ref={"modal5"} backdropOpacity={0.2}>
               <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
@@ -1098,6 +1130,11 @@ this.fetchAssignmentAPI()
                     <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Log out</Text>
                   </View>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.refs.creditsModal.open()}>
+                  <View style={{borderRadius:10}}>
+                    <Text style={{color:'white',fontSize:15,fontWeight:'500'}}>Credits</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
               {this.state.ifRenderPostOrComments?this.ifRenderUserComments():this.ifRenderUserPosts()}
             </View>
@@ -1151,6 +1188,21 @@ this.fetchAssignmentAPI()
                     </TouchableOpacity>
                   </View>
                 </View>
+              </View>
+            </Modal>
+            <Modal style={[styles.modal1, styles.modal6]} position={"bottom"} ref={"creditsModal"} backdropOpacity={0.2}>
+              <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center'}}>
+                <Text>aasd</Text>
+                <View>
+                  <Text>Made By:</Text>
+                  <Text>Chen Chen</Text>
+                  <Text>Xi Chu</Text>
+                  <Text>Yufei Qiao</Text>
+                  <Text>Justin Tao</Text>
+                  <Text>Luvian Wang</Text>
+                  <Text>Howard Zhou</Text>
+                </View>
+
               </View>
             </Modal>
           </View>
