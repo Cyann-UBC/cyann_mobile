@@ -268,36 +268,37 @@ export default class viewQuestion extends Component {
 
   render() {
     return (
-      <View>
-        <View style={styles.topContainer}>
-          <TouchableOpacity
-            style={{marginLeft:15}}
-            onPress={this.onBackPress}>
-            <FontAwesomeIcon name={"arrow-left"} size={27} color={'white'} />
-          </TouchableOpacity>
-
-            <Text style={styles.courseTitle}>{this.props.courseName}</Text>
-
+        <View>
+          <View style={styles.topContainer}>
             <TouchableOpacity
-              onPress={this.openDrawer}
-              style={{height:20,width:20,marginRight: 15}}>
+              style={{marginLeft:15}}
+              onPress={this.onBackPress}>
+              <FontAwesomeIcon name={"arrow-left"} size={27} color={'white'} />
             </TouchableOpacity>
+
+              <Text style={styles.courseTitle}>{this.props.courseName}</Text>
+
+              <TouchableOpacity
+                onPress={this.openDrawer}
+                style={{height:20,width:20,marginRight: 15}}>
+              </TouchableOpacity>
+          </View>
+
+                <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#294a62',paddingLeft:15,paddingRight:15,paddingTop:7}}>
+                <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
+                </ScrollView>
+
+
+
+          <View style={{flex:1,height:height/1.5,backgroundColor:'#294a62',paddingLeft:7,paddingRight:7}}>
+              {this.renderScrollView()}
+          </View>
+          <ActionButton position="right" offsetY={this.state.ifTypingAnswering?380:0} text="answer" buttonColor="#26D3F2" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
+            icon={this.state.ifTypingAnswering?<FontAwesomeIcon name={'send-o'} size={23} color='#f6f7fb'/>
+          :<FontAwesomeIcon name={'pencil'} size={23} color='#f6f7fb'/>}>
+          </ActionButton>
         </View>
 
-              <ScrollView style={{flex:1,height:height-height/12.5-height/1.5,backgroundColor:'#294a62',paddingLeft:15,paddingRight:15,paddingTop:7}}>
-              <Text style={{color:'white',fontSize:17,fontWeight:'400',marginBottom:10}}>{this.props.questionContent}</Text>
-              </ScrollView>
-
-
-
-        <View style={{flex:1,height:height/1.5,backgroundColor:'#294a62',paddingLeft:7,paddingRight:7}}>
-            {this.renderScrollView()}
-        </View>
-        <ActionButton position="right" text="answer" buttonColor="#26D3F2" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
-          icon={this.state.ifTypingAnswering?<FontAwesomeIcon name={'send-o'} size={23} color='#f6f7fb'/>
-        :<FontAwesomeIcon name={'pencil'} size={23} color='#f6f7fb'/>}>
-        </ActionButton>
-      </View>
     );
   }
 }
