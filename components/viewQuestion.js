@@ -121,6 +121,8 @@ export default class viewQuestion extends Component {
               style={{color:'white',height:height/1.5,fontSize:20,width:width,padding:20}}
               multiline={true}
               value={this.state.commentContent}
+              autoFocus={true}
+              selectionColor={"white"}
               placeholder={'your answer here'}
               placeholderTextColor='white' />
           </View>

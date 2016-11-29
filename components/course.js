@@ -1208,9 +1208,9 @@ this.fetchAssignmentAPI()
             </Modal>
             <Modal style={[styles.modal1, styles.modal5]} position={"bottom"} ref={"creditsModal"} backdropOpacity={0.2}>
               <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center',paddingVertical:20}}>
-                <Text style={{color:'white',fontSize:17,fontWeight:'600',textAlign:'center'}}>Made for CPEN 321 at University of British Columbia</Text>
+                <Text style={{color:'white',fontSize:17,fontWeight:'600',textAlign:'center'}}>Made for CPEN 321 at the University of British Columbia</Text>
                 <View>
-                  <Text style={{color:'white',fontSize:17,fontWeight:'600',marginBottom:20,paddingLeft:20}}>Made By:</Text>
+                  <Text style={{color:'white',fontSize:17,fontWeight:'600',marginBottom:20,paddingLeft:20}}>Developers:</Text>
                   <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',width:width,paddingHorizontal:20}}>
                     <Text style={{color:'white',fontSize:15,fontWeight:'500',marginRight:15}}>Chen Chen</Text>
                     <Text style={{color:'white',fontSize:15,fontWeight:'500',marginRight:15}}>Xi Chu</Text>
