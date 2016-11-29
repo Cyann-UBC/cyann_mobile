@@ -74,7 +74,7 @@ export default class viewQuestion extends Component {
   }
 
   getComments(){
-    var url = "http://localhost:8080:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
+    var url = "http://localhost:8080/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url
     ,{method:"GET",
       headers:{
@@ -93,7 +93,7 @@ export default class viewQuestion extends Component {
   }
   upvoteComment(id){
 // /api/courses/:courseId/posts/:postId/comments/:commentId/upvote
-    fetch("http://localhost:8080:3000/api/courses/"+this.state.courseId+"/posts/"+this.state.postId +"/comments/"+id+'/upvote',{method:"put",
+    fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts/"+this.state.postId +"/comments/"+id+'/upvote',{method:"put",
           headers: {
           'Authorization': 'Bearer '+this.props.jwt
           }})
@@ -226,7 +226,7 @@ export default class viewQuestion extends Component {
   }
 
   setAsAnswer(){
-    var url = "http://localhost:8080:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments/"+this.state.setAnserId+"/setAsAnswer"
+    var url = "http://localhost:8080/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments/"+this.state.setAnserId+"/setAsAnswer"
     fetch(url,{method:"PUT",
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -250,7 +250,7 @@ export default class viewQuestion extends Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    var url = "http://localhost:8080:3000/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
+    var url = "http://localhost:8080/"+"api/courses/"+this.props.courseId+"/posts/"+this.props.questionId+"/comments"
     fetch(url,{method:"POST",
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -293,7 +293,7 @@ export default class viewQuestion extends Component {
           <View style={{flex:1,height:height/1.5,backgroundColor:'#294a62',paddingLeft:7,paddingRight:7}}>
               {this.renderScrollView()}
           </View>
-          <ActionButton position="right" offsetY={this.state.ifTypingAnswering?380:0} text="answer" buttonColor="#26D3F2" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
+          <ActionButton position="right" offsetY={this.state.ifTypingAnswering?385:0} text="answer" buttonColor="#26D3F2" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
             icon={this.state.ifTypingAnswering?<FontAwesomeIcon name={'send-o'} size={23} color='#f6f7fb'/>
           :<FontAwesomeIcon name={'pencil'} size={23} color='#f6f7fb'/>}>
           </ActionButton>
