@@ -184,7 +184,7 @@ export default class Login extends Component {
             <Image style={{height:110,width:110}} resizeMode={Image.resizeMode.contain} source={require('../logo1.png')}/>
           </Animatable.View>
           <View>
-            <Text style={{marginLeft:10,marginTop:-30,fontSize:27,fontWeight:'700',color:'white'}}>Cyann</Text>
+            <Text style={{marginLeft:10,marginTop:-30,fontSize:27,fontWeight:'700',color:'white'}}>CYANN</Text>
           </View>
           <View></View>
           <View></View>

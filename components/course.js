@@ -8,6 +8,7 @@ import {
   ListView,
   LayoutAnimation,
   StatusBar,
+  AsyncStorage,
   Image,
   Text,
   View
@@ -107,7 +108,10 @@ export default class course extends Component {
       if (!error) {
         console.warn(JSON.stringify(data))
         _this.setState({ user : null});
-        Actions.login()
+        AsyncStorage.removeItem('jwt')
+        .then(function(){
+          Actions.preLogin()
+        })
       } else {
 
       }
