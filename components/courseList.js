@@ -120,7 +120,7 @@ export default class courseList extends Component {
     if(model === 'iPhone 6 Plus' || model === 'iPhone 6s Plus' || model ==='iPhone 7 Plus'){
       this.setState({offsetY:510})
     }
-    console.warn(JSON.stringify(this.props.jwt))
+    console.warn(JSON.stringify(this.props.jwt.jwt))
     this.setState({jwtToken:this.props.jwt.jwt})
     this.getAllCourses()
     this.getUserCourses()

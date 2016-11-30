@@ -873,6 +873,8 @@ this.fetchAssignmentAPI()
                         iconClass={FontAwesomeIcon}
                         iconName={'search'}
                         iconColor={'white'}
+                        autoCorrect={false}
+                        autoCapitalize={false}
                         labelStyle={{ fontWeight:'600',color:'white',fontSize:17,marginTop:15,marginLeft:10}}
                         inputStyle={styles.filterButtonText}
                         style={{backgroundColor:'#294a62',width:width-30,height:height/20,borderRadius:height/10,marginRight:20,marginTop:20}}
@@ -1336,7 +1338,8 @@ const styles = StyleSheet.create({
   },
     modal4: {
     height: 350,
-    backgroundColor:'#102942'
+    backgroundColor:'#102942',
+    marginBottom:30,
   },
     modal5: {
     height: 250,

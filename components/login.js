@@ -51,6 +51,7 @@ export default class Login extends Component {
     }
   }
   componentWillMount(){
+    // AsyncStorage.removeItem('jwt');
     // this.handleLogout()
       var _this = this
       AsyncStorage.getItem('jwt')
@@ -107,8 +108,8 @@ export default class Login extends Component {
     }
 
   retreiveJWT(result){
-    var _this = this
     // console.warn(this.state.access_token)
+    var _this = this
     var body = {
     'userType': 'Student',
     'socialToken': this.state.access_token,
@@ -133,7 +134,8 @@ export default class Login extends Component {
       .then(function(){
         console.warn(responseData.data)
         _this.setState({jwt:responseData.data})
-
+      }).then(function(){
+        Actions.courseList({jwt:_this.state.jwt})
       })
       // AsyncStorage.setUserID('userId',responseData.data.userId)
     })
@@ -145,7 +147,8 @@ export default class Login extends Component {
     alert('Error fetching data: ' + error.toString());
   } else {
     this.retreiveJWT(result)
-    Actions.courseList({jwt:this.state.jwt})
+    console.warn("wtf"+JSON.stringify(this.state.jwt))
+
     // console.warn(JSON.stringify(result))
   //  Actions.courseList()
   }

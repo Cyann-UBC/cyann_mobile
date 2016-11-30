@@ -19,6 +19,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import ActionButton from 'react-native-action-button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+var DeviceInfo = require('react-native-device-info');
 var Dimensions = require('Dimensions');
 var {
   width,
@@ -43,10 +44,15 @@ export default class viewQuestion extends Component {
       userId:'',
       showAnswer:false,
       setAsAnswerID:'',
+      offsetY:385
     };
   }
 
   componentWillMount(){
+    var model = DeviceInfo.getModel();
+    if(model === 'iPhone 6 Plus' || model === 'iPhone 6s Plus' || model ==='iPhone 7 Plus'){
+      this.setState({offsetY:425})
+    }
     console.warn(this.props.courseId)
     console.warn(this.props.questionId)
     this.setState({courseId:this.props.courseId})
@@ -295,7 +301,7 @@ export default class viewQuestion extends Component {
           <View style={{flex:1,height:height/1.5,backgroundColor:'#294a62',paddingLeft:7,paddingRight:7}}>
               {this.renderScrollView()}
           </View>
-          <ActionButton position="right" offsetY={this.state.ifTypingAnswering?385:0} text="answer" buttonColor="#26D3F2" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
+          <ActionButton position="right" offsetY={this.state.ifTypingAnswering?this.state.offsetY:0} text="answer" buttonColor="#26D3F2" onPress={this.state.ifPostAnser?()=>this.postAnswer():()=>this.writeQuestion()}
             icon={this.state.ifTypingAnswering?<FontAwesomeIcon name={'send-o'} size={23} color='#f6f7fb'/>
           :<FontAwesomeIcon name={'pencil'} size={23} color='#f6f7fb'/>}>
           </ActionButton>

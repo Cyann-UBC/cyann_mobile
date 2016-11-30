@@ -13,6 +13,7 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* cyann_mobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* cyann_mobileTests.m */; };
+		10109F471DEF6E1100B46A44 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10109F461DEF6E1100B46A44 /* Images-2.xcassets */; };
 		102A2ECD1DB91CDB00A6522A /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 102A2ECC1DB91CDB00A6522A /* EvilIcons.ttf */; };
 		102A2ED91DB91CE800A6522A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 102A2ED81DB91CE800A6522A /* Ionicons.ttf */; };
 		105F6F8D1DE52075008E3D6A /* pier.otf in Resources */ = {isa = PBXBuildFile; fileRef = 105F6F8C1DE52075008E3D6A /* pier.otf */; };
@@ -148,6 +149,7 @@
 		00E356EE1AD99517003FC87E /* cyann_mobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cyann_mobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* cyann_mobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cyann_mobileTests.m; sourceTree = "<group>"; };
+		10109F461DEF6E1100B46A44 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "cyann_mobile/Images-2.xcassets"; sourceTree = "<group>"; };
 		102A2ECC1DB91CDB00A6522A /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		102A2ED81DB91CE800A6522A /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		105F6F8C1DE52075008E3D6A /* pier.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = pier.otf; path = ../../../../Library/Fonts/pier.otf; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				10109F461DEF6E1100B46A44 /* Images-2.xcassets */,
 			);
 			name = cyann_mobile;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 			files = (
 				1064E85C1DCB17C0004AEC4C /* Octicons.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				10109F471DEF6E1100B46A44 /* Images-2.xcassets in Resources */,
 				102A2ECD1DB91CDB00A6522A /* EvilIcons.ttf in Resources */,
 				102A2ED91DB91CE800A6522A /* Ionicons.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -746,6 +750,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -779,6 +784,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
