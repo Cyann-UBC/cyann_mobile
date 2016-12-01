@@ -45,13 +45,14 @@ var animations = {
       },
     },
     easeInEaseOut: {
-      duration: 400,
+      duration: 1900,
       create: {
+        duration:400,
         type: LayoutAnimation.Types.easeInEaseOut,
         property: LayoutAnimation.Properties.scaleXY,
       },
       update: {
-        delay: 100,
+        duration: 500,
         type: LayoutAnimation.Types.easeInEaseOut,
       },
     },
@@ -295,6 +296,7 @@ export default class courseList extends Component {
     console.warn(to)
     Communications.email(to,null,null,'email from Cyann User','')
   }
+
   renderUserList(rowData){
     return(
       <TouchableOpacity onPress={()=>this.emailUser(rowData.email)}>
@@ -434,7 +436,9 @@ export default class courseList extends Component {
       )
     }else{
       var courses = this.state.listSource
+
       return(
+
         <View style={{height:height,paddingTop:height/4.5}}>
 
           <Swiper

@@ -585,22 +585,25 @@ this.fetchAssignmentAPI()
         shadowOffset: {height: 3.5,width: 2},backgroundColor:'#527ba6',height:height/3.4,flex:1,flexDirection:'column',justifyContent:'space-between',marginTop:10,paddingLeft:10,borderRadius:5,marginLeft:10,marginRight:10,padding:10,marginBottom:5}}>
           <Animatable.View key={rowID} style={{height:130}}>
             <View style={{flex:1,flexDirection:'row'}}>
-              <Text style={{fontSize:15,fontWeight:'400',width:width/1.25,color:'white',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>260?rowData.content.substring(0,260)+'...':rowData.content}</Text>
+              <Text style={{fontSize:15,fontWeight:'400',width:width-40,color:'white',paddingBottom:10,fontWeight:'500'}}>{rowData.content.length>260?rowData.content.substring(0,260)+'...':rowData.content}</Text>
               </View>
           </Animatable.View>
-          <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:15,paddingLeft:10,paddingRight:10}}>
-            <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-start',alignItems:'center',paddingBottom:20}}>
-                <FontAwesomeIcon name="comments-o" size={30} color={'white'}/>
-              <View>
-                <Text style={{color:'white',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
+            <View style={{flex:1,flexDirection:'row',width:width-30,justifyContent:'space-between',alignItems:'center',paddingHorizontal:10}}>
+              <View style={{width:30}}>
+                <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                  <FontAwesomeIcon name="comments-o" size={30} color={'white'}/>
+                  <View>
+                    <Text style={{color:'white',fontWeight:'500',alignSelf:'center',textAlign:'center',marginTop:7,marginLeft:10}}>{rowData.comments.length}</Text>
+                  </View>
+                </View>
               </View>
-            </View>
-            <View style={{flex:1,flexDirection:'row',width:30,justifyContent:'flex-end',alignItems:'center',paddingBottom:20}}>
+
               <TouchableOpacity onPress={()=>this.openModal5(rowData._id)}>
                 <FontAwesomeIcon name="pencil-square-o" size={30} color={'white'}/>
               </TouchableOpacity>
             </View>
-          </View>
+
+
         </Animatable.View>
       </TouchableOpacity>
     )
@@ -773,14 +776,14 @@ this.fetchAssignmentAPI()
       return(
         <View style={{flex:1,flexDirection:'column',alignItems:'center', justifyContent:'space-around',paddingTop:height/7,paddingBottom:height/7}}>
           <TouchableOpacity onPress={()=>this.toggleReading()}>
-            <Animatable.View animation={'slideInRight'} delay={100} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+            <Animatable.View animation={'fadeInRight'} delay={100} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <FontAwesomeIcon name="book" size={50} color={'white'} style={{marginBottom:10}}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>readings</Text>
             </Animatable.View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={()=>this.toggleAssignment()}>
-            <Animatable.View animation={'slideInRight'} delay={200} duration={350} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+            <Animatable.View animation={'fadeInRight'} delay={200} duration={500} style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
               <FontAwesomeIcon name="file-text" size={50} color={'white'} style={{marginBottom:10}}/>
               <Text style={{textAlign:'center',color:"white",fontSize:20,fontWeight:'600'}}>assignments</Text>
             </Animatable.View>
@@ -1056,7 +1059,7 @@ this.fetchAssignmentAPI()
 
           <KeyboardAwareScrollView keyboardDismissMode={'on-drag'} contentContainerStyle={{flex:1,justifyContent:'space-around',alignItems:'center',backgroundColor:this.state.backgroundColor}} >
           <View style={{}}>
-            <Animatable.View ref="titleView" animation={'slideInRight'} duration={this.state.buttonExit===false?300:500} style={titleStyle}>
+            <Animatable.View ref="titleView" animation={'fadeInRight'} duration={this.state.buttonExit===false?400:500} style={titleStyle}>
               <Animatable.View ref="titleBounceOff" animation={this.state.questionTitle.length>0?"flash":undefined} style={{
               width:0,
               height:0,
@@ -1074,7 +1077,7 @@ this.fetchAssignmentAPI()
                 placeholderTextColor="white"
               />
             </Animatable.View>
-            <Animatable.View ref="contentView" animation={'slideInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?300:500} style={contentStyle}>
+            <Animatable.View ref="contentView" animation={'fadeInRight'} delay={this.state.buttonExit===false?200:600} duration={this.state.buttonExit===false?400:500} style={contentStyle}>
               <Animatable.View ref="contentBounceOff" animation={this.state.questionContent.length>0?"flash":undefined} style={{
               width:0,
               height:0,

@@ -184,7 +184,7 @@ export default class Login extends Component {
             <Image style={{height:110,width:110}} resizeMode={Image.resizeMode.contain} source={require('../logo1.png')}/>
           </Animatable.View>
           <View>
-            <Animatable.Text animation={"fadeInRight"} duration={500} delay={700} style={{marginLeft:10,marginTop:-30,fontSize:27,fontWeight:'700',color:'white'}}>CYANN</Animatable.Text>
+            <Animatable.Text animation={"fadeInRight"} duration={500} delay={700} style={{marginLeft:10,marginTop:-30,fontSize:27,fontWeight:'700',color:'white'}}>C Y A N N</Animatable.Text>
           </View>
           <View></View>
           <View></View>

@@ -57,22 +57,23 @@ export default class Login extends Component {
         _this.setState({buttonText:'login'})
         Actions.login()
       }else{
-        AsyncStorage.getItem('jwt')
-          .then(req => JSON.parse(req))
-          .then(json => _this.setState({jwt:json}))
-          .then(function(){
-            Actions.courseList({jwt:_this.state.jwt})
-          })
-          .catch((error)=>{
-            if(error){
-              console.warn(error)
-            }else{
-              console.warn("here")
-              // _this.setState({user:data.credentials})
-              // _this.setState({buttonText:'logout'})
-            }
-          })
-
+        if(AsyncStorage.getItem('jwt')){
+          AsyncStorage.getItem('jwt')
+            .then(req => JSON.parse(req))
+            .then(json => _this.setState({jwt:json}))
+            .then(function(){
+              Actions.courseList({jwt:_this.state.jwt})
+            })
+            .catch((error)=>{
+              if(error){
+                console.warn(error)
+              }else{
+                console.warn("here")
+                // _this.setState({user:data.credentials})
+                // _this.setState({buttonText:'logout'})
+              }
+            })
+        }
       }
       if (!error) {
         _this.setState({ user : data})
