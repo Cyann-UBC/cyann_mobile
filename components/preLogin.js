@@ -48,7 +48,7 @@ export default class Login extends Component {
 
   componentWillMount(){
     // AsyncStorage.removeItem('jwt');
-    // this.handleLogout()
+    this.handleLogout()
     var _this = this
     FBLoginManager.getCredentials(function(error, data){
       // console.warn(JSON.stringify(data))

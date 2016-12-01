@@ -29,15 +29,14 @@ import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import dismissKeyboard from 'react-native-dismiss-keyboard';
-
-var Accordion = require('react-native-accordion');
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import ActionButton from 'react-native-action-button';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-var Modal   = require('react-native-modalbox');
 import { Kohana } from 'react-native-textinput-effects';
-var {FBLogin, FBLoginManager,FBLoginView} = require('react-native-facebook-login');
 
-import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
+var Accordion = require('react-native-accordion');
+var Modal   = require('react-native-modalbox');
+var {FBLogin, FBLoginManager,FBLoginView} = require('react-native-facebook-login');
 var Dimensions = require('Dimensions');
 var {
   width,
@@ -157,7 +156,6 @@ export default class course extends Component {
 
   toggleReading(){
 this.fetchReadingsAPI()
-
   }
 
   toggleAssignment(){
@@ -235,7 +233,6 @@ this.fetchAssignmentAPI()
     })
   }
 
-
   filterPost(){
     // console.warn(this.state.keywords)
     var keywords = this.state.keywords
@@ -308,41 +305,6 @@ this.fetchAssignmentAPI()
     })
   }
 
-  gotoFile(rowData,type){
-    Actions.fileView({uri:"http://localhost:8080/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.jwt})
-  }
-
-  setQuestionID(id){
-    this.setState({quesitonIdAnswering:id})
-  }
-
-  ifWantToDelete(id,authorId){
-    this.setState({postId:id})
-    this.setState({authorOfPost:authorId})
-    this.refs.deleteModal.open()
-  }
-
-  ifUserWantToDelete(id,courseId){
-    this.setState({postId:id})
-    this.setState({deleteUserOwnCourseId:courseId})
-    this.setState({authorOfPost:this.props.jwt.userId})
-    this.refs.deleteUserModal.open()
-  }
-
-  ifUserWantToDeleteComments(commentId,courseId,postId){
-    this.setState({postId:postId})
-    this.setState({deleteUserOwnCourseId:courseId})
-    this.setState({deleteUserOwnCommentId:commentId})
-    this.setState({authorOfPost:this.props.jwt.userId})
-    this.refs.deleteUserCommentModal.open()
-  }
-
-  dontDelete(){
-    this.setState({postId:""})
-    this.setState({authorOfPost:""})
-    this.refs.deleteModal.close()
-  }
-
   deleteOwnPost(){
     fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts/"+this.state.postId,{method:"DELETE",
           headers: {
@@ -398,14 +360,6 @@ this.fetchAssignmentAPI()
     })
   }
 
-  ifEdit(id,authorId,title,content){
-    this.setState({postId:id})
-    this.setState({authorOfPost:authorId})
-    this.setState({editPostTitle:title})
-    this.setState({editPostText:content})
-    this.refs.editModal.open()
-  }
-
   editPost(){
     var post = {
     'title': this.state.editPostTitle,
@@ -436,6 +390,112 @@ this.fetchAssignmentAPI()
       this.refs.errorModal.open()
     })
   }
+
+  askQuestion(){
+    if(this.state.questionTitle.length == 0 || this.state.questionContent.length == 0){
+      this.refs.postErrorModal.open()
+      return
+    }
+    this.setState({pageNumber:1})
+    this.setState({buttonExit:true})
+    this.refs.titleView.bounce(500)
+    this.refs.contentView.bounce(500)
+    this.refs.buttonView.bounce(1000)
+    this.setState({delayFirst:true})
+    setTimeout(()=>{this.refs.titleBounceOff.bounceOutUp(750)},200)
+    setTimeout(()=>{this.refs.contentBounceOff.bounceOutUp(900)},250)
+    var post = {
+    'title': this.state.questionTitle,
+    'content': this.state.questionContent,
+    }
+
+    var formBody = []
+
+    for (var property in post) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(post[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts",{method:"POST",
+    headers: {
+     'Content-Type': 'application/x-www-form-urlencoded',
+     'Authorization': 'Bearer '+this.props.jwt.jwt
+     },
+    body:formBody})
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.setState({questionList:new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 != r2
+      }).cloneWithRows(responseData.posts)})
+    })
+    setTimeout(()=>{this.setState({pageNumber:0})},800)
+    setTimeout(()=>{this.setState({pageNumber:undefined})},850)
+    setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},1000)
+    setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},1000)
+    setTimeout(()=>{this.setState({buttonExit:false})},800)
+    setTimeout(()=>{this.setState({delayFirst:false})},2100)
+  }
+
+  viewQuestion=(courseId,id,title,content,author)=>{
+    fetch("http://localhost:8080/api/courses/"+courseId+'/'+'posts/'+id,{method:"GET",
+    headers:{
+      'Authorization': 'Bearer '+this.props.jwt.jwt
+    }
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+      Actions.viewQuestion({data:responseData,courseId:courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.jwt})
+    })
+    .catch((error)=>{
+      this.refs.errorModal.open()
+    })
+  }
+
+  gotoFile(rowData,type){
+    Actions.fileView({uri:"http://localhost:8080/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.jwt})
+  }
+
+  setQuestionID(id){
+    this.setState({quesitonIdAnswering:id})
+  }
+
+  ifWantToDelete(id,authorId){
+    this.setState({postId:id})
+    this.setState({authorOfPost:authorId})
+    this.refs.deleteModal.open()
+  }
+
+  ifUserWantToDelete(id,courseId){
+    this.setState({postId:id})
+    this.setState({deleteUserOwnCourseId:courseId})
+    this.setState({authorOfPost:this.props.jwt.userId})
+    this.refs.deleteUserModal.open()
+  }
+
+  ifUserWantToDeleteComments(commentId,courseId,postId){
+    this.setState({postId:postId})
+    this.setState({deleteUserOwnCourseId:courseId})
+    this.setState({deleteUserOwnCommentId:commentId})
+    this.setState({authorOfPost:this.props.jwt.userId})
+    this.refs.deleteUserCommentModal.open()
+  }
+
+  dontDelete(){
+    this.setState({postId:""})
+    this.setState({authorOfPost:""})
+    this.refs.deleteModal.close()
+  }
+
+  ifEdit(id,authorId,title,content){
+    this.setState({postId:id})
+    this.setState({authorOfPost:authorId})
+    this.setState({editPostTitle:title})
+    this.setState({editPostText:content})
+    this.refs.editModal.open()
+  }
+
 
   ifRenderCross(id,authorId,userType){
     if(this.props.jwt.userId === authorId){
@@ -653,68 +713,6 @@ this.fetchAssignmentAPI()
         null
       )
     }
-  }
-
-  askQuestion(){
-    if(this.state.questionTitle.length == 0 || this.state.questionContent.length == 0){
-      this.refs.postErrorModal.open()
-      return
-    }
-    this.setState({pageNumber:1})
-    this.setState({buttonExit:true})
-    this.refs.titleView.bounce(500)
-    this.refs.contentView.bounce(500)
-    this.refs.buttonView.bounce(1000)
-    this.setState({delayFirst:true})
-    setTimeout(()=>{this.refs.titleBounceOff.bounceOutUp(750)},200)
-    setTimeout(()=>{this.refs.contentBounceOff.bounceOutUp(900)},250)
-    var post = {
-    'title': this.state.questionTitle,
-    'content': this.state.questionContent,
-    }
-
-    var formBody = []
-
-    for (var property in post) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(post[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-
-    fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts",{method:"POST",
-    headers: {
-     'Content-Type': 'application/x-www-form-urlencoded',
-     'Authorization': 'Bearer '+this.props.jwt.jwt
-     },
-    body:formBody})
-    .then((response) => response.json())
-    .then((responseData) => {
-      this.setState({questionList:new ListView.DataSource({
-          rowHasChanged: (r1, r2) => r1 != r2
-      }).cloneWithRows(responseData.posts)})
-    })
-    setTimeout(()=>{this.setState({pageNumber:0})},800)
-    setTimeout(()=>{this.setState({pageNumber:undefined})},850)
-    setTimeout(()=>{this.refs.titleBounceOff.fadeInDown(200)},1000)
-    setTimeout(()=>{this.refs.contentBounceOff.fadeInDown(200)},1000)
-    setTimeout(()=>{this.setState({buttonExit:false})},800)
-    setTimeout(()=>{this.setState({delayFirst:false})},2100)
-  }
-
-  viewQuestion=(courseId,id,title,content,author)=>{
-    fetch("http://localhost:8080/api/courses/"+courseId+'/'+'posts/'+id,{method:"GET",
-    headers:{
-      'Authorization': 'Bearer '+this.props.jwt.jwt
-    }
-    })
-    .then((response) => response.json())
-    .then((responseData) => {
-      Actions.viewQuestion({data:responseData,courseId:courseId,questionId:id,questionTitle:title,questionContent:content,questionAuthor:author,jwt:this.props.jwt.jwt})
-    })
-    .catch((error)=>{
-      this.refs.errorModal.open()
-    })
   }
 
   updateTitle(event){
