@@ -23,7 +23,6 @@ const {
 
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
-import Drawer from 'react-native-drawer';
 import TimerMixin from 'react-timer-mixin';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import FacebookTabBar from './tabbar.js';

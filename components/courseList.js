@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
-import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import {Motion, spring} from 'react-motion';
 import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
