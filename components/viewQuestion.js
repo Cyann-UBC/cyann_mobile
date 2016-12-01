@@ -124,7 +124,7 @@ export default class viewQuestion extends Component {
             </TouchableOpacity>
             <TextInput
               onChangeText={(text)=>this.setState({commentContent:text})}
-              style={{color:'white',height:height/1.5,fontSize:20,width:width,padding:20}}
+              style={{color:'white',height:height/3.5,fontSize:20,width:width,padding:20}}
               multiline={true}
               value={this.state.commentContent}
               autoFocus={true}
