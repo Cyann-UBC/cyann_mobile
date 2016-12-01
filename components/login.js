@@ -180,16 +180,16 @@ export default class Login extends Component {
             />
           <View></View>
           <View></View>
-          <Animatable.View animation={"fadeInDown"} duration={300} delay={500}>
+          <Animatable.View animation={"fadeInRight"} duration={500} delay={500}>
             <Image style={{height:110,width:110}} resizeMode={Image.resizeMode.contain} source={require('../logo1.png')}/>
           </Animatable.View>
           <View>
-            <Animatable.Text animation={"fadeIn"} duration={500} delay={700} style={{marginLeft:10,marginTop:-30,fontSize:27,fontWeight:'700',color:'white'}}>CYANN</Animatable.Text>
+            <Animatable.Text animation={"fadeInRight"} duration={500} delay={700} style={{marginLeft:10,marginTop:-30,fontSize:27,fontWeight:'700',color:'white'}}>CYANN</Animatable.Text>
           </View>
           <View></View>
           <View></View>
         <TouchableOpacity onPress={this.state.user===null?()=>this.handleLogin():()=>this.handleLogout()}>
-          <Animatable.View animation={"fadeInUp"} duration={300} delay={900} style={{width:width/1.3,height:70}}>
+          <Animatable.View animation={"fadeInRight"} duration={500} delay={900} style={{width:width/1.3,height:70}}>
             <View style={{borderRadius:35,backgroundColor:'#26D3F2',flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
               <FontAwesomeIcon style={{marginRight:10}} name={'facebook-square'} color={'white'} size={37} />
               <Text style={{marginLeft:20,fontSize:27,fontWeight:'700',color:'white'}}>Login</Text>

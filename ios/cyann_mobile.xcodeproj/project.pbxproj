@@ -16,7 +16,6 @@
 		10109F471DEF6E1100B46A44 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10109F461DEF6E1100B46A44 /* Images-2.xcassets */; };
 		102A2ECD1DB91CDB00A6522A /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 102A2ECC1DB91CDB00A6522A /* EvilIcons.ttf */; };
 		102A2ED91DB91CE800A6522A /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 102A2ED81DB91CE800A6522A /* Ionicons.ttf */; };
-		105F6F8D1DE52075008E3D6A /* pier.otf in Resources */ = {isa = PBXBuildFile; fileRef = 105F6F8C1DE52075008E3D6A /* pier.otf */; };
 		1064E85C1DCB17C0004AEC4C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1064E85B1DCB17C0004AEC4C /* Octicons.ttf */; };
 		10693E411DC9027A00267CC4 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10693E361DC9026800267CC4 /* libRCTFBLogin.a */; };
 		108A29031DC908FE0066237F /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 108A28FF1DC908FE0066237F /* Bolts.framework */; };
@@ -152,7 +151,6 @@
 		10109F461DEF6E1100B46A44 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "cyann_mobile/Images-2.xcassets"; sourceTree = "<group>"; };
 		102A2ECC1DB91CDB00A6522A /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		102A2ED81DB91CE800A6522A /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		105F6F8C1DE52075008E3D6A /* pier.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = pier.otf; path = ../../../../Library/Fonts/pier.otf; sourceTree = "<group>"; };
 		1064E85B1DCB17C0004AEC4C /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		10693E301DC9026800267CC4 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		108A28FF1DC908FE0066237F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = cyann_mobile.xcodeproj/Bolts.framework; sourceTree = "<group>"; };
@@ -378,7 +376,6 @@
 				108A29011DC908FE0066237F /* FBSDKLoginKit.framework */,
 				108A29021DC908FE0066237F /* FBSDKShareKit.framework */,
 				102A2ED81DB91CE800A6522A /* Ionicons.ttf */,
-				105F6F8C1DE52075008E3D6A /* pier.otf */,
 				10AE04E61DCBA543005C0E72 /* FontAwesome.ttf */,
 				1064E85B1DCB17C0004AEC4C /* Octicons.ttf */,
 				102A2ECC1DB91CDB00A6522A /* EvilIcons.ttf */,
@@ -643,7 +640,6 @@
 				102A2ED91DB91CE800A6522A /* Ionicons.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				10AE04E71DCBA543005C0E72 /* FontAwesome.ttf in Resources */,
-				105F6F8D1DE52075008E3D6A /* pier.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

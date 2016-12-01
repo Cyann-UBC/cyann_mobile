@@ -22,6 +22,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Communications from 'react-native-communications';
 import ActionButton from 'react-native-action-button';
 import Swiper from 'react-native-swiper';
+var Modal   = require('react-native-modalbox');
 
 var DeviceInfo = require('react-native-device-info');
 var Dimensions = require('Dimensions');
@@ -110,7 +111,9 @@ export default class courseList extends Component {
       currentCourseId:'',
       currentCourseName:'',
       showInfo:false,
-      offsetY:470
+      offsetY:470,
+      dropCourseName:'',
+      dropCourseId:'',
     };
   }
 
@@ -260,6 +263,33 @@ export default class courseList extends Component {
     .catch((error)=>{
       this.refs.modal6.open();
     })
+  }
+
+  ifDropCourse(id,dropCourseName){
+    this.setState({dropCourseId:id})
+    this.setState({dropCourseName:dropCourseName},()=>this.refs.dropCourseModal.open())
+  }
+
+  confirmDropCourse(){
+    fetch('http://localhost:8080/api/courses/removeUser/'+this.state.dropCourseId,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
+    .then((response)=>response.json())
+    .then((responseData)=>{
+       console.warn(JSON.stringify(responseData))
+       this.setState({dropCourseId:''})
+       this.setState({dropCourseName:''})
+       this.refs.dropCourseModal.close()
+       this.getUserCourses()
+       this.setState({userAddCourseSwitch:false})
+    })
+    .catch((error)=>{
+      this.refs.modal6.open();
+    })
+  }
+
+  cancelDropCourse(){
+    this.setState({dropCourseId:''})
+    this.setState({dropCourseName:''})
+    this.refs.dropCourseModal.close()
   }
 
   emailUser=(to)=>{
@@ -418,6 +448,7 @@ export default class courseList extends Component {
             onTouchStart={()=>this.setState({offset:-50})}
             onTouchEnd={()=>this.setState({offset:15})}
             >
+
             {this.state.listSource.map(function(course, i){
 
               if(i==0){
@@ -453,6 +484,7 @@ export default class courseList extends Component {
                var instructors = ['Farshid Agharebparast','Sathish Gopalakrishnan']
                var TAs = ['Bader Alahmad','John Deppe','Bibek Kaur','Theresa Mammarella','Nick Mulvenna']
                var courseCardStyle=[containerStyle,this.state.containerStyle]
+
                 return(
                   <TouchableOpacity onPressIn={()=>this.setState({radius:1.5})} onPressOut={()=>this.setState({radius:3.5})} onPress={()=>this.gotoCourse(course._id)}>
                     <View obj={course} key={i} style={courseCardStyle} >
@@ -487,9 +519,11 @@ export default class courseList extends Component {
                       </View>
 
                         <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center',width:200,marginTop:20}}>
-                          <View>
-                            <FontAwesomeIcon name={'times'} color={'white'} size={28} style={{marginRight:5}}/>
-                          </View>
+                          <TouchableOpacity onPress={()=>this.ifDropCourse(course._id)}>
+                            <View>
+                              <FontAwesomeIcon name={'times'} color={'white'} size={28} style={{marginRight:5}}/>
+                            </View>
+                          </TouchableOpacity>
                           <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                             <FontAwesomeIcon name={'list-alt'} color={'white'} size={28}/>
                             <Text style={{marginLeft:7,color:'white',fontSize:16,fontWeight:'500',textAlign:'center',paddingTop:10,marginBottom:10}}>{course.postCount}</Text>
@@ -529,6 +563,30 @@ export default class courseList extends Component {
               {this.ifRenderScrollView()}
 
           </View>
+          <Modal backdrop={false} style={[styles.modal1, styles.modal5]} ref={"dropCourseModal"} backdropOpacity={0.2}>
+            <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center'}}>
+              <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:20}}>
+                <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+                  <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Are you sure you want to delete your post</Text>
+                </View>
+              </Animatable.View>
+
+              <View style={{height:30,width:width,marginBottom:20}}>
+                <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'auto'}}>
+                  <TouchableOpacity onPress={()=>this.confirmDropCourse()}>
+                    <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                      <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Yes</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.cancelDropCourse()}>
+                    <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
+                      <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>No</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
       </View>
     );
   }
@@ -554,29 +612,25 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-  courseCard:{
-
+  modal: {
+    paddingTop:10,
+    paddingBottom:20,
+    paddingLeft:20,
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
-  autocomplete: {
-        alignSelf: 'center',
-        width:300,
-        borderRadius:height/100,
-        height: 50,
-        backgroundColor: '#FFF',
-        borderColor: 'lightblue',
-        borderWidth: 1
-    },
-    btnShadow: {
-    shadowOpacity: 0.3,
-    shadowOffset: {
-      width: 0, height: 8,
-    },
-    shadowColor: '#000',
-    shadowRadius: 4,
-    elevation: 8,
-  }
-
-
+  modal1:{
+    paddingTop:10,
+    paddingBottom:20,
+    paddingLeft:10,
+    paddingRight:10,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  modal5: {
+    height: 250,
+    backgroundColor:'#102942'
+  },
 });
 
 AppRegistry.registerComponent('courseList', () => courseList);
