@@ -2,10 +2,12 @@
 
 ##Intro
 This is this repository for Cyann's mobile app power by [Cyann's backend](https://github.com/Cyann-UBC/Cyann)
+
 Please follow the step in the backend to build and run the server on your localhost:8080
 
 ##How to build?
-###due to the framework's complex nature, we have a lot to go over, this guide will walk you through the steps
+###due to the framework's complex nature:scream_cat: we have a lot to go over, this guide will walk you through the steps
+
 First, follow [this](https://facebook.github.io/react-native/docs/getting-started.html) guild to setup react-native and npm on your computer.
 
 After you've done that, do the following
@@ -19,7 +21,7 @@ unzip the the Facebook SDK you just downloaded
 
 and drag the following files to ~/Documents/FacebookSDK
 
-this step is crucial, or the build will fail
+this step is crucial, or the build will fail :broken_heart:
 ```
 Bolts.framework
 FBSDKCoreKit.framework
@@ -61,4 +63,4 @@ Click the "play" button on the top-left corner and the app will start
 
 ![login](/screenshot/login.png?raw =50x)
 
-If you see the login screen on your iPhone simulator, then you're all set
+If you see the login screen on your iPhone simulator, then you're all set :+1:
