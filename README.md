@@ -27,6 +27,8 @@ FBSDKLoginKit.framework
 FBSDKShareKit.framework
 ```
 
+![xcode](/screenshot/facebook.png?raw=true "Optional Title")
+
 ###NPM dependencies
 
 then clone the repository
