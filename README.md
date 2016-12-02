@@ -17,7 +17,7 @@ Then, follow [this](https://facebook.github.io/react-native/docs/getting-started
 After you've done that, do the following
 
 ###Facebook SDK
-Because the mobile app uses iOS Facebook SDK to handle user login, you will have to download Facebook SDK [here](Download the SDK)
+Because the mobile app uses iOS Facebook SDK to handle user login, you will have to download Facebook SDK [here](https://origincache.facebook.com/developers/resources/?id=facebook-ios-sdk-current.zip)
 
 On your computer, create a new folder called "FacebookSDK" under your ~/Documents
 
