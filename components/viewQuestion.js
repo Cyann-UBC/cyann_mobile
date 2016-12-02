@@ -202,18 +202,12 @@ export default class viewQuestion extends Component {
   }
 
   ifRenderInstructor(userType){
-    if(userType === "Instructor"){
+    if(userType === "instructor"){
       return(
         <View style={{width:40}}>
           <Text style={{marginLeft:10,extAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>INS</Text>
         </View>
       )
-    }else if(userType === "TA"){
-      return(
-        <View style={{width:40}}>
-          <Text style={{marginLeft:10,extAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>TA</Text>
-        </View>
-    )
     }else{
       return(
         <View style={{width:40}}>

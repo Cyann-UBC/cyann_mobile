@@ -507,16 +507,12 @@ this.fetchAssignmentAPI()
           <FontAwesomeIcon name={'times'} size={25} color={'#F64848'} style={{marginTop:10,marginRight:10}}/>
         </TouchableOpacity>
       )
-    }else if(userType === "Instructor"){
+    }else if(userType === "instructor"){
       return(
         <View style={{marginTop:13,marginRight:15,height:height/17,width:30,borderRadius:height/100}}>
           <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>INS</Text>
         </View>
       )
-    }else if(userType === "TA"){
-      <View style={{marginTop:13,marginRight:15,height:height/17,width:30,borderRadius:height/100}}>
-        <Text style={{textAlign:'center',fontSize:13,color:'#26D3F2',fontWeight:'500'}}>TA</Text>
-      </View>
     }else{
       return(
         <View style={{height:20,width:30,marginTop:10,marginRight:10,backgroundColor:'transparent'}}></View>
