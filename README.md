@@ -39,7 +39,7 @@ FBSDKShareKit.framework
 
 then clone the repository
 ```
-git clone https://github.com/Cyann-UBC/cyann_front
+git clone https://github.com/Cyann-UBC/cyann_mobile
 ```
 
 navigate to the folder
