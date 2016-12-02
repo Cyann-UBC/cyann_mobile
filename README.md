@@ -62,6 +62,6 @@ go to cyann_mobile/ios and double click on cyann_mobile.xcodeproj. Your Xcode wi
 
 Click the "play" button on the top-left corner and the app will start
 
-![login](/screenshot/login.png?raw =50x)
+<img src="/screenshot/login.png" width="200">
 
 If you see the login screen on your iPhone simulator, then you're all set :+1:
