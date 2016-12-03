@@ -69,6 +69,9 @@ Click the "play" button on the top-left corner and the app will start
 
 Once you see the login screen on your iPhone simulator, then you're all set :+1:
 
+##UI component breakdown 
+Cyann is designed to provide the best user experience possible, but if by any chance you find the UI confusing, please visit [our wiki](https://github.com/Cyann-UBC/cyann_mobile/wiki)
+
 ##Please note
 You may run into some issues, when you try to test the web ui on your local host. Your local database may not have any course
 or posts created. It is because we limit the functionality of creating a course to instructor type of users. And we need email verification to change someone's user_type to instructor. One thing you can do is to use Robomongo, a database managing app, to change the content manually.
