@@ -53,11 +53,11 @@ export default class viewQuestion extends Component {
     if(model === 'iPhone 6 Plus' || model === 'iPhone 6s Plus' || model ==='iPhone 7 Plus'){
       this.setState({offsetY:425})
     }
-    console.warn(this.props.courseId)
-    console.warn(this.props.questionId)
+    ////console.warn(this.props.courseId)
+    ////console.warn(this.props.questionId)
     this.setState({courseId:this.props.courseId})
     this.setState({postId:this.props.questionId})
-    console.warn(JSON.stringify(this.props.data))
+    ////console.warn(JSON.stringify(this.props.data))
     this.setState({commentList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(this.props.data.data.comments)})
@@ -88,7 +88,7 @@ export default class viewQuestion extends Component {
       }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      ////console.warn(JSON.stringify(responseData))
       this.setState({commentList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
@@ -105,7 +105,7 @@ export default class viewQuestion extends Component {
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      ////console.warn(JSON.stringify(responseData))
       this.getComments()
     })
   }
@@ -235,7 +235,7 @@ export default class viewQuestion extends Component {
         'Authorization': 'Bearer '+this.props.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      ////console.warn(JSON.stringify(responseData))
     })
   }
 
@@ -260,7 +260,7 @@ export default class viewQuestion extends Component {
       ,body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      ////console.warn(JSON.stringify(responseData))
       this.setState({ifTypingAnswering:!this.state.ifTypingAnswering})
       this.setState({ifPostAnser:!this.state.ifPostAnser})
       this.setState({commentContent:''})

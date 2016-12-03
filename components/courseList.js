@@ -119,11 +119,11 @@ export default class courseList extends Component {
 
   componentWillMount(){
     var model = DeviceInfo.getModel();
-    console.warn(model)
+    //console.warn(model)
     if(model === 'iPhone 6 Plus' || model === 'iPhone 6s Plus' || model ==='iPhone 7 Plus'){
       this.setState({offsetY:510})
     }
-    console.warn(JSON.stringify(this.props.jwt.jwt))
+    //console.warn(JSON.stringify(this.props.jwt.jwt))
     this.setState({jwtToken:this.props.jwt.jwt})
     this.getAllCourses()
     this.getUserCourses()
@@ -148,11 +148,11 @@ export default class courseList extends Component {
     fetch('http://localhost:8080/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response)=>response.json())
     .then((responseData)=>{
-      //console.warn(JSON.stringify(responseData))
+      ////console.warn(JSON.stringify(responseData))
       this.setState({allCourseList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
-      //  console.warn("all course: "+JSON.stringify(responseData))
+      //  //console.warn("all course: "+JSON.stringify(responseData))
       this.setState({allCourseFilter:responseData.data})
     })
     .catch((error) => {
@@ -165,13 +165,13 @@ export default class courseList extends Component {
     fetch('http://localhost:8080/api/users/my/courseData',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then(response=>response.json())
     .then(responseData=>{
-      console.warn('my courses '+JSON.stringify(responseData))
+      //console.warn('my courses '+JSON.stringify(responseData))
       this.setState({myCourse:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
       this.setState({listSource:responseData})
-      console.warn(JSON.stringify(this.state.myCourse))
-      console.warn(this.state.myCourse._dataBlob.s1.length)
+      //console.warn(JSON.stringify(this.state.myCourse))
+      //console.warn(this.state.myCourse._dataBlob.s1.length)
     })
     .catch((error)=>{
       this.refs.modal6.open();
@@ -185,7 +185,7 @@ export default class courseList extends Component {
       this.setState({userList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.setState({showUserList:true})
     })
     .catch((error)=>{
@@ -205,7 +205,7 @@ export default class courseList extends Component {
     this.setState({allCourseList:new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 != r2
     }).cloneWithRows(filtered)})
-    console.warn(JSON.stringify(filtered))
+    //console.warn(JSON.stringify(filtered))
   }
 
   toggleSearchBar(){
@@ -256,7 +256,7 @@ export default class courseList extends Component {
     fetch('http://localhost:8080/api/courses/addUser/'+id,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response)=>response.json())
     .then((responseData)=>{
-       console.warn(JSON.stringify(responseData))
+       //console.warn(JSON.stringify(responseData))
        this.getUserCourses()
        this.setState({userAddCourseSwitch:false})
     })
@@ -274,7 +274,7 @@ export default class courseList extends Component {
     fetch('http://localhost:8080/api/courses/removeUser/'+this.state.dropCourseId,{method:"PUT",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response)=>response.json())
     .then((responseData)=>{
-       console.warn(JSON.stringify(responseData))
+       //console.warn(JSON.stringify(responseData))
        this.setState({dropCourseId:''})
        this.setState({dropCourseName:''})
        this.refs.dropCourseModal.close()
@@ -293,7 +293,7 @@ export default class courseList extends Component {
   }
 
   emailUser=(to)=>{
-    console.warn(to)
+    //console.warn(to)
     Communications.email(to,null,null,'email from Cyann User','')
   }
 

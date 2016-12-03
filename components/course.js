@@ -103,7 +103,7 @@ export default class course extends Component {
     var _this = this
     FBLoginManager.logout(function(error, data){
       if (!error) {
-        console.warn(JSON.stringify(data))
+        //console.warn(JSON.stringify(data))
         _this.setState({ user : null});
         AsyncStorage.removeItem('jwt')
         .then(function(){
@@ -124,7 +124,7 @@ export default class course extends Component {
   }
 
   openModal5(id){
-    console.warn(id)
+    //console.warn(id)
     this.setState({quesitonIdAnswering:id})
     this.refs.modal5.open();
   }
@@ -165,7 +165,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/courses/"+this.state.courseId+"/posts",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
-        console.warn(JSON.stringify(responseData))
+        //console.warn(JSON.stringify(responseData))
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
@@ -192,7 +192,7 @@ this.fetchAssignmentAPI()
     fetch(url,{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Authorization': 'Bearer '+this.props.jwt.jwt},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.setState({commentContent:''})
       this.fetchPostsAPI()
       this.refs.modal5.close()
@@ -206,7 +206,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/"+this.state.courseId+"/files/assignments",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
-      //  console.warn(JSON.stringify(responseData))
+      //  //console.warn(JSON.stringify(responseData))
       this.setState({assignmentList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
@@ -221,7 +221,7 @@ this.fetchAssignmentAPI()
     fetch("http://localhost:8080/api/"+this.state.courseId+"/files/readings",{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response) => response.json())
     .then((responseData) => {
-        console.warn(JSON.stringify(responseData))
+        //console.warn(JSON.stringify(responseData))
       this.setState({readingList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.files)})
@@ -233,7 +233,7 @@ this.fetchAssignmentAPI()
   }
 
   filterPost(){
-    // console.warn(this.state.keywords)
+    // //console.warn(this.state.keywords)
     var keywords = this.state.keywords
     var weeksAgo = this.state.filterWeeks
     var filterUserType = this.state.filterUserType
@@ -244,7 +244,7 @@ this.fetchAssignmentAPI()
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.setState({questionList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
@@ -261,7 +261,7 @@ this.fetchAssignmentAPI()
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn('user info'+JSON.stringify(responseData))
+      //console.warn('user info'+JSON.stringify(responseData))
       this.setState({userName:responseData.userInfo.name})
       this.setState({profileImg:responseData.userInfo.profileImg})
     })
@@ -277,7 +277,7 @@ this.fetchAssignmentAPI()
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn('user comments'+JSON.stringify(responseData))
+      //console.warn('user comments'+JSON.stringify(responseData))
       this.setState({userComments:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
@@ -294,7 +294,7 @@ this.fetchAssignmentAPI()
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn('user posts'+JSON.stringify(responseData))
+      //console.warn('user posts'+JSON.stringify(responseData))
       this.setState({userPosts:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData)})
@@ -312,13 +312,13 @@ this.fetchAssignmentAPI()
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.fetchPostsAPI()
       this.refs.deleteModal.close()
       // this.refs.deleteUserModal.close()
     })
     .catch((error)=>{
-      console.warn(error)
+      //console.warn(error)
       this.refs.errorModal.open()
     })
   }
@@ -331,7 +331,7 @@ this.fetchAssignmentAPI()
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.getUserPosts()
       this.refs.deleteModal.close()
       this.refs.deleteUserModal.close()
@@ -349,7 +349,7 @@ this.fetchAssignmentAPI()
           }})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.getUserComments()
       this.refs.deleteModal.close()
       this.refs.deleteUserCommentModal.close()
@@ -381,7 +381,7 @@ this.fetchAssignmentAPI()
         },body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.fetchPostsAPI()
       this.refs.editModal.close()
     })
@@ -453,7 +453,7 @@ this.fetchAssignmentAPI()
   }
 
   gotoFile(rowData,type){
-    Actions.fileView({uri:"http://localhost:8080/api/"+this.state.courseId+'/files/'+type+'/download/'+rowData, jwt:this.props.jwt.jwt})
+    Actions.fileView({uri:"http://localhost:8080/api/"+this.state.courseId+'/files/'+type+'/download/', file: rowData, jwt:this.props.jwt.jwt})
   }
 
   setQuestionID(id){
@@ -680,7 +680,7 @@ this.fetchAssignmentAPI()
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'assignments')}>
           <View style={styles.fileRow}>
             <FontAwesomeIcon name={rowData.split('.')[1]==='pdf'?'file-pdf-o':'file-o'} size={30} color={'white'} style={{marginRight:20}}/>
-            <Text style={{fontSize:20,fontWeight:'500',color:'white'}}>{rowData}</Text>
+            <Text style={{width:width/1.5,fontSize:20,fontWeight:'500',color:'white'}}>{rowData}</Text>
             <View style={{height:15,width:15}}></View>
           </View>
         </TouchableOpacity>
@@ -698,7 +698,7 @@ this.fetchAssignmentAPI()
         <TouchableOpacity onPress={()=>this.gotoFile(rowData,'readings')}>
           <View style={styles.fileRow}>
             <FontAwesomeIcon name={rowData.split('.')[1]==='pdf'?'file-pdf-o':'file-o'} size={30} color={'white'} style={{marginRight:20}}/>
-            <Text style={{fontSize:20,fontWeight:'500',color:'white'}}>{rowData.split('.')[0]}</Text>
+            <Text style={{width:width/1.5,fontSize:20,fontWeight:'500',color:'white'}}>{rowData.split('.')[0]}</Text>
             <View style={{height:15,width:15}}></View>
           </View>
         </TouchableOpacity>

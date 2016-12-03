@@ -59,7 +59,7 @@ export default class Login extends Component {
         .then(json => _this.setState({jwt:json}))
         .then(function(){
           FBLoginManager.getCredentials(function(error, data){
-            // console.warn(JSON.stringify(data))
+            // //console.warn(JSON.stringify(data))
             if(data === null){
               _this.setState({user:null})
               _this.setState({buttonText:'login'})
@@ -81,14 +81,14 @@ export default class Login extends Component {
     var _this = this
     FBLoginManager.login(function(error, data){
       if (!error) {
-        // console.warn(JSON.stringify(data.credentials.token))
+        // //console.warn(JSON.stringify(data.credentials.token))
         _this.setState({access_token: data.credentials.token})
         _this.setState({ user : data},_this.fetchUserInfo(data))
         // this.props.onLogin && _this.props.onLogin();
       } else {
-        // console.warn('wtf')
-        // console.warn(JSON.stringify(data))
-        // console.warn(error, data);
+        // //console.warn('wtf')
+        // //console.warn(JSON.stringify(data))
+        // //console.warn(error, data);
       }
     })
   }
@@ -98,7 +98,7 @@ export default class Login extends Component {
       var _this = this
       FBLoginManager.logout(function(error, data){
         if (!error) {
-          console.warn(JSON.stringify(data))
+          //console.warn(JSON.stringify(data))
           _this.setState({ user : null});
           // this.props.onLogout && _this.props.onLogout();
         } else {
@@ -108,7 +108,7 @@ export default class Login extends Component {
     }
 
   retreiveJWT(result){
-    // console.warn(this.state.access_token)
+    // //console.warn(this.state.access_token)
     var _this = this
     var body = {
     'userType': 'Student',
@@ -118,7 +118,7 @@ export default class Login extends Component {
     }
 
     var formBody = []
-    // console.warn(JSON.stringify(body))
+    // //console.warn(JSON.stringify(body))
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
       var encodedValue = encodeURIComponent(body[property]);
@@ -129,10 +129,10 @@ export default class Login extends Component {
     fetch('http://localhost:8080/api/users/register',{method:'POST',headers: {'Content-Type': 'application/x-www-form-urlencoded'},body:formBody})
     .then((response) => response.json())
     .then((responseData) => {
-      console.warn('a')
+      //console.warn('a')
       AsyncStorage.setItem('jwt',JSON.stringify(responseData.data))
       .then(function(){
-        console.warn(responseData.data)
+        //console.warn(responseData.data)
         _this.setState({jwt:responseData.data})
       }).then(function(){
         Actions.courseList({jwt:_this.state.jwt})
@@ -147,9 +147,9 @@ export default class Login extends Component {
     alert('Error fetching data: ' + error.toString());
   } else {
     this.retreiveJWT(result)
-    console.warn("wtf"+JSON.stringify(this.state.jwt))
+    //console.warn("wtf"+JSON.stringify(this.state.jwt))
 
-    // console.warn(JSON.stringify(result))
+    // //console.warn(JSON.stringify(result))
   //  Actions.courseList()
   }
 }

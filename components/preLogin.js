@@ -51,7 +51,7 @@ export default class Login extends Component {
     this.handleLogout()
     var _this = this
     FBLoginManager.getCredentials(function(error, data){
-      // console.warn(JSON.stringify(data))
+      // //console.warn(JSON.stringify(data))
       if(data === null){
         _this.setState({user:null})
         _this.setState({buttonText:'login'})
@@ -66,9 +66,9 @@ export default class Login extends Component {
             })
             .catch((error)=>{
               if(error){
-                console.warn(error)
+                //console.warn(error)
               }else{
-                console.warn("here")
+                //console.warn("here")
                 // _this.setState({user:data.credentials})
                 // _this.setState({buttonText:'logout'})
               }
@@ -90,7 +90,7 @@ export default class Login extends Component {
         var _this = this
         FBLoginManager.logout(function(error, data){
           if (!error) {
-            console.warn(JSON.stringify(data))
+            //console.warn(JSON.stringify(data))
             _this.setState({ user : null});
             // this.props.onLogout && _this.props.onLogout();
           } else {

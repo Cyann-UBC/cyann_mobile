@@ -30,10 +30,12 @@ export default class fileView extends Component {
     super(props);
     this.state = {
       uri:'',
+      file:''
     }
   }
   componentWillMount(){
     this.setState({uri:this.props.uri})
+    this.setState({file:encodeURIComponent(this.props.file)})
   }
 
   render(){
@@ -41,7 +43,7 @@ export default class fileView extends Component {
       <View>
         <WebView
           scalesPageToFit={true}
-          source={{uri: this.state.uri,method:'GET',headers:{'Authorization': 'Bearer '+this.props.jwt}}}
+          source={{uri: this.state.uri+"?fileName="+this.state.file,method:'GET',headers:{'Authorization': 'Bearer '+this.props.jwt}}}
           style={{height:height,width:width}}
         />
       <ActionButton position="left" offsetY={560} offsetX={20} text="answer" buttonColor="transparent" verticalOrientation='down' degrees={90}
