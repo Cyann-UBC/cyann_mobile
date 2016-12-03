@@ -24,7 +24,6 @@ const {
 import { Router, Scene } from 'react-native-router-flux';
 import { Actions } from 'react-native-router-flux';
 import TimerMixin from 'react-timer-mixin';
-import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import FacebookTabBar from './tabbar.js';
 import * as Animatable from 'react-native-animatable';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
