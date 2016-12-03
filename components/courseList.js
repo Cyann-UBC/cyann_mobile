@@ -570,7 +570,7 @@ export default class courseList extends Component {
             <View style={{flex:1,flexDirection:'column',justifyContent:'space-around',alignItems:'center'}}>
               <Animatable.View ref="yourAnswerView" animation={'fadeIn'} duration={1000} style={{height:50,marginTop:20}}>
                 <View style={{flex:1,flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
-                  <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Are you sure you want to delete your post</Text>
+                  <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23,textAlign:'center'}}>Are you sure you want to delete this course?</Text>
                 </View>
               </Animatable.View>
 
