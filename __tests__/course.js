@@ -1,12 +1,12 @@
 import 'react-native';
 import React from 'react';
-import courseList from '../components/course';
+import course from '../components/course';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
 it('renders correctly', () => {
   const tree = renderer.create(
-    <Index />
+    <course />
   );
 });
