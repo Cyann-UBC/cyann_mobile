@@ -59,9 +59,15 @@ go to cyann_mobile/ios and double click on cyann_mobile.xcodeproj. Your Xcode wi
 
 Click the "play" button on the top-left corner and the app will start
 
-<img src="/screenshot/login.png" width="200">
+If your computer isn't very fast the app might run before the project is completely built, in that case you will see a red screen, simply select the iPhone simulator and press command+R on your keyboard
+
+<img src="/screenshot/Simulator Screen Shot Dec 2, 2016, 10.52.58 PM.png" width="200">
 
 Once you see the login screen on your iPhone simulator, then you're all set :+1:
+
+<img src="/screenshot/login.png" width="200">
+
+
 
 ##UI component breakdown 
 Cyann is designed to provide the best user experience possible, but if by any chance you find the UI confusing, please visit [our wiki](https://github.com/Cyann-UBC/cyann_mobile/wiki)
