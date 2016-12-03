@@ -70,6 +70,7 @@ Once you see the login screen on your iPhone simulator, the app is all set :+1:
 After you tap the log in button and log yourself in with facebook, you will very likely see a blank screen with only a search bar, don't worry, it only means the mongoDB on your macbook isn't populated with any data.
 
 If mongoDB contains course created by instructor, it would look like this
+
 <img src="/screenshot/courseSearch.png" width="200">
 
 
