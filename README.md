@@ -67,6 +67,10 @@ Once you see the login screen on your iPhone simulator, the app is all set :+1:
 
 <img src="/screenshot/login.png" width="200">
 
+In Xcode 8, a bug might occurs to intertupt the login, in that case, you will need to turn the "Keychain Sharing" property on under Target/Capabilities
+
+<img src="/screenshot/Xcode8_bug.png" width="200">
+
 After you tap the log in button and log yourself in with facebook, you will very likely see a blank screen with only a search bar, don't worry, it only means the mongoDB on your macbook isn't populated with any data.
 
 If mongoDB contains course created by instructor, it would look like this
