@@ -75,7 +75,7 @@ After you tap the log in button and log yourself in with facebook, you will very
 
 If mongoDB contains course created by instructor, it would look like this
 
-<img src="/screenshot/courseSearch.png" width="200">
+<img src="/screenshot/courseSearch.png" width="350">
 
 
 ##UI component breakdown 
