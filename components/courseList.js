@@ -148,11 +148,11 @@ export default class courseList extends Component {
     fetch('http://localhost:8080/api/courses',{method:"GET",headers: {'Authorization': 'Bearer '+this.props.jwt.jwt}})
     .then((response)=>response.json())
     .then((responseData)=>{
-      ////console.warn(JSON.stringify(responseData))
+      //console.warn(JSON.stringify(responseData))
       this.setState({allCourseList:new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 != r2
       }).cloneWithRows(responseData.data)})
-      //  //console.warn("all course: "+JSON.stringify(responseData))
+      //console.warn("all course: "+JSON.stringify(responseData))
       this.setState({allCourseFilter:responseData.data})
     })
     .catch((error) => {

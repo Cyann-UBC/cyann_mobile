@@ -59,7 +59,7 @@ export default class Login extends Component {
         .then(json => _this.setState({jwt:json}))
         .then(function(){
           FBLoginManager.getCredentials(function(error, data){
-            // //console.warn(JSON.stringify(data))
+            //console.warn(JSON.stringify(data))
             if(data === null){
               _this.setState({user:null})
               _this.setState({buttonText:'login'})
@@ -73,7 +73,7 @@ export default class Login extends Component {
             }
           })
         })
-        .catch(error => console.warn('error!'));
+        .catch(error => //console.warn('error!'));
 
   }
 
@@ -81,14 +81,14 @@ export default class Login extends Component {
     var _this = this
     FBLoginManager.login(function(error, data){
       if (!error) {
-        // //console.warn(JSON.stringify(data.credentials.token))
+        //console.warn(JSON.stringify(data.credentials.token))
         _this.setState({access_token: data.credentials.token})
         _this.setState({ user : data},_this.fetchUserInfo(data))
         // this.props.onLogin && _this.props.onLogin();
       } else {
-        // //console.warn('wtf')
-        // //console.warn(JSON.stringify(data))
-        // //console.warn(error, data);
+        //console.warn('wtf')
+        //console.warn(JSON.stringify(data))
+        //console.warn(error, data);
       }
     })
   }
@@ -102,13 +102,13 @@ export default class Login extends Component {
           _this.setState({ user : null});
           // this.props.onLogout && _this.props.onLogout();
         } else {
-          // console.log(error, data);
+           console.log(error, data);
         }
       });
     }
 
   retreiveJWT(result){
-    // //console.warn(this.state.access_token)
+    //console.warn(this.state.access_token)
     var _this = this
     var body = {
     'userType': 'Student',
@@ -118,7 +118,7 @@ export default class Login extends Component {
     }
 
     var formBody = []
-    // //console.warn(JSON.stringify(body))
+    //console.warn(JSON.stringify(body))
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
       var encodedValue = encodeURIComponent(body[property]);
@@ -149,7 +149,7 @@ export default class Login extends Component {
     this.retreiveJWT(result)
     //console.warn("wtf"+JSON.stringify(this.state.jwt))
 
-    // //console.warn(JSON.stringify(result))
+    //console.warn(JSON.stringify(result))
   //  Actions.courseList()
   }
 }
