@@ -73,7 +73,7 @@ export default class Login extends Component {
             }
           })
         })
-        .catch(error => //console.warn('error!'));
+        .catch(error => console.warn('error!'));
 
   }
 
