@@ -28,7 +28,6 @@ export default class cyann_mobile extends Component {
         <Scene hideNavBar={true}  panHandlers={null} key="course" duration={500} animation={"fade"} component={course} title="course"/>
         <Scene hideNavBar={true}  key="viewQuestion" component={viewQuestion} duration={500} title="viewQuestion"/>
         <Scene hideNavBar={true}  key="fileView" component={fileView} duration={500} title="fileView"/>
-
       </Router>
     )
   }

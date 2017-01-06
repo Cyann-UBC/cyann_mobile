@@ -11,43 +11,28 @@ import {
   Text,
   View
 } from 'react-native';
+import { Router, Scene,ActionConst } from 'react-native-router-flux';
+import courseList from './components/courseList';
+import course from './components/course';
+import viewQuestion from './components/viewQuestion';
+import fileView from './components/fileView';
+import login from './components/login';
+import preLogin from './components/preLogin'
 
 export default class cyann_mobile extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
+      <Router>
+        <Scene hideNavBar={true}  key="preLogin" component={preLogin} duration={500} title="preLogin" initial={true}/>
+        <Scene hideNavBar={true}  key="login" component={login} duration={500} title="login"/>
+        <Scene hideNavBar={true}  key="courseList" duration={500} component={courseList} title="courseList"/>
+        <Scene hideNavBar={true}  panHandlers={null} key="course" duration={500} animation={"fade"} component={course} title="course"/>
+        <Scene hideNavBar={true}  key="viewQuestion" component={viewQuestion} duration={500} title="viewQuestion"/>
+        <Scene hideNavBar={true}  key="fileView" component={fileView} duration={500} title="fileView"/>
+      </Router>
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 AppRegistry.registerComponent('cyann_mobile', () => cyann_mobile);
