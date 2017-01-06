@@ -34,5 +34,4 @@ export default class cyann_mobile extends Component {
   }
 }
 
-
 AppRegistry.registerComponent('cyann_mobile', () => cyann_mobile);
