@@ -439,7 +439,7 @@ export default class courseList extends Component {
 
       return(
 
-        <View style={{height:height,paddingTop:height/4.5}}>
+        <View style={{flex:1,height:height,paddingTop:height/4.5}}>
 
           <Swiper
             height={height/1.45}
@@ -486,7 +486,7 @@ export default class courseList extends Component {
                };
                var instructors = ['Farshid Agharebparast','Sathish Gopalakrishnan']
                var TAs = ['Bader Alahmad','John Deppe','Bibek Kaur','Theresa Mammarella','Nick Mulvenna']
-               var courseCardStyle=[containerStyle,this.state.containerStyle]
+               var courseCardStyle=containerStyle
 
                 return(
                   <TouchableOpacity onPressIn={()=>this.setState({radius:1.5})} onPressOut={()=>this.setState({radius:3.5})} onPress={()=>this.gotoCourse(course._id)}>
@@ -575,7 +575,7 @@ export default class courseList extends Component {
               </Animatable.View>
 
               <View style={{height:30,width:width,marginBottom:20}}>
-                <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'auto'}}>
+                <View style={{flex:1,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
                   <TouchableOpacity onPress={()=>this.confirmDropCourse()}>
                     <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center',width:width/2-50,height:height/13,backgroundColor:'#26D3F2',borderRadius:height/100}}>
                       <Text style={{color:"white",fontWeight:'600',alignSelf:"center",fontSize:23}}>Yes</Text>
